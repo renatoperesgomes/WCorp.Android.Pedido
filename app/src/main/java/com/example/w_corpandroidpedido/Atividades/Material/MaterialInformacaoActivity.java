@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.w_corpandroidpedido.Atividades.Impressora.Impressora;
 import com.example.w_corpandroidpedido.R;
 
 public class MaterialInformacaoActivity extends AppCompatActivity {
@@ -49,7 +50,8 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
     }
 
     public void adicionarProduto(Context context, String nomeMaterial, String valorMaterial, String qtdMaterial){
-        System.out.println(nomeMaterial);
+        Intent intent = new Intent(context, Impressora.class);
+        context.startActivity(intent);
     }
 
     private void voltarParaProduto(){

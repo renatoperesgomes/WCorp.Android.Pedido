@@ -2,15 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Atividades.Impressora.ImpressoraActivity">
-
+    tools:context=".Atividades.Impressora.Impressora">
     <Button
-        android:id="@+id/button_usb"
+        android:id="@+id/id_printer_receiptpositivo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
