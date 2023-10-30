@@ -3,11 +3,13 @@ package com.example.w_corpandroidpedido.Atividades.Material;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.w_corpandroidpedido.Atividades.Impressora.ImpressoraActivity;
 import com.example.w_corpandroidpedido.R;
 
 public class MaterialInformacaoActivity extends AppCompatActivity {
@@ -39,7 +41,7 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         getTxtQtdMaterial.setText("1");
 
         getBtnAdicionar.setOnClickListener(view ->{
-            adicionarProduto(nomeMaterial, valorProduto, "1");
+            adicionarProduto(this, nomeMaterial, valorProduto, "1");
         });
 
         getBtnVoltar.setOnClickListener(view ->{
@@ -47,9 +49,9 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         });
     }
 
-    private void adicionarProduto(String nomeMaterial, String valorMaterial, String qtdMaterial){
-        System.out.println(nomeMaterial);
-        System.out.println(valorMaterial);
+    public void adicionarProduto(Context context, String nomeMaterial, String valorMaterial, String qtdMaterial){
+        Intent intent = new Intent(context, ImpressoraActivity.class);
+        context.startActivity(intent);
     }
 
     private void voltarParaProduto(){

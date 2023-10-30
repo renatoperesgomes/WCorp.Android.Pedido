@@ -61,13 +61,13 @@ public class SubCategoriaActivity extends AppCompatActivity {
         MaterialSubCategoriaService materialSubCategoriaService = new MaterialSubCategoriaService();
 
         ListenableFuture<List<MaterialSubCategoria.Retorno>> materialSubCategoria = materialSubCategoriaService.getSubCategoria(bearer, idCategoria);
+
         materialSubCategoria.addListener(() -> {
             try{
                 List<MaterialSubCategoria.Retorno> result = materialSubCategoria.get();
 
                 runOnUiThread(() ->{
                     if(result == null){
-                        //MELHORAR ISSO
                         finish();
                         irParaProdutos(this, idCategoria);
                     }else{

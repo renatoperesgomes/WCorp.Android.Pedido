@@ -44,6 +44,7 @@ dependencies {
     implementation ("androidx.concurrent:concurrent-futures:1.1.0")
     implementation("androidx.datastore:datastore-preferences-rxjava2:1.0.0")
     implementation ("androidx.test.espresso:espresso-core:3.5.1")
+    implementation ("com.github.DantSu:ESCPOS-ThermalPrinter-Android:3.3.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
