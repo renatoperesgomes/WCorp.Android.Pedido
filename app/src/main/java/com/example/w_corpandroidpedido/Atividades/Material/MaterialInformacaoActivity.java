@@ -1,7 +1,6 @@
 package com.example.w_corpandroidpedido.Atividades.Material;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,7 @@ import com.example.w_corpandroidpedido.Atividades.Impressora.Impressora;
 import com.example.w_corpandroidpedido.R;
 
 public class MaterialInformacaoActivity extends AppCompatActivity {
-    private int idMaterial;
+    private String idMaterial;
     private String nomeMaterial;
     private String valorProduto;
     private EditText getTxtNomeMaterial;
@@ -26,7 +25,7 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_material_informacao);
         Intent intent = getIntent();
-        idMaterial = intent.getIntExtra(MaterialActivity.ID_MATERIAL, 0);
+        idMaterial = intent.getStringExtra(MaterialActivity.ID_MATERIAL);
         nomeMaterial = intent.getStringExtra(MaterialActivity.NOME_MATERIAL);
         valorProduto = intent.getStringExtra(MaterialActivity.VALOR_MATERIAL);
 

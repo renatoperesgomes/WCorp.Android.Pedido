@@ -5,10 +5,14 @@
     android:id="@+id/content_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".Atividades.Impressora.Impressora">
+
     <Button
         android:id="@+id/id_printer_receiptpositivo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Imprimir"
+        android:layout_gravity="center_vertical"/>
 
 </LinearLayout>

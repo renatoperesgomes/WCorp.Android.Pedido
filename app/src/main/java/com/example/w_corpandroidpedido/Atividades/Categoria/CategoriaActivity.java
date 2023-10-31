@@ -1,5 +1,6 @@
 package com.example.w_corpandroidpedido.Atividades.Categoria;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.datastore.preferences.core.Preferences;
@@ -13,6 +14,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.w_corpandroidpedido.MainActivity;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
@@ -37,6 +40,9 @@ public class CategoriaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categoria);
 
+        Intent intent = getIntent();
+        String idEmpresa = intent.getStringExtra(MainActivity.ID_EMPRESA);
+
         getRecycleCategoria = findViewById(R.id.viewCategoria);
         getToolbarCategoria = findViewById(R.id.toolbarCategoria);
 
@@ -52,13 +58,22 @@ public class CategoriaActivity extends AppCompatActivity {
 
         MaterialCategoriaService materialCategoriaService = new MaterialCategoriaService();
 
-        ListenableFuture<List<MaterialCategoria.Retorno>> materialCategoria = materialCategoriaService.getCategoria(bearer);
+        ListenableFuture<MaterialCategoria> materialCategoria = materialCategoriaService.getCategoria(bearer, idEmpresa);
 
         materialCategoria.addListener(() -> {
             try{
-                List<MaterialCategoria.Retorno> result = materialCategoria.get();
+                MaterialCategoria result = materialCategoria.get();
                 runOnUiThread(() ->{
-                    getRecycleCategoria.setAdapter(new CategoriaAdapter(this, result));
+                    if(result.validated){
+                        getRecycleCategoria.setAdapter(new CategoriaAdapter(this, result.retorno));
+                    }else if(result.hasInconsistence){
+                        AlertDialog.Builder alert = new AlertDialog.Builder(CategoriaActivity.this);
+                        alert.setTitle("Atenção");
+                        alert.setMessage(result.inconsistences.get(0).text);
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("OK", null);
+                        alert.show();
+                    }
                 });
             }catch (Exception e){
                 System.out.println("Erro :" + e.getMessage());

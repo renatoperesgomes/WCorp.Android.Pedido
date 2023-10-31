@@ -60,19 +60,18 @@ public class SubCategoriaActivity extends AppCompatActivity {
 
         MaterialSubCategoriaService materialSubCategoriaService = new MaterialSubCategoriaService();
 
-        ListenableFuture<List<MaterialSubCategoria.Retorno>> materialSubCategoria = materialSubCategoriaService.getSubCategoria(bearer, idCategoria);
-
+        ListenableFuture<MaterialSubCategoria> materialSubCategoria = materialSubCategoriaService.getSubCategoria(bearer, idCategoria);
         materialSubCategoria.addListener(() -> {
             try{
-                List<MaterialSubCategoria.Retorno> result = materialSubCategoria.get();
-
+                MaterialSubCategoria result = materialSubCategoria.get();
+                System.out.println(materialSubCategoria.get());
                 runOnUiThread(() ->{
-                    if(result == null){
+                    if(result.validated){
+                        getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, result.retorno),
+                                                          new VoltarAdapter(this, this, null ,ViewType.SUB_CATEGORIA.ordinal())));
+                    }else if(result.hasInconsistence){
                         finish();
                         irParaProdutos(this, idCategoria);
-                    }else{
-                        getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, result),
-                                                                            new VoltarAdapter(this, this, null ,ViewType.SUB_CATEGORIA.ordinal())));
                     }
                 });
             }catch (Exception e){

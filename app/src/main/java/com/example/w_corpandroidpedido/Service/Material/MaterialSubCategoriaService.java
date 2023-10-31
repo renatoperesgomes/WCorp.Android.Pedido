@@ -21,7 +21,7 @@ public class MaterialSubCategoriaService {
     static String baseUrl = "http://10.0.2.2:5101/GetListSubCategoria/";
     private Executor executor = Executors.newSingleThreadExecutor();
 
-    public ListenableFuture<List<MaterialSubCategoria.Retorno>> getSubCategoria(String bearer, int idCategoria){
+    public ListenableFuture<MaterialSubCategoria> getSubCategoria(String bearer, int idCategoria){
         return CallbackToFutureAdapter.getFuture(completer -> {
             executor.execute(() -> {
                 try{
@@ -40,12 +40,9 @@ public class MaterialSubCategoriaService {
 
                     Gson gson = new Gson();
                     MaterialSubCategoria subCategoriaJson = gson.fromJson(jsonEmString, MaterialSubCategoria.class);
-
-                    if(subCategoriaJson.validated){
-                        completer.set(subCategoriaJson.retorno);
-                    }
+                    completer.set(subCategoriaJson);
                 }catch (Exception e){
-                    completer.setException(e );
+                    completer.setException(e);
                 }
             });
             return null;

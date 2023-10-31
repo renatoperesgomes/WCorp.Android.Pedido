@@ -19,7 +19,7 @@ public class MaterialService {
     static String baseUrl = "http://10.0.2.2:5101/GetListMaterial";
     private Executor executor = Executors.newSingleThreadExecutor();
 
-    public ListenableFuture<List<Material.Retorno>> getMaterial(String bearer, int idSubCategoria) {
+    public ListenableFuture<Material> getMaterial(String bearer, int idSubCategoria) {
         return CallbackToFutureAdapter.getFuture(completer -> {
             executor.execute(() -> {
                 try {
@@ -38,14 +38,9 @@ public class MaterialService {
 
                     Gson gson = new Gson();
                     Material materialJson = gson.fromJson(jsonEmString, Material.class);
-
-                    if (materialJson.validated) {
-                        completer.set(materialJson.retorno);
-                    }
+                    completer.set(materialJson);
                 } catch (Exception e) {
                     completer.setException(e);
-                } catch (Throwable e) {
-                    throw new RuntimeException(e);
                 }
             });
             return null;

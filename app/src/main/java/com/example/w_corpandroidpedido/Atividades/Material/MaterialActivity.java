@@ -55,13 +55,13 @@ public class MaterialActivity extends AppCompatActivity {
 
         MaterialService materialService = new MaterialService();
 
-        ListenableFuture<List<Material.Retorno>> materialSubCategoria = materialService.getMaterial(bearer, idSubCategoria);
+        ListenableFuture<Material> materialSubCategoria = materialService.getMaterial(bearer, idSubCategoria);
 
         materialSubCategoria.addListener(() -> {
             try{
-                List<Material.Retorno> result = materialSubCategoria.get();
+                Material result = materialSubCategoria.get();
                 runOnUiThread(() ->{
-                    getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result),
+                    getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno),
                                                                     new VoltarAdapter(this ,null,this,ViewType.MATERIAL.ordinal())));
                 });
             }catch (Exception e){

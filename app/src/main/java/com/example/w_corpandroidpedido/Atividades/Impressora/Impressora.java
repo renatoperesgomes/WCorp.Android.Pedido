@@ -88,8 +88,10 @@ public class Impressora extends Activity implements View.OnClickListener {
         final String[] textArray5 = {"CNPJ: 00.000.000/0000-00              "};
         final String[] textArray6 = {"MENSAGEM TBL F0                       "};
         final String[] textArray7 = {"LOJA CRED SEM FIN                     "};
-        final String[] textArray8 = {"ENDERECO1 ENDERECO2 ENDERECO3         \n-ENDERECO4                            "};
-        final String[] textArray9 = {"CIDADE1 CIDADE2 CIDADE3 CIDADE4 CI    \n - SP                                 "};
+        final String[] textArray8 = {"ENDERECO1 ENDERECO2 ENDERECO3         \n" +
+            "                        -ENDERECO4                            "};
+        final String[] textArray9 = {"CIDADE1 CIDADE2 CIDADE3 CIDADE4 CI    \n " +
+    "                                - SP                                 "};
         final String[] textArray10 = {"0000000000000004  DOC=419019  AUT=095121"};
         final String[] textArray11 = {"19/11/19", "09:51", "ONL-X"};
         final String[] textArray12 = {"VENDA A CREDITO                       "};

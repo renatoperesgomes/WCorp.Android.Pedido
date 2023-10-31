@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.rxjava2.RxDataStore;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import io.reactivex.Single;
 
 public class MainActivity extends AppCompatActivity {
     private static final Preferences.Key<String> STRING_KEY = new Preferences.Key<>("authentication");
+    public static final String ID_EMPRESA = "com.example.w_corpandroidpedido.ID_EMPRESA";
     private EditText getTxtNomeUsuario;
     private EditText getTxtSenhaUsuario;
     private Button getBotaoLogin;
@@ -52,21 +54,21 @@ public class MainActivity extends AppCompatActivity {
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 
         EmpresaService empresaService = new EmpresaService();
-        ListenableFuture<List<Empresa.Retorno>> empresa = empresaService.getEmpresa();
+        ListenableFuture<Empresa> empresa = empresaService.getEmpresa();
 
         empresa.addListener(() ->{
             try{
                 runOnUiThread(() ->{
-                    List<Empresa.Retorno> listEmpresas = null;
+                    Empresa listaEmpresas = null;
                     try {
-                        listEmpresas = empresa.get();
+                        listaEmpresas = empresa.get();
                     } catch (ExecutionException e) {
                         throw new RuntimeException(e);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
 
-                    EmpresaAdapter adapterEmpresa = new EmpresaAdapter(this, listEmpresas);
+                    EmpresaAdapter adapterEmpresa = new EmpresaAdapter(this, listaEmpresas.retorno);
 
                     getEmpresa.setAdapter(adapterEmpresa);
                 });
@@ -103,9 +105,7 @@ public class MainActivity extends AppCompatActivity {
                                 mutablePreferences.set(STRING_KEY, result.retorno);
                                 return Single.just(mutablePreferences);
                             });
-
-                            Intent intent = new Intent(this, CategoriaActivity.class);
-                            startActivity(intent);
+                            logarUsuario(this);
                         }else if(result.hasInconsistence){
                             AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                             alert.setTitle("Atenção");
@@ -120,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, MoreExecutors.directExecutor());
         });
+    }
+    private void logarUsuario(Context context){
+        Intent intent = new Intent(context, CategoriaActivity.class);
+        intent.putExtra(ID_EMPRESA, idEmpresa);
+        startActivity(intent);
     }
 }
 

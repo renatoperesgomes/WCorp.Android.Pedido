@@ -19,7 +19,7 @@ public class EmpresaService {
     static String baseUrl = "http://10.0.2.2:5101/GetListEmpresa";
     private Executor executor = Executors.newSingleThreadExecutor();
 
-    public ListenableFuture<List<Empresa.Retorno>> getEmpresa() {
+    public ListenableFuture<Empresa> getEmpresa() {
         return CallbackToFutureAdapter.getFuture(completer -> {
             executor.execute(() -> {
                 try {
@@ -37,9 +37,7 @@ public class EmpresaService {
 
                     Gson gson = new Gson();
                     Empresa empresaJson = gson.fromJson(jsonEmString, Empresa.class);
-                    if (empresaJson.validated) {
-                        completer.set(empresaJson.retorno);
-                    }
+                    completer.set(empresaJson);
                 } catch (Exception e) {
                     completer.setException(e);
                 }
