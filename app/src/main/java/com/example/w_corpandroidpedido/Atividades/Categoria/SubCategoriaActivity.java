@@ -64,11 +64,10 @@ public class SubCategoriaActivity extends AppCompatActivity {
         materialSubCategoria.addListener(() -> {
             try{
                 MaterialSubCategoria result = materialSubCategoria.get();
-                System.out.println(materialSubCategoria.get());
                 runOnUiThread(() ->{
                     if(result.validated){
                         getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, result.retorno),
-                                                          new VoltarAdapter(this, this, null ,ViewType.SUB_CATEGORIA.ordinal())));
+                                                                            new VoltarAdapter(this, this, null ,ViewType.SUB_CATEGORIA.ordinal())));
                     }else if(result.hasInconsistence){
                         finish();
                         irParaProdutos(this, idCategoria);

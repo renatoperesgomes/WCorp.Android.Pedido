@@ -19,6 +19,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Atividades.Pedido.ListaPedidosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Atividades.Cliente.ProcurarClienteActivity"
+            android:exported="false" />
+        <activity
             android:name=".Atividades.Impressora.Impressora"
             android:exported="false" />
         <activity

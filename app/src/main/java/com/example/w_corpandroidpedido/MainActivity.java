@@ -59,12 +59,10 @@ public class MainActivity extends AppCompatActivity {
         empresa.addListener(() ->{
             try{
                 runOnUiThread(() ->{
-                    Empresa listaEmpresas = null;
+                    Empresa listaEmpresas;
                     try {
                         listaEmpresas = empresa.get();
-                    } catch (ExecutionException e) {
-                        throw new RuntimeException(e);
-                    } catch (InterruptedException e) {
+                    } catch (ExecutionException | InterruptedException e) {
                         throw new RuntimeException(e);
                     }
 
@@ -82,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 idEmpresa = String.valueOf(id);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 System.out.println("ERRO");

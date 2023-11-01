@@ -29,7 +29,6 @@ import io.reactivex.Flowable;
 
 public class CategoriaActivity extends AppCompatActivity {
     private RecyclerView getRecycleCategoria;
-    private Toolbar getToolbarCategoria;
     public static final String ID_CATEGORIA = "com.example.w_corpandroidpedido.IDCATEGORIA";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private String bearer;
@@ -44,7 +43,6 @@ public class CategoriaActivity extends AppCompatActivity {
         String idEmpresa = intent.getStringExtra(MainActivity.ID_EMPRESA);
 
         getRecycleCategoria = findViewById(R.id.viewCategoria);
-        getToolbarCategoria = findViewById(R.id.toolbarCategoria);
 
         getRecycleCategoria.setLayoutManager(new GridLayoutManager(this,2, GridLayoutManager.VERTICAL, false));
         getRecycleCategoria.setHasFixedSize(true);
