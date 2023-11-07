@@ -1,20 +1,14 @@
 package com.example.w_corpandroidpedido.Atividades.Pedido;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ConcatAdapter;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.example.w_corpandroidpedido.Models.Material.MaterialSubCategoria;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Util.Adapter.Pedido.Pedido;
 import com.example.w_corpandroidpedido.Util.Adapter.Pedido.PedidoAdapter;
-import com.example.w_corpandroidpedido.Util.Adapter.SubCategoriaAdapter;
-import com.example.w_corpandroidpedido.Util.Adapter.VoltarAdapter;
-import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 
 import java.util.ArrayList;
 import java.util.List;

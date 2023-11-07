@@ -59,9 +59,9 @@ public class Impressora extends Activity implements View.OnClickListener {
     }
 
     private void initLayout(){
-        mRoot = (LinearLayout) this.findViewById(R.id.content_view);
+        mRoot = this.findViewById(R.id.content_view);
 
-        mPositivoReceiptText = (Button) mRoot.findViewById(R.id.id_printer_receiptpositivo);
+        mPositivoReceiptText = mRoot.findViewById(R.id.id_printer_receiptpositivo);
         mPositivoReceiptText.setVisibility(View.VISIBLE);
         mPositivoReceiptText.setOnClickListener(this);
         mPositivoReceiptText.setEnabled(true);
@@ -81,7 +81,7 @@ public class Impressora extends Activity implements View.OnClickListener {
         map_positivo.put(PrintAttributes.KEY_TYPEFACE, 1);
         map_positivo.put(PrintAttributes.KEY_TEXTSIZE, 17);
 
-        final String[] textArray = {"                 Visa                 "};
+        final String[] textArray =  {"                 Visa                 "};
         final String[] textArray2 = {"         CREDITO A VISTA - I          "};
         final String[] textArray3 = {"             424242-4242              "};
         final String[] textArray4 = {" VIA - ESTABELECIMENTO / POS=69000163 "};

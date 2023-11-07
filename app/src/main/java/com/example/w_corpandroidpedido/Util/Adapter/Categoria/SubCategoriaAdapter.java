@@ -1,4 +1,4 @@
-package com.example.w_corpandroidpedido.Util.Adapter;
+package com.example.w_corpandroidpedido.Util.Adapter.Categoria;
 
 import android.content.Context;
 import android.view.LayoutInflater;

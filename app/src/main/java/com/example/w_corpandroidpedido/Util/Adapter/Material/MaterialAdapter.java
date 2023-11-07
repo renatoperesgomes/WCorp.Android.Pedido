@@ -1,4 +1,4 @@
-package com.example.w_corpandroidpedido.Util.Adapter;
+package com.example.w_corpandroidpedido.Util.Adapter.Material;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -32,7 +32,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
         View itemLista = LayoutInflater.from(context).inflate(R.layout.card, parent, false);
         MaterialViewHolder holder = new MaterialViewHolder(itemLista);
         CardView card = holder.itemView.findViewById(R.id.card);
-        card.setBackgroundColor(Color.parseColor("#E1EA75"));
+        card.setCardBackgroundColor(Color.parseColor("#E1EA75"));
         return holder;
     }
 

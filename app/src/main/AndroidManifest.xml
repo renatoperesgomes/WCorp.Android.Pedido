@@ -28,9 +28,6 @@
             android:name=".Atividades.Impressora.Impressora"
             android:exported="false" />
         <activity
-            android:name=".Atividades.Impressora.ImpressoraActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

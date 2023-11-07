@@ -11,9 +11,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
 
 public class EmpresaService {
     static String baseUrl = "http://10.0.2.2:5101/GetListEmpresa";

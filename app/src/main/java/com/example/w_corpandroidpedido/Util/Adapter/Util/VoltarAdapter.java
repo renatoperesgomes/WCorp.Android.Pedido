@@ -1,19 +1,15 @@
-package com.example.w_corpandroidpedido.Util.Adapter;
+package com.example.w_corpandroidpedido.Util.Adapter.Util;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
-import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 

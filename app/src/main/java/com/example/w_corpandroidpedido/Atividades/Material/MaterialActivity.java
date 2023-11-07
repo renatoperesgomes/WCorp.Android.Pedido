@@ -1,5 +1,6 @@
 package com.example.w_corpandroidpedido.Atividades.Material;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
@@ -13,17 +14,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
 import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialService;
-import com.example.w_corpandroidpedido.Util.Adapter.MaterialAdapter;
-import com.example.w_corpandroidpedido.Util.Adapter.VoltarAdapter;
+import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialAdapter;
+import com.example.w_corpandroidpedido.Util.Adapter.Util.VoltarAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 import com.google.common.util.concurrent.ListenableFuture;
-
-import java.util.List;
 
 import io.reactivex.Flowable;
 
@@ -61,8 +61,19 @@ public class MaterialActivity extends AppCompatActivity {
             try{
                 Material result = materialSubCategoria.get();
                 runOnUiThread(() ->{
-                    getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno),
-                                                                    new VoltarAdapter(this ,null,this,ViewType.MATERIAL.ordinal())));
+                    if(result.validated){
+                        getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno),
+                                                                        new VoltarAdapter(this ,null,this,ViewType.MATERIAL.ordinal())));
+                    }else if(result.hasInconsistence){
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MaterialActivity.this);
+                        alert.setTitle("Atenção");
+                        alert.setMessage(result.inconsistences.get(0).text);
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("OK", null);
+                        alert.show();
+
+                        getRecycleMaterial.setAdapter(new VoltarAdapter(this ,null,this,ViewType.MATERIAL.ordinal()));
+                    }
                 });
             }catch (Exception e){
                 System.out.println("Erro :" + e.getMessage());

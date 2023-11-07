@@ -2,7 +2,6 @@ package com.example.w_corpandroidpedido.Atividades.Categoria;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
@@ -17,13 +16,13 @@ import android.os.Bundle;
 
 import com.example.w_corpandroidpedido.MainActivity;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
+import com.example.w_corpandroidpedido.Models.Material.MaterialSubCategoria;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
-import com.example.w_corpandroidpedido.Util.Adapter.CategoriaAdapter;
+import com.example.w_corpandroidpedido.Service.Material.MaterialSubCategoriaService;
+import com.example.w_corpandroidpedido.Util.Adapter.Categoria.CategoriaAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
-
-import java.util.List;
 
 import io.reactivex.Flowable;
 
@@ -33,7 +32,6 @@ public class CategoriaActivity extends AppCompatActivity {
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private String bearer;
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +77,9 @@ public class CategoriaActivity extends AppCompatActivity {
         }, MoreExecutors.directExecutor());
     }
     public void irParaSubCategoria(Context context, int idCategoria){
+        MaterialSubCategoriaService materialSubCategoriaService = new MaterialSubCategoriaService();
+        ListenableFuture<MaterialSubCategoria> materialSubCategoria = materialSubCategoriaService.getSubCategoria(bearer, idCategoria);
+
         Intent intent = new Intent(context, SubCategoriaActivity.class);
         intent.putExtra(ID_CATEGORIA, idCategoria);
         context.startActivity(intent);

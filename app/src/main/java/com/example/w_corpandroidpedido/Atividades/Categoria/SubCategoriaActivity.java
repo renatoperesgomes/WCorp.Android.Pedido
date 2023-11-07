@@ -1,7 +1,7 @@
 package com.example.w_corpandroidpedido.Atividades.Categoria;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
@@ -10,25 +10,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
 import com.example.w_corpandroidpedido.Models.Material.MaterialSubCategoria;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialSubCategoriaService;
-import com.example.w_corpandroidpedido.Util.Adapter.MaterialAdapter;
-import com.example.w_corpandroidpedido.Util.Adapter.SubCategoriaAdapter;
-import com.example.w_corpandroidpedido.Util.Adapter.VoltarAdapter;
+import com.example.w_corpandroidpedido.Util.Adapter.Categoria.SubCategoriaAdapter;
+import com.example.w_corpandroidpedido.Util.Adapter.Util.VoltarAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 import com.google.common.util.concurrent.ListenableFuture;
-
-import java.util.List;
 
 import io.reactivex.Flowable;
 

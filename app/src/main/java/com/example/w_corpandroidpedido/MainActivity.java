@@ -9,7 +9,6 @@ import androidx.datastore.rxjava2.RxDataStore;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -23,11 +22,10 @@ import com.example.w_corpandroidpedido.Models.Empresa.Empresa;
 import com.example.w_corpandroidpedido.Models.Usuario.Usuario;
 import com.example.w_corpandroidpedido.Service.Empresa.EmpresaService;
 import com.example.w_corpandroidpedido.Service.Usuario.UsuarioService;
-import com.example.w_corpandroidpedido.Util.Adapter.EmpresaAdapter;
+import com.example.w_corpandroidpedido.Util.Adapter.Empresa.EmpresaAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.reactivex.Single;
@@ -90,32 +88,41 @@ public class MainActivity extends AppCompatActivity {
             String nomeUsuario = getTxtNomeUsuario.getText().toString();
             String senhaUsuario = getTxtSenhaUsuario.getText().toString();
 
-            UsuarioService usuarioService = new UsuarioService();
-            ListenableFuture<Usuario> usuario =  usuarioService.loginAsync(nomeUsuario, senhaUsuario, idEmpresa);
-            usuario.addListener(() ->{
-                try{
-                    Usuario result = usuario.get();
-                    runOnUiThread(() ->{
-                        if(result.validated){
-                            Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
-                                MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-                                mutablePreferences.set(STRING_KEY, result.retorno);
-                                return Single.just(mutablePreferences);
-                            });
-                            logarUsuario(this);
-                        }else if(result.hasInconsistence){
-                            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-                            alert.setTitle("Atenção");
-                            alert.setMessage(result.inconsistences.get(0).text);
-                            alert.setCancelable(false);
-                            alert.setPositiveButton("OK", null);
-                            alert.show();
-                        }
-                    });
-                }catch (Exception e){
-                    System.out.println("Erro :" + e.getMessage());
-                }
-            }, MoreExecutors.directExecutor());
+            if(nomeUsuario.isEmpty() || senhaUsuario.isEmpty()){
+                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                alert.setTitle("Atenção");
+                alert.setMessage("Usuário/Senha não preenchidos!");
+                alert.setCancelable(false);
+                alert.setPositiveButton("OK", null);
+                alert.show();
+            }else{
+                UsuarioService usuarioService = new UsuarioService();
+                ListenableFuture<Usuario> usuario =  usuarioService.loginAsync(nomeUsuario, senhaUsuario, idEmpresa);
+                usuario.addListener(() ->{
+                    try{
+                        Usuario result = usuario.get();
+                        runOnUiThread(() ->{
+                            if(result.validated){
+                                Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
+                                    MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+                                    mutablePreferences.set(STRING_KEY, result.retorno);
+                                    return Single.just(mutablePreferences);
+                                });
+                                logarUsuario(this);
+                            }else if(result.hasInconsistence){
+                                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                                alert.setTitle("Atenção");
+                                alert.setMessage(result.inconsistences.get(0).text);
+                                alert.setCancelable(false);
+                                alert.setPositiveButton("OK", null);
+                                alert.show();
+                            }
+                        });
+                    }catch (Exception e){
+                        System.out.println("Erro :" + e.getMessage());
+                    }
+                }, MoreExecutors.directExecutor());
+            }
         });
     }
     private void logarUsuario(Context context){
