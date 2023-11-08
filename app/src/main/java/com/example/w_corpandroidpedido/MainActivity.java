@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         listaEmpresas = empresa.get();
                     } catch (ExecutionException | InterruptedException e) {
-                        throw new RuntimeException(e);
+                        throw new RuntimeException(e.getCause());
                     }
 
                     EmpresaAdapter adapterEmpresa = new EmpresaAdapter(this, listaEmpresas.retorno);

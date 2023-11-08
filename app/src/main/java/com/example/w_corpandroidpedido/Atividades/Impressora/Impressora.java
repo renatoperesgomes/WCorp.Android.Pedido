@@ -75,33 +75,34 @@ public class Impressora extends Activity implements View.OnClickListener {
     }
 
     private void onPositivoReceiptClicked(){
-        final Bitmap positivo_title = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.logowcorp), 265, 54, false);
+        final Bitmap positivo_title = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.logowcorpdarktheme), 265, 150, false);
         final Map<String,Integer> map_positivo = new HashMap<String,Integer>();
         map_positivo.put(PrintAttributes.KEY_ALIGN, 0);
         map_positivo.put(PrintAttributes.KEY_TYPEFACE, 1);
         map_positivo.put(PrintAttributes.KEY_TEXTSIZE, 17);
 
-        final String[] textArray =  {"                 Visa                 "};
+        final String[] textArray =  {"Elo"};
         final String[] textArray2 = {"         CREDITO A VISTA - I          "};
         final String[] textArray3 = {"             424242-4242              "};
         final String[] textArray4 = {" VIA - ESTABELECIMENTO / POS=69000163 "};
         final String[] textArray5 = {"CNPJ: 00.000.000/0000-00              "};
         final String[] textArray6 = {"MENSAGEM TBL F0                       "};
         final String[] textArray7 = {"LOJA CRED SEM FIN                     "};
-        final String[] textArray8 = {"ENDERECO1 ENDERECO2 ENDERECO3         \n" +
-            "                        -ENDERECO4                            "};
-        final String[] textArray9 = {"CIDADE1 CIDADE2 CIDADE3 CIDADE4 CI    \n " +
-    "                                - SP                                 "};
+        final String[] textArray8 = {"Av. Cel. Manoel Inocêncio, 888 - Vila Sao João"};
+        final String[] textArray9 = {"Caçapava - SP, 12281-020"};
         final String[] textArray10 = {"0000000000000004  DOC=419019  AUT=095121"};
-        final String[] textArray11 = {"19/11/19", "09:51", "ONL-X"};
+        final String[] textArray11 = {"08/11/2023", "12:52", "ONL-X"};
         final String[] textArray12 = {"VENDA A CREDITO                       "};
         final String[] textArray13 = {"VALOR:", "30,00"};
         final String[] textArray14 = {"MENSAGEM TBL D0                       "};
+
+
 
         final Map<String,Integer> maptext1 = new HashMap<String,Integer>();
         maptext1.put(PrintAttributes.KEY_TEXTSIZE, 17);
         maptext1.put(PrintAttributes.KEY_ALIGN, 0);
         maptext1.put(PrintAttributes.KEY_TYPEFACE, 0);
+        maptext1.put(PrintAttributes.KEY_LINESPACE, 10);
 
         final Map<String,Integer> maptext2 = new HashMap<String,Integer>();
         maptext2.put(PrintAttributes.KEY_TEXTSIZE, 17);
@@ -183,6 +184,7 @@ public class Impressora extends Activity implements View.OnClickListener {
                     mPrinter.printColumnsTextWithAttributes(textArray12, attrCols2, mCallback);
                     mPrinter.printColumnsTextWithAttributes(textArray13, attrCols5, mCallback);
                     mPrinter.printColumnsTextWithAttributes(textArray14, attrCols2, mCallback);
+                    mPrinter.printQRCode("https://www.youtube.com/watch?v=C24hUt18RWY&list=RDJh8CB1A9aPs&index=2", 0 , 200, mCallback);
                     mPrinter.printStepWrapPaper(180, mCallback);
                 } catch (Exception e) {
                     // TODO Auto-generated catch block

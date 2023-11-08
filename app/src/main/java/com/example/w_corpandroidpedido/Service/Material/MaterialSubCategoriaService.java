@@ -18,7 +18,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class MaterialSubCategoriaService {
-    static String baseUrl = "http://10.0.2.2:5101/GetListSubCategoria/";
+    static String baseUrl = "http://192.168.2.189:45455/GetListSubCategoria/";
     private Executor executor = Executors.newSingleThreadExecutor();
 
     public ListenableFuture<MaterialSubCategoria> getSubCategoria(String bearer, int idCategoria){

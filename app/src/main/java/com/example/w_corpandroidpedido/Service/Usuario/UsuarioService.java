@@ -15,7 +15,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class UsuarioService {
-    static String baseUrl = "http://10.0.2.2:5101/Login/";
+    static String baseUrl = "http://192.168.2.189:45455/Login/";
     private Executor executor = Executors.newSingleThreadExecutor();
     public ListenableFuture<Usuario> loginAsync(String usuario, String senha, String idEmpresa){
         return CallbackToFutureAdapter.getFuture(completer -> {
