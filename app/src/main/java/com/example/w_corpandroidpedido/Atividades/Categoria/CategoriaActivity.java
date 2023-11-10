@@ -29,8 +29,12 @@ import io.reactivex.Flowable;
 public class CategoriaActivity extends AppCompatActivity {
     private RecyclerView getRecycleCategoria;
     public static final String ID_CATEGORIA = "com.example.w_corpandroidpedido.IDCATEGORIA";
+    public static final String MULTIPLA_SELECAO = "com.example.w_corpandroidpedido.MULTIPLASELECAO";
+    public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
+    public static final String COMBO_CATEGORIA_FILHO = "com.example.w_corpandroidpedido.COMBOCATEGORIAFILHO";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private String bearer;
+    private String idEmpresa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class CategoriaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categoria);
 
         Intent intent = getIntent();
-        String idEmpresa = intent.getStringExtra(MainActivity.ID_EMPRESA);
+        idEmpresa = intent.getStringExtra(MainActivity.ID_EMPRESA);
 
         getRecycleCategoria = findViewById(R.id.viewCategoria);
 
@@ -51,6 +55,10 @@ public class CategoriaActivity extends AppCompatActivity {
                 dataStore.data().map(prefs -> prefs.get(BEARER));
 
         bearer = getBearer.blockingFirst();
+        pesquisarCategorias();
+    }
+
+    private void pesquisarCategorias(){
 
         MaterialCategoriaService materialCategoriaService = new MaterialCategoriaService();
 
@@ -76,12 +84,30 @@ public class CategoriaActivity extends AppCompatActivity {
             }
         }, MoreExecutors.directExecutor());
     }
-    public void irParaSubCategoria(Context context, int idCategoria){
-        MaterialSubCategoriaService materialSubCategoriaService = new MaterialSubCategoriaService();
-        ListenableFuture<MaterialSubCategoria> materialSubCategoria = materialSubCategoriaService.getSubCategoria(bearer, idCategoria);
 
+    public void irParaSubCategoria(Context context, int idCategoria){
         Intent intent = new Intent(context, SubCategoriaActivity.class);
+
         intent.putExtra(ID_CATEGORIA, idCategoria);
+
+        context.startActivity(intent);
+    }
+    public void irParaSubCategoria(Context context, int idCategoria, boolean comboCategoriaFilho){
+        Intent intent = new Intent(context, SubCategoriaActivity.class);
+
+        intent.putExtra(ID_CATEGORIA, idCategoria);
+        intent.putExtra(COMBO_CATEGORIA_FILHO, comboCategoriaFilho);
+
+        context.startActivity(intent);
+    }
+
+    public void irParaSubCategoria(Context context, int idCategoria, boolean multiplaSelecaoCategoria, int qtdSelecaoCategoria){
+        Intent intent = new Intent(context, SubCategoriaActivity.class);
+
+        intent.putExtra(ID_CATEGORIA, idCategoria);
+        intent.putExtra(MULTIPLA_SELECAO, multiplaSelecaoCategoria);
+        intent.putExtra(QTD_SELECAO, qtdSelecaoCategoria);
+
         context.startActivity(intent);
     }
 }

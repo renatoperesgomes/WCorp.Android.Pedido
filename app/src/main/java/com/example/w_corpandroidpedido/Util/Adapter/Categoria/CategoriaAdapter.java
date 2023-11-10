@@ -36,10 +36,18 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
     public void onBindViewHolder(@NonNull CategoriaViewHolder holder, int position) {
         holder.nomeCategoria.setText(items.get(position).nome);
         holder.itemView.setOnClickListener(view -> {
-            new CategoriaActivity().irParaSubCategoria(context, items.get(position).id);
+            if (items.get(position).pdvMultiplaSelecao) {
+                new CategoriaActivity().irParaSubCategoria(context, items.get(position).id,
+                        items.get(position).pdvMultiplaSelecao,
+                        items.get(position).pdvMultiplaSelecaoQuantidade);
+            }else if(items.get(position).pdvComboCategoriaFilho){
+                new CategoriaActivity().irParaSubCategoria(context,items.get(position).id,
+                        items.get(position).pdvComboCategoriaFilho);
+            } else {
+                new CategoriaActivity().irParaSubCategoria(context, items.get(position).id);
+            }
         });
     }
-
 
     @Override
     public int getItemCount() {

@@ -11,18 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
 import com.example.w_corpandroidpedido.R;
+import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialAdapter;
 import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 
 
 public class VoltarAdapter extends RecyclerView.Adapter<VoltarAdapter.VoltarViewHolder> {
     private final Context context;
-    private final SubCategoriaActivity classeSubCategoria;
-    private final MaterialActivity classeMaterial;
+    private final SubCategoriaActivity classeSubCategoriaActivity;
+    private final MaterialActivity classeMaterialActivity;
     private final int viewType;
-    public VoltarAdapter(Context context, SubCategoriaActivity classeSubCategoria, MaterialActivity classeMaterial ,int viewType){
+    public VoltarAdapter(Context context, SubCategoriaActivity classeSubCategoriaActivity, int viewType){
         this.context = context;
-        this.classeSubCategoria = classeSubCategoria;
-        this.classeMaterial = classeMaterial;
+        this.classeSubCategoriaActivity = classeSubCategoriaActivity;
+        this.classeMaterialActivity = null;
+        this.viewType = viewType;
+    }
+
+    public VoltarAdapter(Context context, MaterialActivity classeMaterialActivity, int viewType){
+        this.context = context;
+        this.classeSubCategoriaActivity = null;
+        this.classeMaterialActivity = classeMaterialActivity;
         this.viewType = viewType;
     }
 
@@ -38,11 +46,11 @@ public class VoltarAdapter extends RecyclerView.Adapter<VoltarAdapter.VoltarView
     public void onBindViewHolder(@NonNull VoltarViewHolder holder, int position) {
         if(viewType == ViewType.SUB_CATEGORIA.ordinal()){
             holder.itemView.setOnClickListener(view ->{
-                classeSubCategoria.finish();
+                classeSubCategoriaActivity.finish();
             });
         }else if(viewType == ViewType.MATERIAL.ordinal()){
             holder.itemView.setOnClickListener(view ->{
-                classeMaterial.finish();
+                classeMaterialActivity.finish();
             });
         }
     }

@@ -36,7 +36,17 @@ public class SubCategoriaAdapter extends RecyclerView.Adapter<SubCategoriaAdapte
     public void onBindViewHolder(@NonNull SubCategoriaViewHolder holder, int position) {
         holder.nomeSubCategoria.setText(items.get(position).nome);
         holder.itemView.setOnClickListener(view -> {
-            new SubCategoriaActivity().irParaProdutos(context, items.get(position).id);
+            if(items.get(position).pdvMultiplaSelecao){
+                new SubCategoriaActivity().irParaProdutos(context, items.get(position).id,
+                                                                   items.get(position).pdvMultiplaSelecao,
+                                                                   items.get(position).pdvMultiplaSelecaoQuantidade);
+            }else if(items.get(position).pdvComboCategoriaFilho){
+                new SubCategoriaActivity().irParaProdutos(context,
+                        items.get(position).id,
+                        items.get(position).pdvComboCategoriaFilho);
+            }else{
+                new SubCategoriaActivity().irParaProdutos(context, items.get(position).id);
+            }
         });
     }
 

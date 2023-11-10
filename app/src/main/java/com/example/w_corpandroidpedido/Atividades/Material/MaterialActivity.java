@@ -30,6 +30,9 @@ import io.reactivex.Flowable;
 public class MaterialActivity extends AppCompatActivity {
     private RecyclerView getRecycleMaterial;
     private int idSubCategoria;
+    private boolean multiplaSelecao;
+    private int qtdSelecao;
+    private boolean comboCategoriaFilho;
     public static final String ID_MATERIAL = "com.example.w_corpandroidpedido.IDMATERIAL";
     public static final String NOME_MATERIAL = "com.example.w_corpandroidpedido.IDMATERIAL";
     public static final String VALOR_MATERIAL = "com.example.w_corpandroidpedido.VALORMATERIAL";
@@ -39,11 +42,17 @@ public class MaterialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_material);
+
         Intent intent = getIntent();
+
         idSubCategoria = intent.getIntExtra(SubCategoriaActivity.ID_SUBCATEGORIA, 0);
+        multiplaSelecao = intent.getBooleanExtra(SubCategoriaActivity.MULTIPLA_SELECAO, false);
+        qtdSelecao = intent.getIntExtra(SubCategoriaActivity.QTD_SELECAO, 0);
+        comboCategoriaFilho = intent.getBooleanExtra(SubCategoriaActivity.COMBO_CATEGORIA_FILHO, false);
+
 
         getRecycleMaterial = findViewById(R.id.viewProduto);
-        getRecycleMaterial.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false));
+        getRecycleMaterial.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
         getRecycleMaterial.setHasFixedSize(true);
 
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
@@ -53,6 +62,16 @@ public class MaterialActivity extends AppCompatActivity {
 
         bearer = getBearer.blockingFirst();
 
+        pesquisarMateriais();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        pesquisarMateriais();
+    }
+
+    private void pesquisarMateriais(){
         MaterialService materialService = new MaterialService();
 
         ListenableFuture<Material> materialSubCategoria = materialService.getMaterial(bearer, idSubCategoria);
@@ -62,8 +81,17 @@ public class MaterialActivity extends AppCompatActivity {
                 Material result = materialSubCategoria.get();
                 runOnUiThread(() ->{
                     if(result.validated){
-                        getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno),
-                                                                        new VoltarAdapter(this ,null,this,ViewType.MATERIAL.ordinal())));
+                        if(multiplaSelecao){
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno, true, qtdSelecao),
+                                    new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
+                        }else if(comboCategoriaFilho){
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno, true),
+                                    new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
+                        }
+                        else{
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno),
+                                    new VoltarAdapter(this ,this, ViewType.MATERIAL.ordinal())));
+                        }
                     }else if(result.hasInconsistence){
                         AlertDialog.Builder alert = new AlertDialog.Builder(MaterialActivity.this);
                         alert.setTitle("Atenção");
@@ -72,7 +100,7 @@ public class MaterialActivity extends AppCompatActivity {
                         alert.setPositiveButton("OK", null);
                         alert.show();
 
-                        getRecycleMaterial.setAdapter(new VoltarAdapter(this ,null,this,ViewType.MATERIAL.ordinal()));
+                        getRecycleMaterial.setAdapter(new VoltarAdapter(this,this,ViewType.MATERIAL.ordinal()));
                     }
                 });
             }catch (Exception e){
@@ -83,6 +111,7 @@ public class MaterialActivity extends AppCompatActivity {
 
     public void irParaProdutoInformacao(Context context, int idMaterial, String nomeMaterial, double valorMaterial){
         Intent intent = new Intent(context, MaterialInformacaoActivity.class);
+
         intent.putExtra(ID_MATERIAL, idMaterial);
         intent.putExtra(NOME_MATERIAL, nomeMaterial);
 
@@ -90,4 +119,5 @@ public class MaterialActivity extends AppCompatActivity {
         intent.putExtra(VALOR_MATERIAL, valorString);
         context.startActivity(intent);
     }
+
 }

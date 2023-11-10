@@ -26,7 +26,9 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_material_informacao);
+
         Intent intent = getIntent();
+
         idMaterial = intent.getStringExtra(MaterialActivity.ID_MATERIAL);
         nomeMaterial = intent.getStringExtra(MaterialActivity.NOME_MATERIAL);
         valorProduto = intent.getStringExtra(MaterialActivity.VALOR_MATERIAL);
