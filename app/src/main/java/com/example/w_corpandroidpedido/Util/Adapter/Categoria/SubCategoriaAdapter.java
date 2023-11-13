@@ -16,8 +16,8 @@ import com.example.w_corpandroidpedido.R;
 import java.util.List;
 
 public class SubCategoriaAdapter extends RecyclerView.Adapter<SubCategoriaAdapter.SubCategoriaViewHolder>{
-    private Context context;
-    private List<MaterialSubCategoria.Retorno> items;
+    private final Context context;
+    private final List<MaterialSubCategoria.Retorno> items;
 
     public SubCategoriaAdapter(Context context, List<MaterialSubCategoria.Retorno> items){
         this.context = context;
@@ -28,8 +28,7 @@ public class SubCategoriaAdapter extends RecyclerView.Adapter<SubCategoriaAdapte
     @Override
     public SubCategoriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemLista = LayoutInflater.from(context).inflate(R.layout.card, parent, false);
-        SubCategoriaViewHolder holder = new SubCategoriaViewHolder(itemLista);
-        return holder;
+        return new SubCategoriaViewHolder(itemLista);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class SubCategoriaAdapter extends RecyclerView.Adapter<SubCategoriaAdapte
         return items.size();
     }
 
-    class SubCategoriaViewHolder extends RecyclerView.ViewHolder {
+    static class SubCategoriaViewHolder extends RecyclerView.ViewHolder {
         TextView nomeSubCategoria = itemView.findViewById(R.id.nome);
         public SubCategoriaViewHolder(@NonNull View itemView) {
             super(itemView);

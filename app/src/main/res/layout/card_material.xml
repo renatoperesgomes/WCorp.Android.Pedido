@@ -7,21 +7,36 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card"
+        android:id="@+id/cardMaterial"
         android:layout_width="150dp"
-        android:layout_height="120dp"
+        android:layout_height="110dp"
         app:cardBackgroundColor="@color/md_theme_light_secondary"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="10dp"
+        app:strokeColor="@color/md_theme_light_secondary"
+        app:strokeWidth="10dp">
 
         <TextView
-            android:id="@+id/nome"
+            android:id="@+id/nomeMaterial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="15dp"
             android:textSize="14sp"
+            android:padding="5dp"
             android:text="TextView"
             android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/precoMaterial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@android:color/white"
+            android:gravity="right"
+            android:padding="5dp"
+            android:text="R$ 99999,99"
+            android:textColor="@android:color/black"
             android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>

@@ -16,8 +16,8 @@ import com.example.w_corpandroidpedido.R;
 import java.util.List;
 
 public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.CategoriaViewHolder> {
-    private Context context;
-    private List<MaterialCategoria.Retorno> items;
+    private final Context context;
+    private final List<MaterialCategoria.Retorno> items;
 
     public CategoriaAdapter(Context context, List<MaterialCategoria.Retorno> items) {
         this.context = context;
@@ -28,8 +28,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
     @Override
     public CategoriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemLista = LayoutInflater.from(context).inflate(R.layout.card, parent, false);
-        CategoriaViewHolder holder = new CategoriaViewHolder(itemLista);
-        return holder;
+        return new CategoriaViewHolder(itemLista);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
         return items.size();
     }
 
-    class CategoriaViewHolder extends RecyclerView.ViewHolder {
+    static class CategoriaViewHolder extends RecyclerView.ViewHolder {
         TextView nomeCategoria = itemView.findViewById(R.id.nome);
 
         public CategoriaViewHolder(@NonNull View itemView) {

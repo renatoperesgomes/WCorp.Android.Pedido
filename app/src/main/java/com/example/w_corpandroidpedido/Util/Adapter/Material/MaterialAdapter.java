@@ -16,7 +16,6 @@ import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.R;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.MaterialViewHolder> {
 
@@ -52,19 +51,20 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     @NonNull
     @Override
     public MaterialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemLista = LayoutInflater.from(context).inflate(R.layout.card, parent, false);
-        MaterialViewHolder holder = new MaterialViewHolder(itemLista);
-        return holder;
+        View itemLista = LayoutInflater.from(context).inflate(R.layout.card_material, parent, false);
+        return new MaterialViewHolder(itemLista);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
+
+        holder.cardMaterial.setId(position);
         holder.nomeProduto.setText(items.get(position).nome);
-        holder.itemView.setId(items.get(position).id);
-        CardView card = holder.itemView.findViewById(R.id.card);
+        holder.precoProduto.setText("R$ " + items.get(position).preco);
+
         holder.itemView.setOnClickListener(view -> {
             if(multiplaSelecao){
-                card.setCardBackgroundColor(Color.parseColor("#009574"));
+                holder.cardMaterial.setCardBackgroundColor(Color.parseColor("#009574"));
 
                 contagemSelecao++;
 
@@ -73,7 +73,14 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                     contagemSelecao = 0;
                 }
             }else if(comboCategoriaFilho){
-                card.setClickable(false);
+                for(int i = 0; i < items.size(); i++){
+                    if(position == i){
+                        System.out.println("É igualé");
+                    }else{
+                        System.out.println(view);
+                    }
+
+                }
             }
             else{
                 new MaterialActivity().irParaProdutoInformacao(context, items.get(position).id, items.get(position).nome ,items.get(position).preco);
@@ -86,8 +93,10 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
         return items.size();
     }
 
-    class MaterialViewHolder extends RecyclerView.ViewHolder{
-        TextView nomeProduto = itemView.findViewById(R.id.nome);
+    static class MaterialViewHolder extends RecyclerView.ViewHolder{
+        CardView cardMaterial = itemView.findViewById(R.id.cardMaterial);
+        TextView nomeProduto = itemView.findViewById(R.id.nomeMaterial);
+        TextView precoProduto = itemView.findViewById(R.id.precoMaterial);
         public MaterialViewHolder(@NonNull View itemView) {
             super(itemView);
         }
