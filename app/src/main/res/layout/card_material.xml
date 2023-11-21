@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@android:color/white"
-            android:gravity="right"
+            android:gravity="end|bottom"
             android:padding="5dp"
             android:text="R$ 99999,99"
             android:textColor="@android:color/black"

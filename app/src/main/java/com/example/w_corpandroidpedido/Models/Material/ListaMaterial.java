@@ -2,13 +2,14 @@ package com.example.w_corpandroidpedido.Models.Material;
 
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 
+
 import java.util.List;
 
-public class Material {
+public class ListaMaterial {
     public List<Inconsistences> inconsistences;
     public boolean validated;
     public boolean hasInconsistence;
-    public Retorno retorno;
+    public List<Retorno> retorno;
 
     public static class Retorno{
         public int id;

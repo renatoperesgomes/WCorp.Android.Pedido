@@ -25,53 +25,26 @@
             android:layout_gravity="center_horizontal"
             android:textColor="@color/md_theme_light_onPrimary"/>
     </androidx.appcompat.widget.Toolbar>
-    <LinearLayout
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/viewMaterialInformacao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="160sp"
         android:padding="20dp">
-        <EditText
-            android:id="@+id/txtNomeMaterial"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="@string/nome_do_produto"
-            android:layout_marginTop="10dp"
-            android:enabled="false"/>
+    </androidx.recyclerview.widget.RecyclerView>
 
-        <EditText
-            android:id="@+id/txtPrecoMaterial"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="@string/valor_do_produto"
-            android:layout_marginTop="10dp"
-            android:enabled="false"/>
-
-        <EditText
-            android:id="@+id/txtQtdMaterial"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="@string/qtd_do_produto"
-            android:layout_marginTop="10dp"
-            android:enabled="false"/>
-        <Button
-            android:id="@+id/btnAdicionarProduto"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="@string/adicionar_produto"
-            android:layout_marginTop="20dp"/>
-        <Button
-            android:id="@+id/btnVoltar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Voltar"
-            android:backgroundTint="@color/md_theme_light_error"
-            android:layout_marginTop="20dp"/>
-    </LinearLayout>
+    <Button
+        android:id="@+id/btnAdicionarProduto"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/adicionar_produto"
+        android:layout_marginTop="20dp"/>
+    <Button
+        android:id="@+id/btnVoltar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Voltar"
+        android:backgroundTint="@color/md_theme_light_error"
+        android:layout_marginTop="20dp"/>
 </LinearLayout>

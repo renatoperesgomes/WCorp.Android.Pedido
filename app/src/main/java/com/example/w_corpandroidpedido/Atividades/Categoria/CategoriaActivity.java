@@ -9,17 +9,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.w_corpandroidpedido.MainActivity;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
-import com.example.w_corpandroidpedido.Models.Material.MaterialSubCategoria;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
-import com.example.w_corpandroidpedido.Service.Material.MaterialSubCategoriaService;
 import com.example.w_corpandroidpedido.Util.Adapter.Categoria.CategoriaAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
