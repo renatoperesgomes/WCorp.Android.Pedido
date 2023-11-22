@@ -11,15 +11,17 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class BuscarMaterialCategoriaService {
     static String baseUrl = "http://192.168.2.189:45455/GetMaterialCategoria";
 
     private Executor executor = Executors.newSingleThreadExecutor();
 
-    public ListenableFuture<MaterialCategoriaSelecionado> buscarMaterialCategoria(int idMaterial) {
+    public Future<MaterialCategoriaSelecionado> buscarMaterialCategoria(int idMaterial) {
         return CallbackToFutureAdapter.getFuture(completer -> {
             executor.execute(() -> {
                 try {

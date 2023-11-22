@@ -45,7 +45,6 @@ public class MaterialActivity extends AppCompatActivity {
     public static final String COMBO_CATEGORIA = "com.example.w_corpandroidpedido.COMBOCATEGORIA";
     public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
     public static final String ITEMS = "com.example.w_corpandroidpedido.ITEMS";
-    private ArrayList<Integer> listIdMaterialCategoria = new ArrayList<>();
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private String bearer;
     @Override

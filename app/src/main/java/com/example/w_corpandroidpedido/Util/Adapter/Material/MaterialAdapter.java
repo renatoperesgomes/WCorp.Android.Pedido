@@ -23,6 +23,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.MaterialViewHolder> {
 
@@ -68,22 +70,17 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
+    public synchronized void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
 
-        if(comboCategoriaFilho) {
-            // Caso seja selecionado o card rapidamente, está ocasionando um bug pelo não carregamento do holder.cardMaterial.getTag().hashCode;
-            final ListenableFuture<MaterialCategoriaSelecionado> materialCategoriaSelecionado = buscarMaterialCategoriaService.buscarMaterialCategoria(items.get(position).id);
-            materialCategoriaSelecionado.addListener(() -> {
+        if (comboCategoriaFilho) {
+            final Future<MaterialCategoriaSelecionado> materialCategoriaSelecionado = buscarMaterialCategoriaService.buscarMaterialCategoria(items.get(position).id);
                 try {
                     idCategoriaMaterialSelecionado = materialCategoriaSelecionado.get().retorno.id;
                     holder.cardMaterial.setTag(idCategoriaMaterialSelecionado);
-
                 } catch (Exception e) {
                     System.out.println("Erro: " + e.getMessage());
                 }
-            }, MoreExecutors.directExecutor());
         }
-
         holder.cardMaterial.setId(position);
         holder.nomeProduto.setText(items.get(position).nome);
         holder.precoProduto.setText("R$ " + items.get(position).preco);
@@ -93,30 +90,30 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                 new MaterialActivity().irParaProdutoInformacao(context, items.get(position).id, items.get(position).nome, items.get(position).preco);
             } else {
                 if (multiplaSelecao) {
-                        idMateriais.add(contagemSelecao, items.get(position).id);
+                    idMateriais.add(contagemSelecao, items.get(position).id);
 
-                        holder.cardMaterial.setCardBackgroundColor(Color.parseColor("#009574"));
-                        holder.cardMaterial.setClickable(true);
-                        contagemSelecao++;
+                    holder.cardMaterial.setCardBackgroundColor(Color.parseColor("#009574"));
+                    holder.cardMaterial.setClickable(true);
+                    contagemSelecao++;
 
-                        if (contagemSelecao == qtdSelecao) {
+                    if (contagemSelecao == qtdSelecao) {
 
-                            new MaterialActivity().irParaProdutoInformacao(context, true, qtdSelecao, idMateriais);
-                            contagemSelecao = 0;
-                        }
-                } else if (comboCategoriaFilho) {
+                        new MaterialActivity().irParaProdutoInformacao(context, true, qtdSelecao, idMateriais);
+                        contagemSelecao = 0;
+                    }
+                } else {
                     CardView cardSelecionado = holder.cardMaterial;
                     RecyclerView rvMaterial = (RecyclerView) holder.itemView.getParent();
-                    int idMaterialCategoriaSelecionado = holder.cardMaterial.getTag().hashCode();
 
+                    int idMaterialCategoriaSelecionado = holder.cardMaterial.getTag().hashCode();
 
                     idMateriais.add(contagemSelecao, items.get(position).id);
                     contagemSelecao++;
                     listCategoriasPreenchidas.add(idMaterialCategoriaSelecionado);
 
                     if (cardSelecionado.isSelected()) {
-                        for (int i = 0; i < items.size(); i++) {
-                            CardView cardHabilitarTodos = rvMaterial.findViewById(i);
+                        for (int idCard = 0; idCard < items.size(); idCard++) {
+                            CardView cardHabilitarTodos = rvMaterial.findViewById(idCard);
                             cardHabilitarTodos.setCardBackgroundColor(Color.parseColor("#005E49"));
                             cardHabilitarTodos.setSelected(false);
                             cardHabilitarTodos.setClickable(false);
@@ -144,7 +141,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                             }
                         }
 
-                        if(todasCategoriasPreenchidas){
+                        if (todasCategoriasPreenchidas) {
                             new MaterialActivity().irParaProdutoInformacao(context, true, idMateriais);
                         }
 
