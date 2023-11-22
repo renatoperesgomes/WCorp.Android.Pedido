@@ -68,9 +68,9 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
         return new MaterialViewHolder(itemLista);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
-    public synchronized void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
 
         if (comboCategoriaFilho) {
             final Future<MaterialCategoriaSelecionado> materialCategoriaSelecionado = buscarMaterialCategoriaService.buscarMaterialCategoria(items.get(position).id);
@@ -81,9 +81,10 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                     System.out.println("Erro: " + e.getMessage());
                 }
         }
+
         holder.cardMaterial.setId(position);
         holder.nomeProduto.setText(items.get(position).nome);
-        holder.precoProduto.setText("R$ " + items.get(position).preco);
+        holder.precoProduto.setText("R$ " + String.format("%.2f", items.get(position).preco));
 
         holder.itemView.setOnClickListener(view -> {
             if (!multiplaSelecao && !comboCategoriaFilho) {
