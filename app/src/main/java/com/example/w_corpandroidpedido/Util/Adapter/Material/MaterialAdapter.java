@@ -11,19 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.test.espresso.core.internal.deps.guava.util.concurrent.Futures;
-import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
 import com.example.w_corpandroidpedido.Models.Material.ListaMaterial;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoriaSelecionado;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.BuscarMaterialCategoriaService;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.MaterialViewHolder> {
@@ -38,7 +34,6 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     private final ArrayList<Integer> idMateriais = new ArrayList<>();
     private final ArrayList<Integer> listCategoriasPreenchidas = new ArrayList<>();
     private final BuscarMaterialCategoriaService buscarMaterialCategoriaService = new BuscarMaterialCategoriaService();
-    private int idCategoriaMaterialSelecionado = 0;
     public MaterialAdapter(Context context, List<ListaMaterial.Retorno> items){
         this.context = context;
         this.items = items;
@@ -74,12 +69,12 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
         if (comboCategoriaFilho) {
             final Future<MaterialCategoriaSelecionado> materialCategoriaSelecionado = buscarMaterialCategoriaService.buscarMaterialCategoria(items.get(position).id);
-                try {
-                    idCategoriaMaterialSelecionado = materialCategoriaSelecionado.get().retorno.id;
-                    holder.cardMaterial.setTag(idCategoriaMaterialSelecionado);
-                } catch (Exception e) {
-                    System.out.println("Erro: " + e.getMessage());
-                }
+            try {
+                int idCategoriaMaterialSelecionado = materialCategoriaSelecionado.get().retorno.id;
+                holder.cardMaterial.setTag(idCategoriaMaterialSelecionado);
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
         }
 
         holder.cardMaterial.setId(position);
@@ -88,18 +83,19 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
         holder.itemView.setOnClickListener(view -> {
             if (!multiplaSelecao && !comboCategoriaFilho) {
-                new MaterialActivity().irParaProdutoInformacao(context, items.get(position).id, items.get(position).nome, items.get(position).preco);
+                idMateriais.add(contagemSelecao, items.get(position).id);
+                new MaterialActivity().irParaMaterialInformacao(context, idMateriais);
             } else {
                 if (multiplaSelecao) {
                     idMateriais.add(contagemSelecao, items.get(position).id);
 
                     holder.cardMaterial.setCardBackgroundColor(Color.parseColor("#009574"));
-                    holder.cardMaterial.setClickable(true);
+                    holder.cardMaterial.setClickable(false);
                     contagemSelecao++;
 
                     if (contagemSelecao == qtdSelecao) {
 
-                        new MaterialActivity().irParaProdutoInformacao(context, true, qtdSelecao, idMateriais);
+                        new MaterialActivity().irParaMaterialInformacao(context, true, qtdSelecao, idMateriais);
                         contagemSelecao = 0;
                     }
                 } else {
@@ -132,7 +128,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
                             if (idMaterialCategoriaSelecionado == idCategoriaMaterialBuscar &&
                                     position != idCard) {
-                                cardDesabilitar.setCardBackgroundColor(Color.parseColor("#000000"));
+                                cardDesabilitar.setCardBackgroundColor(Color.parseColor("#001c13"));
                                 cardDesabilitar.setSelected(false);
                                 cardDesabilitar.setClickable(true);
                             }
@@ -143,7 +139,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                         }
 
                         if (todasCategoriasPreenchidas) {
-                            new MaterialActivity().irParaProdutoInformacao(context, true, idMateriais);
+                            new MaterialActivity().irParaMaterialInformacao(context, true, idMateriais);
                         }
 
                         cardSelecionado.setCardBackgroundColor(Color.parseColor("#009574"));
@@ -155,7 +151,6 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return items.size();

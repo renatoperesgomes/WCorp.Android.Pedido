@@ -3,8 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/app_bar_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@android:drawable/ic_dialog_info"
+        app:showAsAction="ifRoom"
+        android:title="Início" />
+    <item
+        android:id="@+id/app_bar_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        android:title="Pagamento"
+/>
+    <item
+        android:id="@+id/app_bar_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="Comando" />
 </menu>

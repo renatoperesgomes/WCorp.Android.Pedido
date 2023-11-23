@@ -76,12 +76,17 @@ public class SubCategoriaActivity extends AppCompatActivity {
                 MaterialSubCategoria result = materialSubCategoria.get();
                 runOnUiThread(() ->{
                     if(result.validated){
-                        getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, result.retorno),
-                                new VoltarAdapter(this, this, ViewType.SUB_CATEGORIA.ordinal())));
+                        if(comboCategoriaFilho){
+                            finish();
+                            irParaProdutos(this, idCategoria,true);
+                        }else{
+                            getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, result.retorno),
+                                    new VoltarAdapter(this, this, ViewType.SUB_CATEGORIA.ordinal())));
+                        }
                     }else if(result.hasInconsistence){
                         finish();
                         if(multiplaSelecaoCategoria){
-                            irParaProdutos(this, idCategoria,true,qtdSelecaoCategoria);
+                            irParaProdutos(this, idCategoria,true, qtdSelecaoCategoria);
                         }else if(comboCategoriaFilho){
                             irParaProdutos(this, idCategoria,true);
                         }

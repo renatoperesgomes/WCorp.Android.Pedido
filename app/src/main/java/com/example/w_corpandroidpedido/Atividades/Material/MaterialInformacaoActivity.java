@@ -57,9 +57,6 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        idMaterial = intent.getIntExtra(MaterialActivity.ID_MATERIAL, 0);
-        nomeMaterial = intent.getStringExtra(MaterialActivity.NOME_MATERIAL);
-        valorProduto = intent.getStringExtra(MaterialActivity.VALOR_MATERIAL);
         multiplaSelecao = intent.getBooleanExtra(MaterialActivity.MULTIPLA_SELECAO, false);
         comboCategoriaFilho = intent.getBooleanExtra(MaterialActivity.COMBO_CATEGORIA, false);
         qtdSelecao = intent.getIntExtra(MaterialActivity.QTD_SELECAO, 0);
@@ -80,7 +77,7 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
                         runOnUiThread(() ->{
                             listMaterial.add(result);
                             if(listMaterial.size() == listIdMateriais.size()){
-                                getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this, nomeMaterial, valorProduto, true, qtdSelecao, listMaterial));
+                                getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this,true, qtdSelecao, listMaterial));
                             }
                         });
                     }catch (Exception e){
@@ -99,7 +96,7 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
                         runOnUiThread(() ->{
                             listMaterial.add(result);
                             if(listMaterial.size() == listIdMateriais.size()){
-                                getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this, nomeMaterial, valorProduto, true, listMaterial));
+                                getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this,true, listMaterial));
                             }
                         });
                     }catch (Exception e){
@@ -109,27 +106,44 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
             }
         }
         else {
-            getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this, String.valueOf(idMaterial), nomeMaterial, valorProduto));
+            listIdMateriais = (ArrayList<Integer>) Arrays.stream(Objects.requireNonNull(intent.getIntArrayExtra(MaterialActivity.ITEMS))).boxed().collect(Collectors.toList());
+
+            for(int i = 0; i < listIdMateriais.size(); i++){
+                ListenableFuture<Material> material = buscarMaterialService.buscarMaterial(listIdMateriais.get(i));
+                material.addListener(() -> {
+                    try{
+                        Material result = material.get();
+                        runOnUiThread(() ->{
+                            listMaterial.add(result);
+                            if(listMaterial.size() == listIdMateriais.size()){
+                                getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this, listMaterial));
+                            }
+                        });
+                    }catch (Exception e){
+                        System.out.println("Erro :" + e.getMessage());
+                    }
+                }, MoreExecutors.directExecutor());
+            }
         }
 
         getBtnAdicionar = findViewById(R.id.btnAdicionarProduto);
         getBtnVoltar = findViewById(R.id.btnVoltar);
 
         getBtnAdicionar.setOnClickListener(view ->{
-            adicionarProduto(this, nomeMaterial, valorProduto, "1");
+            adicionarProduto(this);
         });
 
         getBtnVoltar.setOnClickListener(view ->{
-            voltarParaProduto();
+            voltarParaMaterialActivity();
         });
     }
 
-    public void adicionarProduto(Context context, String nomeMaterial, String valorMaterial, String qtdMaterial){
+    public void adicionarProduto(Context context){
         Intent intent = new Intent(context, Impressora.class);
         context.startActivity(intent);
     }
 
-    private void voltarParaProduto(){
+    private void voltarParaMaterialActivity(){
         finish();
     }
 }

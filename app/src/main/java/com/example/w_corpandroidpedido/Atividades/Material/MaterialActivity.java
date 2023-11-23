@@ -17,10 +17,8 @@ import android.os.Bundle;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
 import com.example.w_corpandroidpedido.Models.Material.ListaMaterial;
-import com.example.w_corpandroidpedido.Models.Material.MaterialCategoriaSelecionado;
 import com.example.w_corpandroidpedido.R;
 
-import com.example.w_corpandroidpedido.Service.Material.BuscarMaterialCategoriaService;
 import com.example.w_corpandroidpedido.Service.Material.MaterialService;
 import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialAdapter;
 import com.example.w_corpandroidpedido.Util.Adapter.Util.VoltarAdapter;
@@ -119,18 +117,14 @@ public class MaterialActivity extends AppCompatActivity {
         }, MoreExecutors.directExecutor());
     }
 
-    public void irParaProdutoInformacao(Context context, int idMaterial, String nomeMaterial, double valorMaterial){
+    public void irParaMaterialInformacao(Context context, ArrayList<Integer> listIdMateriais){
         Intent intent = new Intent(context, MaterialInformacaoActivity.class);
-
-        intent.putExtra(ID_MATERIAL, idMaterial);
-        intent.putExtra(NOME_MATERIAL, nomeMaterial);
-
-        String valorString = String.valueOf(valorMaterial);
-        intent.putExtra(VALOR_MATERIAL, valorString);
+        int[] arr = listIdMateriais.stream().mapToInt(i -> i).toArray();
+        intent.putExtra(ITEMS, arr);
 
         context.startActivity(intent);
     }
-    public void irParaProdutoInformacao(Context context, boolean multiplaSelecao, int qtdSelecao, ArrayList<Integer> listIdMateriais){
+    public void irParaMaterialInformacao(Context context, boolean multiplaSelecao, int qtdSelecao, ArrayList<Integer> listIdMateriais){
         Intent intent = new Intent(context, MaterialInformacaoActivity.class);
 
         intent.putExtra(MULTIPLA_SELECAO, multiplaSelecao);
@@ -141,7 +135,7 @@ public class MaterialActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
-    public void irParaProdutoInformacao(Context context, boolean comboCategoriaFilho, ArrayList<Integer> listIdMateriais){
+    public void irParaMaterialInformacao(Context context, boolean comboCategoriaFilho, ArrayList<Integer> listIdMateriais){
         Intent intent = new Intent(context, MaterialInformacaoActivity.class);
 
         intent.putExtra(COMBO_CATEGORIA, comboCategoriaFilho);

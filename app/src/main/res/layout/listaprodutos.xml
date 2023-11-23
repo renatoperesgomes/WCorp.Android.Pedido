@@ -1,27 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/idMaterial"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardMaterialSlc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-    <TextView
-        android:id="@+id/nomeMaterial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-    <TextView
-        android:id="@+id/valorMaterial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-    <TextView
-        android:id="@+id/qtdMaterial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-</LinearLayout>
+        android:layout_height="100dp"
+        app:cardCornerRadius="10dp">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/idMaterial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ID" />
+            <TextView
+                android:id="@+id/nomeMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="NOMEDOMATERIAL" />
+            <TextView
+                android:id="@+id/valorMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VALORDOMATERIAL"
+                android:gravity="right"/>
+            <TextView
+                android:id="@+id/qtdMaterial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="QTDMATERIAL"
+                android:gravity="right"/>
+        </TableLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</FrameLayout>
