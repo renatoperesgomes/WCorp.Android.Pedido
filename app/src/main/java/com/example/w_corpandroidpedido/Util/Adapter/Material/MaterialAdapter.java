@@ -111,30 +111,34 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                     if (cardSelecionado.isSelected()) {
                         for (int idCard = 0; idCard < items.size(); idCard++) {
                             CardView cardHabilitarTodos = rvMaterial.findViewById(idCard);
-                            cardHabilitarTodos.setCardBackgroundColor(Color.parseColor("#005E49"));
-                            cardHabilitarTodos.setSelected(false);
-                            cardHabilitarTodos.setClickable(false);
+                            if(cardHabilitarTodos != null){
+                                cardHabilitarTodos.setCardBackgroundColor(Color.parseColor("#005E49"));
+                                cardHabilitarTodos.setSelected(false);
+                                cardHabilitarTodos.setClickable(false);
 
-                            listCategoriasPreenchidas.clear();
-                            idMateriais.clear();
-                            contagemSelecao = 0;
+                                listCategoriasPreenchidas.clear();
+                                idMateriais.clear();
+                                contagemSelecao = 0;
+                            }
                         }
                     } else {
                         todasCategoriasPreenchidas = true;
                         for (int idCard = 0; idCard < items.size(); idCard++) {
                             CardView cardDesabilitar = rvMaterial.findViewById(idCard);
+                            System.out.println(cardDesabilitar);
+                            if(cardDesabilitar != null){
+                                int idCategoriaMaterialBuscar = cardDesabilitar.getTag().hashCode();
 
-                            final int idCategoriaMaterialBuscar = cardDesabilitar.getTag().hashCode();
+                                if (idMaterialCategoriaSelecionado == idCategoriaMaterialBuscar &&
+                                        position != idCard) {
+                                    cardDesabilitar.setCardBackgroundColor(Color.parseColor("#001c13"));
+                                    cardDesabilitar.setSelected(false);
+                                    cardDesabilitar.setClickable(true);
+                                }
 
-                            if (idMaterialCategoriaSelecionado == idCategoriaMaterialBuscar &&
-                                    position != idCard) {
-                                cardDesabilitar.setCardBackgroundColor(Color.parseColor("#001c13"));
-                                cardDesabilitar.setSelected(false);
-                                cardDesabilitar.setClickable(true);
-                            }
-
-                            if (!listCategoriasPreenchidas.contains(idCategoriaMaterialBuscar)) {
-                                todasCategoriasPreenchidas = false;
+                                if (!listCategoriasPreenchidas.contains(idCategoriaMaterialBuscar)) {
+                                    todasCategoriasPreenchidas = false;
+                                }
                             }
                         }
 
