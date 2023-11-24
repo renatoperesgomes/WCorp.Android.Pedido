@@ -125,7 +125,6 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                         todasCategoriasPreenchidas = true;
                         for (int idCard = 0; idCard < items.size(); idCard++) {
                             CardView cardDesabilitar = rvMaterial.findViewById(idCard);
-                            System.out.println(cardDesabilitar);
                             if(cardDesabilitar != null){
                                 int idCategoriaMaterialBuscar = cardDesabilitar.getTag().hashCode();
 

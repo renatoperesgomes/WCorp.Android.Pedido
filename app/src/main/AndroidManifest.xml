@@ -24,7 +24,7 @@
             android:exported="true"/>
 
         <activity
-            android:name=".Atividades.Pedido.ListaPedidosActivity"
+            android:name=".Atividades.Pedido.PesquisarPedidosActivity"
             android:exported="false" />
         <activity
             android:name=".Atividades.Cliente.ProcurarClienteActivity"

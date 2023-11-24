@@ -102,4 +102,6 @@
     <string name="adicionar_produtos">Adicionar produtos</string>
     <string name="lista_de_pedidos">Lista de pedidos</string>
     <string name="procurar_cliente">Procurar cliente</string>
+    <string name="comanda_9999999">Comanda: 9999999</string>
+    <string name="valor_9999999">Valor: 9999999</string>
 </resources>

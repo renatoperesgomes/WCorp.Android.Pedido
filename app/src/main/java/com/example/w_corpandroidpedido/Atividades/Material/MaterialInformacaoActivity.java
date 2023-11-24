@@ -1,10 +1,7 @@
 package com.example.w_corpandroidpedido.Atividades.Material;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ConcatAdapter;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
@@ -13,34 +10,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Atividades.Impressora.Impressora;
-import com.example.w_corpandroidpedido.Models.Material.ListaMaterial;
 import com.example.w_corpandroidpedido.Models.Material.Material;
+import com.example.w_corpandroidpedido.Navegacao.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.BuscarMaterialService;
-import com.example.w_corpandroidpedido.Service.Material.MaterialService;
-import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialAdapter;
 import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialInformacaoAdapter;
-import com.example.w_corpandroidpedido.Util.Adapter.Util.VoltarAdapter;
-import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class MaterialInformacaoActivity extends AppCompatActivity {
     private RecyclerView getRecycleMaterialInformacao;
-    private int idMaterial;
-    private String nomeMaterial;
-    private String valorProduto;
     private boolean multiplaSelecao;
     private boolean comboCategoriaFilho;
     private int qtdSelecao;
@@ -65,6 +52,21 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
 
         getRecycleMaterialInformacao.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         getRecycleMaterialInformacao.setHasFixedSize(true);
+
+        CardView inicio = findViewById(R.id.cardInicio);
+        inicio.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaInicial(this);
+        });
+
+        CardView pagamento = findViewById(R.id.cardPagamento);
+        pagamento.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaPagamento(this);
+        });
+
+        CardView comanda = findViewById(R.id.cardComanda);
+        comanda.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaPesquisaComanda(this);
+        });
 
         if(multiplaSelecao) {
             listIdMateriais = (ArrayList<Integer>) Arrays.stream(Objects.requireNonNull(intent.getIntArrayExtra(MaterialActivity.ITEMS))).boxed().collect(Collectors.toList());
@@ -136,6 +138,11 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         getBtnVoltar.setOnClickListener(view ->{
             voltarParaMaterialActivity();
         });
+    }
+    private void voltarParaPaginaInicial(Context context){
+        Intent intent = new Intent(context, CategoriaActivity.class);
+
+        context.startActivity(intent);
     }
 
     public void adicionarProduto(Context context){

@@ -3,6 +3,7 @@ package com.example.w_corpandroidpedido.Atividades.Material;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
@@ -14,9 +15,11 @@ import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecu
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
 import com.example.w_corpandroidpedido.Models.Material.ListaMaterial;
+import com.example.w_corpandroidpedido.Navegacao.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
 
 import com.example.w_corpandroidpedido.Service.Material.MaterialService;
@@ -61,6 +64,21 @@ public class MaterialActivity extends AppCompatActivity {
         getRecycleMaterial = findViewById(R.id.viewProduto);
         getRecycleMaterial.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
         getRecycleMaterial.setHasFixedSize(true);
+
+        CardView inicio = findViewById(R.id.cardInicio);
+        inicio.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaInicial(this);
+        });
+
+        CardView pagamento = findViewById(R.id.cardPagamento);
+        pagamento.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaPagamento(this);
+        });
+
+        CardView comanda = findViewById(R.id.cardComanda);
+        comanda.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaPesquisaComanda(this);
+        });
 
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 

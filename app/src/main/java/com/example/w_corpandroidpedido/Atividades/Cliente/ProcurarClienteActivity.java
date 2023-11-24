@@ -6,16 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Util.Adapter.Cliente.Cliente;
 import com.example.w_corpandroidpedido.Util.Adapter.Cliente.ProcurarClienteAdapter;
-import com.example.w_corpandroidpedido.Util.Adapter.Pedido.Pedido;
-import com.example.w_corpandroidpedido.Util.Adapter.Pedido.PedidoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

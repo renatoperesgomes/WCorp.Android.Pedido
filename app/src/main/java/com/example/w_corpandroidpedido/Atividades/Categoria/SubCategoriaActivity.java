@@ -1,7 +1,7 @@
 package com.example.w_corpandroidpedido.Atividades.Categoria;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
 import com.example.w_corpandroidpedido.Models.Material.MaterialSubCategoria;
+import com.example.w_corpandroidpedido.Navegacao.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialSubCategoriaService;
-import com.example.w_corpandroidpedido.Util.Adapter.Categoria.CategoriaAdapter;
 import com.example.w_corpandroidpedido.Util.Adapter.Categoria.SubCategoriaAdapter;
 import com.example.w_corpandroidpedido.Util.Adapter.Util.VoltarAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
@@ -56,6 +56,21 @@ public class SubCategoriaActivity extends AppCompatActivity {
         getRecycleSubCategoria = findViewById(R.id.viewSubCategoria);
         getRecycleSubCategoria.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false));
         getRecycleSubCategoria.setHasFixedSize(true);
+
+        CardView inicio = findViewById(R.id.cardInicio);
+        inicio.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaInicial(this);
+        });
+
+        CardView pagamento = findViewById(R.id.cardPagamento);
+        pagamento.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaPagamento(this);
+        });
+
+        CardView comanda = findViewById(R.id.cardComanda);
+        comanda.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaPesquisaComanda(this);
+        });
 
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 
