@@ -34,7 +34,7 @@ public class Pedido {
     public class ListPedidoMaterialItem{
         public int id;
         public int idMaterial;
-        public Material material;
+        public Material.Retorno material;
         public double valorUnitario;
         public int quantidade;
         public int percDesconto;

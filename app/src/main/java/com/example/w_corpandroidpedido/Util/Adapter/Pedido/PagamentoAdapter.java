@@ -1,5 +1,6 @@
 package com.example.w_corpandroidpedido.Util.Adapter.Pedido;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
         return new PagamentoViewHolder(itemLista);
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull PagamentoViewHolder holder, int position) {
         if(pedidoAtual.retorno == null){
@@ -40,8 +42,8 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
             holder.qtdMaterial.setText("1 Un.");
         }else{
             holder.idMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).idMaterial));
-//            holder.nomeMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.retorno.nome));
-//            holder.valorMaterial.setText("R$ " + String.format("%.2f", pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.retorno.preco));
+            holder.nomeMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.nome));
+            holder.valorMaterial.setText("R$ " + String.format("%.2f", pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.preco));
             holder.qtdMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).quantidade));
         }
 

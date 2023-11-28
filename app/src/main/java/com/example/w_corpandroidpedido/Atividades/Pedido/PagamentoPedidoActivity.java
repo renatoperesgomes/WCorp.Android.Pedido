@@ -17,8 +17,8 @@ import com.example.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {
     private RecyclerView getRecyclerViewPagamento;
-    private Pedido pedidoAtual = DadosComanda.pedidoAtual;
     private Button getBtnVoltar;
+    private Pedido pedidoAtual = DadosComanda.pedidoAtual;
 
     private DadosComanda dadosComanda = PesquisarPedidosActivity.dadosComanda;
 

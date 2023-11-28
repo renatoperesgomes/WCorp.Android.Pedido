@@ -1,11 +1,5 @@
 package com.example.w_corpandroidpedido.Menu;
 
-import android.content.Context;
-import android.content.Intent;
-
-import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
-import com.example.w_corpandroidpedido.Atividades.Pedido.PagamentoPedidoActivity;
-import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidosActivity;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 
 
