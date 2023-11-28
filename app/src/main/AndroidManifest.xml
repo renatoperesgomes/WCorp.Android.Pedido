@@ -9,6 +9,7 @@
 
     <application
         android:allowBackup="true"
+
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/logowcorpred"
@@ -17,14 +18,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".Atividades.Pedido.PagamentoPedidoActivity"
-            android:exported="false" />
-
         <service
             android:name=".Service.Material.BuscarMaterialCategoriaService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"/>
 
         <activity
             android:name=".Atividades.Pedido.PesquisarPedidosActivity"

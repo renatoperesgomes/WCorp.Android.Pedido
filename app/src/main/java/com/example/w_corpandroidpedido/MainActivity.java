@@ -18,21 +18,22 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
-import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidosActivity;
+import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Empresa.Empresa;
-import com.example.w_corpandroidpedido.Models.Usuario.Usuario;
 import com.example.w_corpandroidpedido.Service.Empresa.EmpresaService;
 import com.example.w_corpandroidpedido.Service.Usuario.UsuarioService;
 import com.example.w_corpandroidpedido.Util.Adapter.Empresa.EmpresaAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.reactivex.Single;
 
 public class MainActivity extends AppCompatActivity {
     private static final Preferences.Key<String> STRING_KEY = new Preferences.Key<>("authentication");
+    private static final Preferences.Key<String> STRING_KEY_EMPRESA = new Preferences.Key<>("empresa");
     private EditText getTxtNomeUsuario;
     private EditText getTxtSenhaUsuario;
     private Button getBotaoLogin;
@@ -51,20 +52,22 @@ public class MainActivity extends AppCompatActivity {
 
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 
-        EmpresaService empresaService = new EmpresaService();
-        ListenableFuture<Empresa> empresa = empresaService.getEmpresa();
+        RxDataStore<Preferences> dataStoreEmpresa = DataStore.getEmpresa(this);
 
-        empresa.addListener(() ->{
+        EmpresaService empresaService = new EmpresaService();
+        ListenableFuture<BaseApi<List<Empresa>>> listEmpresa = empresaService.GetListEmpresa();
+
+        listEmpresa.addListener(() ->{
             try{
                 runOnUiThread(() ->{
-                    Empresa listaEmpresas;
+                    BaseApi<List<Empresa>> listEmpresaRetorno;
                     try {
-                        listaEmpresas = empresa.get();
+                        listEmpresaRetorno = listEmpresa.get();
                     } catch (ExecutionException | InterruptedException e) {
                         throw new RuntimeException(e.getCause());
                     }
 
-                    EmpresaAdapter adapterEmpresa = new EmpresaAdapter(this, listaEmpresas.retorno);
+                    EmpresaAdapter adapterEmpresa = new EmpresaAdapter(this, listEmpresaRetorno.retorno);
 
                     getEmpresa.setAdapter(adapterEmpresa);
                 });
@@ -97,23 +100,22 @@ public class MainActivity extends AppCompatActivity {
                 alert.show();
             }else{
                 UsuarioService usuarioService = new UsuarioService();
-                ListenableFuture<Usuario> usuario =  usuarioService.loginAsync(nomeUsuario, senhaUsuario, idEmpresa);
-                usuario.addListener(() ->{
+                ListenableFuture<BaseApi<String>> tokenRetorno =  usuarioService.Login(nomeUsuario, senhaUsuario, idEmpresa);
+                tokenRetorno.addListener(() ->{
                     try{
-                        Usuario result = usuario.get();
+                        BaseApi<String> tokenRetornoResult = tokenRetorno.get();
                         runOnUiThread(() ->{
-                            if(result.validated){
+                            if(tokenRetornoResult.validated){
                                 Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
                                     MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-                                    mutablePreferences.set(STRING_KEY, result.retorno);
+                                    mutablePreferences.set(STRING_KEY, tokenRetornoResult.retorno);
                                     return Single.just(mutablePreferences);
                                 });
-
                                 logarUsuario(this);
-                            }else if(result.hasInconsistence){
+                            }else if(tokenRetornoResult.hasInconsistence){
                                 AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                                 alert.setTitle("Atenção");
-                                alert.setMessage(result.inconsistences.get(0).text);
+                                alert.setMessage(tokenRetornoResult.inconsistences.get(0).text);
                                 alert.setCancelable(false);
                                 alert.setPositiveButton("OK", null);
                                 alert.show();
@@ -127,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void logarUsuario(Context context){
-        Intent intent = new Intent(context, PesquisarPedidosActivity.class);
+        Intent intent = new Intent(context, CategoriaActivity.class);
         startActivity(intent);
     }
 }

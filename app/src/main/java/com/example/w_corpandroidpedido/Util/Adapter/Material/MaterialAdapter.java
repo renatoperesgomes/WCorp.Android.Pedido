@@ -13,10 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
-import com.example.w_corpandroidpedido.Models.Material.ListaMaterial;
-import com.example.w_corpandroidpedido.Models.Material.MaterialCategoriaSelecionado;
 import com.example.w_corpandroidpedido.R;
-import com.example.w_corpandroidpedido.Service.Material.BuscarMaterialCategoriaService;
 
 import java.util.ArrayList;
 import java.util.List;

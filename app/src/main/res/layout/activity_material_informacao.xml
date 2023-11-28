@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="15dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical"
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -147,7 +147,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/txtIdComanda"
+                    android:id="@+id/textIdComanda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -175,7 +175,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/txtValorComanda"
+                    android:id="@+id/textValor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

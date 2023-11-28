@@ -1,14 +1,13 @@
-package com.example.w_corpandroidpedido.Models.Usuario;
-
-import android.content.Context;
+package com.example.w_corpandroidpedido.Models;
 
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
+import com.example.w_corpandroidpedido.Models.Material.Material;
 
 import java.util.List;
 
-public class Usuario {
+public class BaseApi<Model> {
     public List<Inconsistences> inconsistences;
     public boolean validated;
     public boolean hasInconsistence;
-    public String retorno;
+    public Model retorno;
 }

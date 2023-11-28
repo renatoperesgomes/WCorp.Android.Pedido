@@ -13,15 +13,10 @@ import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecu
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
-import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidosActivity;
-import com.example.w_corpandroidpedido.Menu.DadosComanda;
-import com.example.w_corpandroidpedido.Models.Material.MaterialSubCategoria;
-import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
+import com.example.w_corpandroidpedido.Navegacao.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
-import com.example.w_corpandroidpedido.Service.Material.MaterialSubCategoriaService;
 import com.example.w_corpandroidpedido.Util.Adapter.Categoria.SubCategoriaAdapter;
 import com.example.w_corpandroidpedido.Util.Adapter.Util.VoltarAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
@@ -41,26 +36,12 @@ public class SubCategoriaActivity extends AppCompatActivity {
     public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
     public static final String COMBO_CATEGORIA_FILHO = "com.example.w_corpandroidpedido.COMBOCATEGORIAFILHO";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
-    private DadosComanda dadosComanda = PesquisarPedidosActivity.dadosComanda;
     private String bearer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_categoria);
-
-        RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
-
-        Flowable<String> getBearer =
-                dataStore.data().map(prefs -> prefs.get(BEARER));
-
-        bearer = getBearer.blockingFirst();
-
-        CardView inicio = findViewById(R.id.cardInicio);
-        CardView pagamento = findViewById(R.id.cardPagamento);
-        CardView comanda = findViewById(R.id.cardComanda);
-        TextView numeroComanda = findViewById(R.id.txtIdComanda);
-        TextView valorComanda = findViewById(R.id.txtValorComanda);
 
         Intent intent = getIntent();
 
@@ -73,15 +54,27 @@ public class SubCategoriaActivity extends AppCompatActivity {
         getRecycleSubCategoria.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false));
         getRecycleSubCategoria.setHasFixedSize(true);
 
+        CardView inicio = findViewById(R.id.cardInicio);
+        inicio.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaInicial(this);
+        });
 
-        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(inicio, pagamento,comanda);
-        navegacaoBarraApp.addClick(this);
+        CardView pagamento = findViewById(R.id.cardPagamento);
+        pagamento.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaPagamento(this);
+        });
 
-        if(dadosComanda != null){
-            numeroComanda.setText(dadosComanda.numeroComanda);
-            valorComanda.setText(dadosComanda.valorComanda);
-        }
+        CardView comanda = findViewById(R.id.cardComanda);
+        comanda.setOnClickListener(view->{
+            NavegacaoBarraApp.irPaginaPesquisaComanda(this);
+        });
 
+        RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
+
+        Flowable<String> getBearer =
+                dataStore.data().map(prefs -> prefs.get(BEARER));
+
+        bearer = getBearer.blockingFirst();
 
         pesquisarSubCategorias();
     }

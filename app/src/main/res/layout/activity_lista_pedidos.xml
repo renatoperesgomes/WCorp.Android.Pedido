@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Atividades.Pedido.PesquisarPedidosActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            tools:ignore="UseCompoundDrawables">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardInicio"
@@ -19,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="15dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical"
@@ -92,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -143,7 +147,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/txtIdComanda"
+                    android:id="@+id/textIdComanda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -171,7 +175,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/txtValorComanda"
+                    android:id="@+id/textValor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -185,7 +189,32 @@
         </RelativeLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
-</FrameLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginVertical="10dp"
+        android:background="?android:attr/listDivider" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
+        <EditText
+            android:id="@+id/textPesquisarComanda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number" />
 
+        <Button
+            android:id="@+id/btnPesquisar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pesquisar" />
+    </LinearLayout>
+
+</LinearLayout>

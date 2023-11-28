@@ -1,8 +1,13 @@
 package com.example.w_corpandroidpedido.Service.Material;
 
+import android.util.Pair;
+
 import androidx.concurrent.futures.CallbackToFutureAdapter;
 
-import com.example.w_corpandroidpedido.Models.Material.ListaMaterial;
+import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Material.Material;
+import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
+import com.example.w_corpandroidpedido.Util.ApiCall;
 import com.example.w_corpandroidpedido.Util.Util;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
@@ -11,38 +16,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MaterialService {
-    static String baseUrl = "http://dashboard.wcorp.com.br:5000/GetListMaterial";
-    private Executor executor = Executors.newSingleThreadExecutor();
+    public ListenableFuture<List<Material>> BuscarMaterial(String bearer, Integer idMaterial, Integer idMaterialCategoria) {
+        ApiCall<List<Material>> apiCall = new ApiCall<>(BaseApi.class);
+        ArrayList<Pair<String,String>> listParametro = new ArrayList<Pair<String, String>>();
 
-    public ListenableFuture<ListaMaterial> getMaterial(String bearer, int idSubCategoria) {
-        return CallbackToFutureAdapter.getFuture(completer -> {
-            executor.execute(() -> {
-                try {
-                    String URLchamada = baseUrl + "?idSubCategoria=" + idSubCategoria;
-                    URL url = new URL(URLchamada);
-                    HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-                    conexao.setRequestProperty("Authorization", "Bearer " + bearer);
-                    conexao.setRequestMethod("POST");
-                    conexao.setDoOutput(true);
+        if (idMaterial != null)
+            listParametro.add(new Pair<>("idMaterial", idMaterial.toString()));
 
-                    if (conexao.getResponseCode() != HttpURLConnection.HTTP_OK)
-                        throw new RuntimeException("HTTP error code: " + conexao.getResponseCode());
+        if (idMaterialCategoria != null)
+            listParametro.add(new Pair<>("idMaterialCategoria", idMaterialCategoria.toString()));
 
-                    BufferedReader resposta = new BufferedReader(new InputStreamReader((conexao.getInputStream())));
-                    String jsonEmString = Util.converteJsonEmString(resposta);
-
-                    Gson gson = new Gson();
-                    ListaMaterial materialJson = gson.fromJson(jsonEmString, ListaMaterial.class);
-                    completer.set(materialJson);
-                } catch (Exception e) {
-                    completer.setException(e);
-                }
-            });
-            return null;
-        });
+        return apiCall.CallApi("BuscarMaterial", bearer, listParametro);
     }
 }
