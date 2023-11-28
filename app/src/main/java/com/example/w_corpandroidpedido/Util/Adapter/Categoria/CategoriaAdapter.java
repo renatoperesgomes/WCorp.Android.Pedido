@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
@@ -28,6 +29,8 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
     @Override
     public CategoriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemLista = LayoutInflater.from(context).inflate(R.layout.card, parent, false);
+        CardView comandaMenu = parent.findViewById(R.id.cardComanda);
+
         return new CategoriaViewHolder(itemLista);
     }
 
@@ -46,6 +49,18 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
                 new CategoriaActivity().irParaSubCategoria(context, items.get(position).id);
             }
         });
+
+
+//        holder.inicioMenu.setOnClickListener(view->{
+//            NavegacaoBarraApp.irPaginaInicial(context);
+//        });
+//
+//        holder.pagamentoMenu.setOnClickListener(view->{
+//            NavegacaoBarraApp.irPaginaPagamento(context);
+//        });
+//
+
+
     }
 
     @Override

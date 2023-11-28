@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Atividades.Material.MaterialInformacaoActivity"
     android:orientation="vertical"
-    android:layout_gravity="center">
+    tools:context=".Atividades.Pedido.PagamentoPedidoActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="15dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical"
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -197,7 +197,7 @@
         android:background="?android:attr/listDivider" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/viewMaterialInformacao"
+        android:id="@+id/viewCarrinhoPagamento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -211,11 +211,11 @@
         android:padding="20dp">
 
         <Button
-            android:id="@+id/btnAdicionarProduto"
+            android:id="@+id/btnPagamento"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:text="@string/adicionar_produto" />
+            android:text="@string/fazer_o_pagamento" />
 
         <Button
             android:id="@+id/btnVoltar"
@@ -223,8 +223,6 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/md_theme_light_error"
-            android:text="Voltar" />
+            android:text="@string/voltar" />
     </LinearLayout>
-
-
-</LinearLayout>
+    </LinearLayout>

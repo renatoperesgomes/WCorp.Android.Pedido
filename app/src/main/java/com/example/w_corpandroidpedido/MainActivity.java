@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
+import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidosActivity;
 import com.example.w_corpandroidpedido.Models.Empresa.Empresa;
 import com.example.w_corpandroidpedido.Models.Usuario.Usuario;
 import com.example.w_corpandroidpedido.Service.Empresa.EmpresaService;
@@ -32,7 +33,6 @@ import io.reactivex.Single;
 
 public class MainActivity extends AppCompatActivity {
     private static final Preferences.Key<String> STRING_KEY = new Preferences.Key<>("authentication");
-    private static final Preferences.Key<String> STRING_KEY_EMPRESA = new Preferences.Key<>("empresa");
     private EditText getTxtNomeUsuario;
     private EditText getTxtSenhaUsuario;
     private Button getBotaoLogin;
@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         getEmpresa = findViewById(R.id.selectEmpresa);
 
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
-
-        RxDataStore<Preferences> dataStoreEmpresa = DataStore.getEmpresa(this);
 
         EmpresaService empresaService = new EmpresaService();
         ListenableFuture<Empresa> empresa = empresaService.getEmpresa();
@@ -111,11 +109,6 @@ public class MainActivity extends AppCompatActivity {
                                     return Single.just(mutablePreferences);
                                 });
 
-                                Single<Preferences> updateResultEmpresa =  dataStoreEmpresa.updateDataAsync(prefsIn -> {
-                                    MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-                                    mutablePreferences.set(STRING_KEY_EMPRESA, idEmpresa);
-                                    return Single.just(mutablePreferences);
-                                });
                                 logarUsuario(this);
                             }else if(result.hasInconsistence){
                                 AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
@@ -134,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void logarUsuario(Context context){
-        Intent intent = new Intent(context, CategoriaActivity.class);
+        Intent intent = new Intent(context, PesquisarPedidosActivity.class);
         startActivity(intent);
     }
 }

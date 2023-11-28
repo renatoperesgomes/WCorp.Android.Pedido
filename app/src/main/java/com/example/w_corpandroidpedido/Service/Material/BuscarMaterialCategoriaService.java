@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class BuscarMaterialCategoriaService {
-    static String baseUrl = "http://192.168.2.189:45455/GetMaterialCategoria";
+    static String baseUrl = "http://dashboard.wcorp.com.br:5000/GetMaterialCategoria";
 
     private Executor executor = Executors.newSingleThreadExecutor();
 

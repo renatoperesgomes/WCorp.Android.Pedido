@@ -13,12 +13,8 @@ public class DataStore {
 
     public static RxDataStore<Preferences> getInstance(Context context) {
         if (instance == null) {
-            instance = new RxPreferenceDataStoreBuilder(context,  "authentication").build();;
+            instance = new RxPreferenceDataStoreBuilder(context,  "authentication").build();
         }
         return instance;
-    }
-
-    public static RxDataStore<Preferences> getEmpresa(Context context) {
-        return new RxPreferenceDataStoreBuilder(context,  "empresa").build();
     }
 }

@@ -15,11 +15,13 @@ import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecu
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
+import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidosActivity;
+import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Models.Material.ListaMaterial;
-import com.example.w_corpandroidpedido.Navegacao.NavegacaoBarraApp;
+import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
 
 import com.example.w_corpandroidpedido.Service.Material.MaterialService;
@@ -39,19 +41,30 @@ public class MaterialActivity extends AppCompatActivity {
     private boolean multiplaSelecao;
     private int qtdSelecao;
     private boolean comboCategoriaFilho;
-    public static final String ID_MATERIAL = "com.example.w_corpandroidpedido.IDMATERIAL";
-    public static final String NOME_MATERIAL = "com.example.w_corpandroidpedido.NOMEMATERIAL";
-    public static final String VALOR_MATERIAL = "com.example.w_corpandroidpedido.VALORMATERIAL";
     public static final String MULTIPLA_SELECAO = "com.example.w_corpandroidpedido.MULTIPLASELECAO";
     public static final String COMBO_CATEGORIA = "com.example.w_corpandroidpedido.COMBOCATEGORIA";
     public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
     public static final String ITEMS = "com.example.w_corpandroidpedido.ITEMS";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
+    private DadosComanda dadosComanda = PesquisarPedidosActivity.dadosComanda;
     private String bearer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_material);
+
+        RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
+
+        Flowable<String> getBearer =
+                dataStore.data().map(prefs -> prefs.get(BEARER));
+
+        bearer = getBearer.blockingFirst();
+
+        CardView inicio = findViewById(R.id.cardInicio);
+        CardView pagamento = findViewById(R.id.cardPagamento);
+        CardView comanda = findViewById(R.id.cardComanda);
+        TextView numeroComanda = findViewById(R.id.txtIdComanda);
+        TextView valorComanda = findViewById(R.id.txtValorComanda);
 
         Intent intent = getIntent();
 
@@ -65,27 +78,14 @@ public class MaterialActivity extends AppCompatActivity {
         getRecycleMaterial.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
         getRecycleMaterial.setHasFixedSize(true);
 
-        CardView inicio = findViewById(R.id.cardInicio);
-        inicio.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaInicial(this);
-        });
 
-        CardView pagamento = findViewById(R.id.cardPagamento);
-        pagamento.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaPagamento(this);
-        });
+        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(inicio, pagamento,comanda);
+        navegacaoBarraApp.addClick(this);
 
-        CardView comanda = findViewById(R.id.cardComanda);
-        comanda.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaPesquisaComanda(this);
-        });
-
-        RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
-
-        Flowable<String> getBearer =
-                dataStore.data().map(prefs -> prefs.get(BEARER));
-
-        bearer = getBearer.blockingFirst();
+        if(dadosComanda != null){
+            numeroComanda.setText(dadosComanda.numeroComanda);
+            valorComanda.setText(dadosComanda.valorComanda);
+        }
 
         pesquisarMateriais();
 

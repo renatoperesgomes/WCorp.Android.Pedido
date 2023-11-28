@@ -19,11 +19,11 @@ public class MaterialCategoriaService {
 
     private Executor executor = Executors.newSingleThreadExecutor();
 
-    public ListenableFuture<MaterialCategoria> getCategoria(String bearer, String idEmpresa){
+    public ListenableFuture<MaterialCategoria> getCategoria(String bearer){
         return CallbackToFutureAdapter.getFuture(completer -> {
             executor.execute(() -> {
                 try{
-                    String URLchamada = baseUrl + "?idEmpresa=" + idEmpresa;
+                    String URLchamada = baseUrl;
                     URL url = new URL(URLchamada);
                     HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
                     conexao.setRequestProperty("Authorization", "Bearer " + bearer);
