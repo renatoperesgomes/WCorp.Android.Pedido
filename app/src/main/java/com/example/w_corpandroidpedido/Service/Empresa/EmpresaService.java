@@ -9,7 +9,7 @@ import java.util.List;
 public class EmpresaService {
     public ListenableFuture<BaseApi<List<Empresa>>> BuscarListEmpresa()
     {
-        ApiCall<BaseApi<List<Empresa>>> apiCall = new ApiCall<>((new BaseApi<Empresa>()).getClass());
+        ApiCall<BaseApi<List<Empresa>>> apiCall = new ApiCall<>(Empresa.class);
         return apiCall.CallApi("BuscarListEmpresa", "", null);
     }
 }

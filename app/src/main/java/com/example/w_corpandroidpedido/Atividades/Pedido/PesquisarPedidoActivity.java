@@ -14,12 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
+import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Pedido.PedidoService;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
+
 
 import io.reactivex.Flowable;
 
@@ -44,9 +46,9 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
 
         bearer = getBearer.blockingFirst();
 
-        CardView inicio = findViewById(R.id.cardInicio);
-        CardView pagamento = findViewById(R.id.cardPagamento);
-        CardView comanda = findViewById(R.id.cardComanda);
+        CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
+        CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
+        CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
         TextView numeroComanda = findViewById(R.id.txtIdComanda);
         TextView valorComanda = findViewById(R.id.txtValorComanda);
 
@@ -56,7 +58,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
         txtValorComanda = findViewById(R.id.txtValorComanda);
 
 
-        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(inicio, pagamento,comanda);
+        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
         if(dadosComanda != null){
@@ -71,16 +73,20 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
             if(nmrComanda.isEmpty()){
                 Toast.makeText(this, "Por favor, selecione um número de comanda", Toast.LENGTH_SHORT).show();
             }else {
-                ListenableFuture<Pedido> buscarPedido = buscarComandaService.BuscarPedido(bearer, Integer.parseInt(nmrComanda));
+                ListenableFuture<BaseApi<Pedido>> buscarPedido = buscarComandaService.BuscarPedido(bearer, Integer.parseInt(nmrComanda));
 
                 buscarPedido.addListener(() -> {
                     runOnUiThread(() -> {
                         try {
-                            dadosComanda = new DadosComanda(buscarPedido.get());
+                            BaseApi<Pedido> retornoPedido = buscarPedido.get();
 
-                            txtIdComanda.setText(dadosComanda.numeroComanda);
-                            txtValorComanda.setText(dadosComanda.valorComanda);
+                            if(retornoPedido.validated && retornoPedido.retorno == null){
+                                txtIdComanda.setText(nmrComanda);
+                                txtValorComanda.setText("0,00");
 
+                            }else{
+                                dadosComanda = new DadosComanda(retornoPedido.retorno);
+                            }
                         } catch (Exception e) {
                             System.out.println("Erro: " + e.getMessage());
                         }

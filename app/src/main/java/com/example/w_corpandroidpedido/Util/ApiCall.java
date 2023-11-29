@@ -50,9 +50,7 @@ public class ApiCall<ApiModel> {
                     String jsonEmString = Util.ConverteJsonEmString(bufferedReader);
 
                     Gson gson = new Gson();
-
                     ApiModel model = gson.fromJson(jsonEmString, modelType);
-
                     completer.set(model);
                 } catch (Exception e) {
                     completer.setException(e);

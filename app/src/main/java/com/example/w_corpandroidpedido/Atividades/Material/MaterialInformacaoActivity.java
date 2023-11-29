@@ -15,11 +15,16 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import com.example.w_corpandroidpedido.Atividades.Impressora.Impressora;
+import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
+import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Material.Material;
+import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
+import com.example.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialService;
+import com.example.w_corpandroidpedido.Service.Pedido.AdicionarPedidoService;
 import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialInformacaoAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -42,6 +47,7 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
     private Button getBtnAdicionar;
     private Button getBtnVoltar;
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
+    private Pedido pedidoAtual = DadosComanda.pedidoAtual;
     private String bearer;
 
     @Override
@@ -80,6 +86,7 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
 
         for(int i = 0; i < listIdMateriais.size(); i++){
             ListenableFuture<BaseApi<List<Material>>> material = materialService.BuscarMaterial(bearer, listIdMateriais.get(i), null);
+
             int finalI = i;
             material.addListener(() -> {
                 try{
@@ -95,7 +102,6 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
                             }else{
                                 getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this, listMaterial));
                             }
-
                         }
                     });
                 }catch (Exception e){
@@ -117,9 +123,18 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         });
     }
 
-    public void adicionarProduto(Context context){
-        Intent intent = new Intent(context, Impressora.class);
-        context.startActivity(intent);
+    private void adicionarProduto(Context context){
+        AdicionarPedidoService adicionarPedidoService = new AdicionarPedidoService();
+
+        PedidoMaterialItem pedidoMaterialItemAtual = new PedidoMaterialItem();
+
+        pedidoMaterialItemAtual.idMaterial = 2789;
+        pedidoMaterialItemAtual.valorUnitario = 24.15;
+        pedidoMaterialItemAtual.quantidade = 1;
+        pedidoMaterialItemAtual.observacao = "Sem cebola";
+        pedidoMaterialItemAtual.bonificacao = false;
+
+        ListenableFuture<BaseApi<Pedido>> pedido = adicionarPedidoService.AdicionarPedido(bearer, pedidoAtual.id , pedidoMaterialItemAtual);
     }
 
     private void voltarParaMaterialActivity(){
