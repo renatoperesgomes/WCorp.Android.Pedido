@@ -1,12 +1,10 @@
 package com.example.w_corpandroidpedido.Models.Pedido;
 
-import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
-import com.example.w_corpandroidpedido.Models.Material.Material;
+import com.example.w_corpandroidpedido.Models.BaseApi;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class Pedido {
+public class Pedido extends BaseApi{
         public int id;
         public int idEmpresa;
         public String dataPedido;

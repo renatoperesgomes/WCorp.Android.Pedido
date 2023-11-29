@@ -1,6 +1,6 @@
 package com.example.w_corpandroidpedido.Models.Empresa;
 
-public class Empresa {
+public class Empresa  {
     public int id;
     public int idMunicipio;
     public int numeroNfatual;
@@ -41,3 +41,4 @@ public class Empresa {
     public int atividadeBloco000SpedEnum;
     public int rowCheckId;
 }
+

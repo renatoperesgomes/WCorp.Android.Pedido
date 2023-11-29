@@ -5,6 +5,7 @@ import android.util.Pair;
 import androidx.concurrent.futures.CallbackToFutureAdapter;
 
 import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Material.ListMaterial;
 import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.Util.ApiCall;
@@ -20,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialService {
-    public ListenableFuture<BaseApi<List<Material>>> BuscarMaterial(String bearer, Integer idMaterial, Integer idMaterialCategoria) {
-        ApiCall<BaseApi<List<Material>>> apiCall = new ApiCall<>(BaseApi.class);
+    public ListenableFuture<ListMaterial> BuscarMaterial(String bearer, Integer idMaterial, Integer idMaterialCategoria) {
+        ApiCall<ListMaterial> apiCall = new ApiCall<>(ListMaterial.class);
         ArrayList<Pair<String,String>> listParametro = new ArrayList<Pair<String, String>>();
 
         if (idMaterial != null)

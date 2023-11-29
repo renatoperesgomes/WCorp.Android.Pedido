@@ -19,6 +19,7 @@ import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Material.ListMaterial;
 import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
@@ -85,12 +86,11 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         listIdMateriais = (ArrayList<Integer>) Arrays.stream(Objects.requireNonNull(intent.getIntArrayExtra(MaterialActivity.ITEMS))).boxed().collect(Collectors.toList());
 
         for(int i = 0; i < listIdMateriais.size(); i++){
-            ListenableFuture<BaseApi<List<Material>>> material = materialService.BuscarMaterial(bearer, listIdMateriais.get(i), null);
-
+            ListenableFuture<ListMaterial> material = materialService.BuscarMaterial(bearer, listIdMateriais.get(i), null);
             int finalI = i;
             material.addListener(() -> {
                 try{
-                    BaseApi<List<Material>> result = material.get();
+                    ListMaterial result = material.get();
                     runOnUiThread(() ->{
                         listMaterial.add(result.retorno.get(finalI));
                         if(listMaterial.size() == listIdMateriais.size()){
@@ -134,7 +134,7 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         pedidoMaterialItemAtual.observacao = "Sem cebola";
         pedidoMaterialItemAtual.bonificacao = false;
 
-        ListenableFuture<BaseApi<Pedido>> pedido = adicionarPedidoService.AdicionarPedido(bearer, pedidoAtual.id , pedidoMaterialItemAtual);
+        ListenableFuture<Pedido> pedido = adicionarPedidoService.AdicionarPedido(bearer, pedidoAtual.id , pedidoMaterialItemAtual);
     }
 
     private void voltarParaMaterialActivity(){

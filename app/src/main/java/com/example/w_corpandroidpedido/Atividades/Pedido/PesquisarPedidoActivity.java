@@ -73,19 +73,19 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
             if(nmrComanda.isEmpty()){
                 Toast.makeText(this, "Por favor, selecione um número de comanda", Toast.LENGTH_SHORT).show();
             }else {
-                ListenableFuture<BaseApi<Pedido>> buscarPedido = buscarComandaService.BuscarPedido(bearer, Integer.parseInt(nmrComanda));
+                ListenableFuture<Pedido> buscarPedido = buscarComandaService.BuscarPedido(bearer, Integer.parseInt(nmrComanda));
 
                 buscarPedido.addListener(() -> {
                     runOnUiThread(() -> {
                         try {
-                            BaseApi<Pedido> retornoPedido = buscarPedido.get();
+                            Pedido retornoPedido = buscarPedido.get();
 
-                            if(retornoPedido.validated && retornoPedido.retorno == null){
+                            if(retornoPedido.validated && retornoPedido.comanda.isEmpty()){
                                 txtIdComanda.setText(nmrComanda);
                                 txtValorComanda.setText("0,00");
 
                             }else{
-                                dadosComanda = new DadosComanda(retornoPedido.retorno);
+                                dadosComanda = new DadosComanda(retornoPedido);
                             }
                         } catch (Exception e) {
                             System.out.println("Erro: " + e.getMessage());

@@ -19,6 +19,7 @@ import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Material.ListMaterialCategoria;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
@@ -82,11 +83,11 @@ public class SubCategoriaActivity extends AppCompatActivity {
     private void pesquisarSubCategorias(){
         MaterialCategoriaService materialCategoriaService = new MaterialCategoriaService();
 
-        ListenableFuture<BaseApi<List<MaterialCategoria>>> listMaterialCategoria = materialCategoriaService.BuscarListaMaterialCategoria(bearer, idCategoria);
+        ListenableFuture<ListMaterialCategoria> listMaterialCategoria = materialCategoriaService.BuscarListaMaterialCategoria(bearer, idCategoria);
 
         listMaterialCategoria.addListener(() -> {
             try{
-                BaseApi<List<MaterialCategoria>> result = listMaterialCategoria.get();
+                ListMaterialCategoria result = listMaterialCategoria.get();
                 runOnUiThread(() ->{
                     if(result.validated){
                         if(comboCategoriaFilho){

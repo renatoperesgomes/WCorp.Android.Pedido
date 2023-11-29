@@ -12,8 +12,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.util.ArrayList;
 
 public class AdicionarPedidoService {
-    public ListenableFuture<BaseApi<Pedido>> AdicionarPedido(String bearer, Integer idComanda, PedidoMaterialItem pedidoMaterialItem) {
-        ApiCall<BaseApi<Pedido>> apiCall = new ApiCall<>(BaseApi.class);
+    public ListenableFuture<Pedido> AdicionarPedido(String bearer, Integer idComanda, PedidoMaterialItem pedidoMaterialItem) {
+        ApiCall<Pedido> apiCall = new ApiCall<>(BaseApi.class);
         ArrayList<Pair<String,String>> listParametro = new ArrayList<Pair<String, String>>();
 
         if (idComanda != null)
