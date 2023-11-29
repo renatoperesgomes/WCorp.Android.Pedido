@@ -5,12 +5,6 @@ import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import java.util.List;
 
 public class MaterialCategoria {
-    public List<Inconsistences> inconsistences;
-    public boolean validated;
-    public boolean hasInconsistence;
-    public List<Retorno> retorno;
-
-    public static class Retorno{
         public int id;
         public int idEmpresa;
         public int idPai;
@@ -32,5 +26,4 @@ public class MaterialCategoria {
         public int idMagento;
         public int status;
         public int rowCheckId;
-    }
 }

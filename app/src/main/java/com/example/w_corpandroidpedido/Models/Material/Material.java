@@ -1,16 +1,8 @@
 package com.example.w_corpandroidpedido.Models.Material;
 
-import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
-
-import java.util.List;
+import java.util.ArrayList;
 
 public class Material {
-    public List<Inconsistences> inconsistences;
-    public boolean validated;
-    public boolean hasInconsistence;
-    public Retorno retorno;
-
-    public static class Retorno{
         public int id;
         public int idEmpresa;
         public int idNCM;
@@ -89,5 +81,5 @@ public class Material {
         public int diasVencimento;
         public boolean controlarNumeroSerieLote;
         public int pedidoIndustrializacaoMateriaPrimaEnum;
+        public ArrayList<MaterialCategoria> listMaterialCategoria;
     }
-}

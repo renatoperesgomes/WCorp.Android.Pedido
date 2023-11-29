@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
+import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.R;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.concurrent.Future;
 public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.MaterialViewHolder> {
 
     private final Context context;
-    private final List<ListaMaterial.Retorno> items;
+    private final List<Material> items;
     private int contagemSelecao = 0;
     private final boolean multiplaSelecao;
     private final int qtdSelecao;
@@ -30,15 +31,14 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     private boolean todasCategoriasPreenchidas;
     private final ArrayList<Integer> idMateriais = new ArrayList<>();
     private final ArrayList<Integer> listCategoriasPreenchidas = new ArrayList<>();
-    private final BuscarMaterialCategoriaService buscarMaterialCategoriaService = new BuscarMaterialCategoriaService();
-    public MaterialAdapter(Context context, List<ListaMaterial.Retorno> items){
+    public MaterialAdapter(Context context, List<Material> items){
         this.context = context;
         this.items = items;
         this.multiplaSelecao = false;
         this.qtdSelecao = 0;
         this.comboCategoriaFilho = false;
     }
-    public MaterialAdapter(Context context, List<ListaMaterial.Retorno> items,boolean comboCategoriaFilho){
+    public MaterialAdapter(Context context, List<Material> items,boolean comboCategoriaFilho){
         this.context = context;
         this.items = items;
         this.multiplaSelecao = false;
@@ -46,7 +46,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
         this.comboCategoriaFilho = comboCategoriaFilho;
     }
 
-    public MaterialAdapter(Context context, List<ListaMaterial.Retorno> items, boolean multiplaSelecao, int qtdSelecao){
+    public MaterialAdapter(Context context, List<Material> items, boolean multiplaSelecao, int qtdSelecao){
         this.context = context;
         this.items = items;
         this.multiplaSelecao = multiplaSelecao;
@@ -65,13 +65,8 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     public void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
 
         if (comboCategoriaFilho) {
-            final Future<MaterialCategoriaSelecionado> materialCategoriaSelecionado = buscarMaterialCategoriaService.buscarMaterialCategoria(items.get(position).id);
-            try {
-                int idCategoriaMaterialSelecionado = materialCategoriaSelecionado.get().retorno.id;
-                holder.cardMaterial.setTag(idCategoriaMaterialSelecionado);
-            } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
-            }
+            int idMaterialCategoriaSelecionado = items.get(position).listMaterialCategoria.get(position).id;
+            holder.cardMaterial.setTag(idMaterialCategoriaSelecionado);
         }
 
         holder.cardMaterial.setId(position);

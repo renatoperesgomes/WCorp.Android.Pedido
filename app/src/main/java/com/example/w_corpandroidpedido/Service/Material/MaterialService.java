@@ -20,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialService {
-    public ListenableFuture<List<Material>> BuscarMaterial(String bearer, Integer idMaterial, Integer idMaterialCategoria) {
-        ApiCall<List<Material>> apiCall = new ApiCall<>(BaseApi.class);
+    public ListenableFuture<BaseApi<List<Material>>> BuscarMaterial(String bearer, Integer idMaterial, Integer idMaterialCategoria) {
+        ApiCall<BaseApi<List<Material>>> apiCall = new ApiCall<>(BaseApi.class);
         ArrayList<Pair<String,String>> listParametro = new ArrayList<Pair<String, String>>();
 
         if (idMaterial != null)

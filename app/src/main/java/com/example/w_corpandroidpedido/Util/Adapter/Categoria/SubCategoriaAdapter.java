@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
-import com.example.w_corpandroidpedido.Models.Material.MaterialSubCategoria;
+import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.R;
 
 import java.util.List;
 
 public class SubCategoriaAdapter extends RecyclerView.Adapter<SubCategoriaAdapter.SubCategoriaViewHolder>{
     private final Context context;
-    private final List<MaterialSubCategoria.Retorno> items;
+    private final List<MaterialCategoria> items;
 
-    public SubCategoriaAdapter(Context context, List<MaterialSubCategoria.Retorno> items){
+    public SubCategoriaAdapter(Context context, List<MaterialCategoria> items){
         this.context = context;
         this.items = items;
     }
@@ -37,8 +37,8 @@ public class SubCategoriaAdapter extends RecyclerView.Adapter<SubCategoriaAdapte
         holder.itemView.setOnClickListener(view -> {
             if(items.get(position).pdvMultiplaSelecao){
                 new SubCategoriaActivity().irParaProdutos(context, items.get(position).id,
-                                                                   items.get(position).pdvMultiplaSelecao,
-                                                                   items.get(position).pdvMultiplaSelecaoQuantidade);
+                    items.get(position).pdvMultiplaSelecao,
+                    items.get(position).pdvMultiplaSelecaoQuantidade);
             }else if(items.get(position).pdvComboCategoriaFilho){
                 new SubCategoriaActivity().irParaProdutos(context,
                         items.get(position).id,

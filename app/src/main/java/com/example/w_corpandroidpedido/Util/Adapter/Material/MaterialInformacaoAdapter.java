@@ -60,18 +60,18 @@ public class MaterialInformacaoAdapter extends RecyclerView.Adapter<MaterialInfo
     @Override
     public void onBindViewHolder(@NonNull MaterialInformacaoAdapter.MaterialInformacaoViewHolder holder, int position) {
         if(!multiplaSelecao && !comboCategoriaFilho) {
-            holder.idMaterial.setText(String.valueOf(items.get(position).retorno.id));
-            holder.nomeMaterial.setText(String.valueOf(items.get(position).retorno.nome));
-            holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).retorno.preco));
+            holder.idMaterial.setText(String.valueOf(items.get(position).id));
+            holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
+            holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).preco));
             holder.qtdMaterial.setText("1 Un.");
 
         }else if(multiplaSelecao){
-            holder.idMaterial.setText(String.valueOf(items.get(position).retorno.id));
-            holder.nomeMaterial.setText(String.valueOf(items.get(position).retorno.nome));
+            holder.idMaterial.setText(String.valueOf(items.get(position).id));
+            holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
 
             for(int i = 0; i < items.size(); i++){
-                if(maiorValor < items.get(i).retorno.preco){
-                    maiorValor = items.get(i).retorno.preco;
+                if(maiorValor < items.get(i).preco){
+                    maiorValor = items.get(i).preco;
                 }
             }
 
@@ -81,9 +81,9 @@ public class MaterialInformacaoAdapter extends RecyclerView.Adapter<MaterialInfo
             holder.qtdMaterial.setText(divisaoMateriais + " Un.");
         }
         else{
-            holder.idMaterial.setText(String.valueOf(items.get(position).retorno.id));
-            holder.nomeMaterial.setText(String.valueOf(items.get(position).retorno.nome));
-            holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).retorno.preco));
+            holder.idMaterial.setText(String.valueOf(items.get(position).id));
+            holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
+            holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).preco));
             holder.qtdMaterial.setText("1 Un.");
         }
     }

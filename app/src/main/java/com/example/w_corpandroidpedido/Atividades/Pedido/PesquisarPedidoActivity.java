@@ -17,13 +17,13 @@ import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
-import com.example.w_corpandroidpedido.Service.Pedido.BuscarComandaService;
+import com.example.w_corpandroidpedido.Service.Pedido.PedidoService;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import io.reactivex.Flowable;
 
-public class PesquisarPedidosActivity extends AppCompatActivity {
+public class PesquisarPedidoActivity extends AppCompatActivity {
     private TextView txtIdComanda;
     private TextView txtValorComanda;
     private EditText pesquisarComanda;
@@ -65,18 +65,18 @@ public class PesquisarPedidosActivity extends AppCompatActivity {
         }
 
         btnPesquisar.setOnClickListener(view -> {
-            BuscarComandaService buscarComandaService = new BuscarComandaService();
+            PedidoService buscarComandaService = new PedidoService();
             nmrComanda = pesquisarComanda.getText().toString();
 
             if(nmrComanda.isEmpty()){
                 Toast.makeText(this, "Por favor, selecione um número de comanda", Toast.LENGTH_SHORT).show();
             }else {
-                ListenableFuture<Pedido> listaPedido = buscarComandaService.buscarComanda(bearer, nmrComanda);
+                ListenableFuture<Pedido> buscarPedido = buscarComandaService.BuscarPedido(bearer, Integer.parseInt(nmrComanda));
 
-                listaPedido.addListener(() -> {
+                buscarPedido.addListener(() -> {
                     runOnUiThread(() -> {
                         try {
-                            dadosComanda = new DadosComanda(listaPedido.get());
+                            dadosComanda = new DadosComanda(buscarPedido.get());
 
                             txtIdComanda.setText(dadosComanda.numeroComanda);
                             txtValorComanda.setText(dadosComanda.valorComanda);

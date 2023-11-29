@@ -52,24 +52,19 @@ public class MainActivity extends AppCompatActivity {
 
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 
-        RxDataStore<Preferences> dataStoreEmpresa = DataStore.getEmpresa(this);
-
         EmpresaService empresaService = new EmpresaService();
         ListenableFuture<BaseApi<List<Empresa>>> listEmpresa = empresaService.GetListEmpresa();
 
         listEmpresa.addListener(() ->{
             try{
                 runOnUiThread(() ->{
-                    BaseApi<List<Empresa>> listEmpresaRetorno;
                     try {
-                        listEmpresaRetorno = listEmpresa.get();
+                        BaseApi<List<Empresa>> listEmpresaRetorno = listEmpresa.get();
+
+                        getEmpresa.setAdapter(new EmpresaAdapter(this, listEmpresaRetorno.retorno));
                     } catch (ExecutionException | InterruptedException e) {
                         throw new RuntimeException(e.getCause());
                     }
-
-                    EmpresaAdapter adapterEmpresa = new EmpresaAdapter(this, listEmpresaRetorno.retorno);
-
-                    getEmpresa.setAdapter(adapterEmpresa);
                 });
             }catch(Exception e){
                 System.out.println("Erro :" + e.getMessage());

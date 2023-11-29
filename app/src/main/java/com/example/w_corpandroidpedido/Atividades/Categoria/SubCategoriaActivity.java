@@ -15,13 +15,20 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
-import com.example.w_corpandroidpedido.Navegacao.NavegacaoBarraApp;
+import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
+import com.example.w_corpandroidpedido.Menu.DadosComanda;
+import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
+import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.R;
+import com.example.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
 import com.example.w_corpandroidpedido.Util.Adapter.Categoria.SubCategoriaAdapter;
 import com.example.w_corpandroidpedido.Util.Adapter.Util.VoltarAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 import com.google.common.util.concurrent.ListenableFuture;
+
+import java.util.List;
 
 import io.reactivex.Flowable;
 
@@ -36,12 +43,24 @@ public class SubCategoriaActivity extends AppCompatActivity {
     public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
     public static final String COMBO_CATEGORIA_FILHO = "com.example.w_corpandroidpedido.COMBOCATEGORIAFILHO";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
+    private DadosComanda dadosComanda = PesquisarPedidoActivity.dadosComanda;
     private String bearer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_categoria);
+
+        RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
+
+        Flowable<String> getBearer =
+                dataStore.data().map(prefs -> prefs.get(BEARER));
+
+        bearer = getBearer.blockingFirst();
+
+        CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
+        CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
+        CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
 
         Intent intent = getIntent();
 
@@ -54,38 +73,20 @@ public class SubCategoriaActivity extends AppCompatActivity {
         getRecycleSubCategoria.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false));
         getRecycleSubCategoria.setHasFixedSize(true);
 
-        CardView inicio = findViewById(R.id.cardInicio);
-        inicio.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaInicial(this);
-        });
-
-        CardView pagamento = findViewById(R.id.cardPagamento);
-        pagamento.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaPagamento(this);
-        });
-
-        CardView comanda = findViewById(R.id.cardComanda);
-        comanda.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaPesquisaComanda(this);
-        });
-
-        RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
-
-        Flowable<String> getBearer =
-                dataStore.data().map(prefs -> prefs.get(BEARER));
-
-        bearer = getBearer.blockingFirst();
+        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
+        navegacaoBarraApp.addClick(this);
 
         pesquisarSubCategorias();
     }
 
     private void pesquisarSubCategorias(){
-        MaterialSubCategoriaService materialSubCategoriaService = new MaterialSubCategoriaService();
+        MaterialCategoriaService materialCategoriaService = new MaterialCategoriaService();
 
-        ListenableFuture<MaterialSubCategoria> materialSubCategoria = materialSubCategoriaService.getSubCategoria(bearer, idCategoria);
-        materialSubCategoria.addListener(() -> {
+        ListenableFuture<BaseApi<List<MaterialCategoria>>> listMaterialCategoria = materialCategoriaService.BuscarListaMaterialCategoria(bearer, idCategoria);
+
+        listMaterialCategoria.addListener(() -> {
             try{
-                MaterialSubCategoria result = materialSubCategoria.get();
+                BaseApi<List<MaterialCategoria>> result = listMaterialCategoria.get();
                 runOnUiThread(() ->{
                     if(result.validated){
                         if(comboCategoriaFilho){

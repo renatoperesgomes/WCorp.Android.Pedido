@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
+import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.R;
 
@@ -18,9 +19,9 @@ import java.util.List;
 
 public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.CategoriaViewHolder> {
     private final Context context;
-    private final List<MaterialCategoria.Retorno> items;
+    private final List<MaterialCategoria> items;
 
-    public CategoriaAdapter(Context context, List<MaterialCategoria.Retorno> items) {
+    public CategoriaAdapter(Context context, List<MaterialCategoria> items) {
         this.context = context;
         this.items = items;
     }
@@ -29,8 +30,6 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
     @Override
     public CategoriaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemLista = LayoutInflater.from(context).inflate(R.layout.card, parent, false);
-        CardView comandaMenu = parent.findViewById(R.id.cardComanda);
-
         return new CategoriaViewHolder(itemLista);
     }
 
@@ -43,24 +42,14 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
                         items.get(position).pdvMultiplaSelecao,
                         items.get(position).pdvMultiplaSelecaoQuantidade);
             }else if(items.get(position).pdvComboCategoriaFilho){
-                new CategoriaActivity().irParaSubCategoria(context,items.get(position).id,
+
+                new CategoriaActivity().irParaSubCategoria(context, items.get(position).id,
                         items.get(position).pdvComboCategoriaFilho);
+
             } else {
                 new CategoriaActivity().irParaSubCategoria(context, items.get(position).id);
             }
         });
-
-
-//        holder.inicioMenu.setOnClickListener(view->{
-//            NavegacaoBarraApp.irPaginaInicial(context);
-//        });
-//
-//        holder.pagamentoMenu.setOnClickListener(view->{
-//            NavegacaoBarraApp.irPaginaPagamento(context);
-//        });
-//
-
-
     }
 
     @Override

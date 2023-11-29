@@ -13,9 +13,9 @@ import java.util.List;
 
 public class EmpresaAdapter extends BaseAdapter {
     private Context context;
-    private List<Empresa.Retorno> empresas;
+    private List<Empresa> empresas;
 
-    public EmpresaAdapter(Context context, List<Empresa.Retorno> empresas) {
+    public EmpresaAdapter(Context context, List<Empresa> empresas) {
         this.context = context;
         this.empresas = empresas;
     }
@@ -26,7 +26,7 @@ public class EmpresaAdapter extends BaseAdapter {
     }
 
     @Override
-    public Empresa.Retorno getItem(int position){
+    public Empresa getItem(int position){
         return empresas.get(position);
     }
 

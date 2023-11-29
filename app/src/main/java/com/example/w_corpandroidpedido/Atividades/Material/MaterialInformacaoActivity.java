@@ -2,6 +2,9 @@ package com.example.w_corpandroidpedido.Atividades.Material;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.preferences.core.PreferencesKeys;
+import androidx.datastore.rxjava2.RxDataStore;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
@@ -11,18 +14,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Atividades.Impressora.Impressora;
+import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
+import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Material.Material;
-import com.example.w_corpandroidpedido.Navegacao.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
+import com.example.w_corpandroidpedido.Service.Material.MaterialService;
 import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialInformacaoAdapter;
+import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import io.reactivex.Flowable;
 
 public class MaterialInformacaoActivity extends AppCompatActivity {
     private RecyclerView getRecycleMaterialInformacao;
@@ -31,14 +39,26 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
     private int qtdSelecao;
     private ArrayList<Integer> listIdMateriais;
     private ArrayList<Material> listMaterial = new ArrayList<>();
-    private BuscarMaterialService buscarMaterialService = new BuscarMaterialService();
     private Button getBtnAdicionar;
     private Button getBtnVoltar;
+    Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
+    private String bearer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_material_informacao);
+
+        RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
+
+        Flowable<String> getBearer =
+                dataStore.data().map(prefs -> prefs.get(BEARER));
+
+        bearer = getBearer.blockingFirst();
+
+        CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
+        CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
+        CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
 
         Intent intent = getIntent();
 
@@ -51,80 +71,39 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         getRecycleMaterialInformacao.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         getRecycleMaterialInformacao.setHasFixedSize(true);
 
-        CardView inicio = findViewById(R.id.cardInicio);
-        inicio.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaInicial(this);
-        });
+        MaterialService materialService = new MaterialService();
 
-        CardView pagamento = findViewById(R.id.cardPagamento);
-        pagamento.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaPagamento(this);
-        });
+        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
+        navegacaoBarraApp.addClick(this);
 
-        CardView comanda = findViewById(R.id.cardComanda);
-        comanda.setOnClickListener(view->{
-            NavegacaoBarraApp.irPaginaPesquisaComanda(this);
-        });
+        listIdMateriais = (ArrayList<Integer>) Arrays.stream(Objects.requireNonNull(intent.getIntArrayExtra(MaterialActivity.ITEMS))).boxed().collect(Collectors.toList());
 
-        if(multiplaSelecao) {
-            listIdMateriais = (ArrayList<Integer>) Arrays.stream(Objects.requireNonNull(intent.getIntArrayExtra(MaterialActivity.ITEMS))).boxed().collect(Collectors.toList());
+        for(int i = 0; i < listIdMateriais.size(); i++){
+            ListenableFuture<BaseApi<List<Material>>> material = materialService.BuscarMaterial(bearer, listIdMateriais.get(i), null);
+            int finalI = i;
+            material.addListener(() -> {
+                try{
+                    BaseApi<List<Material>> result = material.get();
+                    runOnUiThread(() ->{
+                        listMaterial.add(result.retorno.get(finalI));
+                        if(listMaterial.size() == listIdMateriais.size()){
 
-            for(int i = 0; i < listIdMateriais.size(); i++){
-                ListenableFuture<Material> material = buscarMaterialService.buscarMaterial(listIdMateriais.get(i));
-                material.addListener(() -> {
-                    try{
-                        Material result = material.get();
-                        runOnUiThread(() ->{
-                            listMaterial.add(result);
-                            if(listMaterial.size() == listIdMateriais.size()){
+                            if(multiplaSelecao){
                                 getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this,true, qtdSelecao, listMaterial));
-                            }
-                        });
-                    }catch (Exception e){
-                        System.out.println("Erro :" + e.getMessage());
-                    }
-                }, MoreExecutors.directExecutor());
-            }
-        }else if(comboCategoriaFilho){
-            listIdMateriais = (ArrayList<Integer>) Arrays.stream(Objects.requireNonNull(intent.getIntArrayExtra(MaterialActivity.ITEMS))).boxed().collect(Collectors.toList());
-
-            for(int i = 0; i < listIdMateriais.size(); i++){
-                ListenableFuture<Material> material = buscarMaterialService.buscarMaterial(listIdMateriais.get(i));
-                material.addListener(() -> {
-                    try{
-                        Material result = material.get();
-                        runOnUiThread(() ->{
-                            listMaterial.add(result);
-                            if(listMaterial.size() == listIdMateriais.size()){
+                            }else if(comboCategoriaFilho){
                                 getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this,true, listMaterial));
-                            }
-                        });
-                    }catch (Exception e){
-                        System.out.println("Erro :" + e.getMessage());
-                    }
-                }, MoreExecutors.directExecutor());
-            }
-        }
-        else {
-            listIdMateriais = (ArrayList<Integer>) Arrays.stream(Objects.requireNonNull(intent.getIntArrayExtra(MaterialActivity.ITEMS))).boxed().collect(Collectors.toList());
-
-            for(int i = 0; i < listIdMateriais.size(); i++){
-                ListenableFuture<Material> material = buscarMaterialService.buscarMaterial(listIdMateriais.get(i));
-                material.addListener(() -> {
-                    try{
-                        Material result = material.get();
-                        runOnUiThread(() ->{
-                            listMaterial.add(result);
-                            if(listMaterial.size() == listIdMateriais.size()){
+                            }else{
                                 getRecycleMaterialInformacao.setAdapter(new MaterialInformacaoAdapter(this, listMaterial));
                             }
-                        });
-                    }catch (Exception e){
-                        System.out.println("Erro :" + e.getMessage());
-                    }
-                }, MoreExecutors.directExecutor());
-            }
+
+                        }
+                    });
+                }catch (Exception e){
+                    System.out.println("Erro :" + e.getMessage());
+                }
+            }, MoreExecutors.directExecutor());
         }
+
 
         getBtnAdicionar = findViewById(R.id.btnAdicionarProduto);
         getBtnVoltar = findViewById(R.id.btnVoltar);
@@ -136,11 +115,6 @@ public class MaterialInformacaoActivity extends AppCompatActivity {
         getBtnVoltar.setOnClickListener(view ->{
             voltarParaMaterialActivity();
         });
-    }
-    private void voltarParaPaginaInicial(Context context){
-        Intent intent = new Intent(context, CategoriaActivity.class);
-
-        context.startActivity(intent);
     }
 
     public void adicionarProduto(Context context){
