@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 
         EmpresaService empresaService = new EmpresaService();
-        ListenableFuture<BaseApi<List<Empresa>>> listEmpresa = empresaService.GetListEmpresa();
+        ListenableFuture<BaseApi<List<Empresa>>> listEmpresa = empresaService.BuscarListEmpresa();
 
         listEmpresa.addListener(() ->{
             try{

@@ -7,10 +7,10 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.util.List;
 
 public class EmpresaService {
-    public ListenableFuture<BaseApi<List<Empresa>>> GetListEmpresa()
+    public ListenableFuture<BaseApi<List<Empresa>>> BuscarListEmpresa()
     {
-        ApiCall<BaseApi<List<Empresa>>> apiCall = new ApiCall<>(Empresa.class);
-        return apiCall.CallApi("GetListEmpresa", "", null);
+        ApiCall<BaseApi<List<Empresa>>> apiCall = new ApiCall<>((new BaseApi<Empresa>()).getClass());
+        return apiCall.CallApi("BuscarListEmpresa", "", null);
     }
 }
 
