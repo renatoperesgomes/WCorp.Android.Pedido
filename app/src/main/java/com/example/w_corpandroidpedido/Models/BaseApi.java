@@ -5,9 +5,8 @@ import com.example.w_corpandroidpedido.Models.Material.Material;
 
 import java.util.List;
 
-public class BaseApi<Model> {
+public class BaseApi {
     public List<Inconsistences> inconsistences;
     public boolean validated;
     public boolean hasInconsistence;
-    public Model retorno;
 }

@@ -18,6 +18,7 @@ import android.os.Bundle;
 
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Material.ListMaterialCategoria;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
@@ -69,11 +70,11 @@ public class CategoriaActivity extends AppCompatActivity {
 
         MaterialCategoriaService materialCategoriaService = new MaterialCategoriaService();
 
-        ListenableFuture<BaseApi<List<MaterialCategoria>>> listMaterialCategoria = materialCategoriaService.BuscarListaMaterialCategoria(bearer, null);
+        ListenableFuture<ListMaterialCategoria> listMaterialCategoria = materialCategoriaService.BuscarListaMaterialCategoria(bearer, null);
 
         listMaterialCategoria.addListener(() -> {
             try{
-                BaseApi<List<MaterialCategoria>> result = listMaterialCategoria.get();
+                ListMaterialCategoria result = listMaterialCategoria.get();
                 runOnUiThread(() ->{
                     if(result.validated){
                         getRecycleCategoria.setAdapter(new CategoriaAdapter(this, result.retorno));

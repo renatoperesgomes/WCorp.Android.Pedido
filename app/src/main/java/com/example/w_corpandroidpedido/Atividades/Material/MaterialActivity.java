@@ -19,6 +19,7 @@ import android.os.Bundle;
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Material.ListMaterial;
 import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.R;
 
@@ -90,11 +91,11 @@ public class MaterialActivity extends AppCompatActivity {
     private void pesquisarMateriais(){
         MaterialService materialService = new MaterialService();
 
-        ListenableFuture<BaseApi<List<Material>>> materialCategoria = materialService.BuscarMaterial(bearer, null, idSubCategoria);
+        ListenableFuture<ListMaterial> materialCategoria = materialService.BuscarMaterial(bearer, null, idSubCategoria);
 
         materialCategoria.addListener(() -> {
             try{
-                BaseApi<List<Material>> result = materialCategoria.get();
+                ListMaterial result = materialCategoria.get();
                 runOnUiThread(() ->{
                     if(result.validated){
                         if(multiplaSelecao){

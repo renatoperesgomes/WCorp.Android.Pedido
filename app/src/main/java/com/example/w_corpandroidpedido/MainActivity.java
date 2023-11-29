@@ -20,6 +20,8 @@ import android.widget.Spinner;
 import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Empresa.Empresa;
+import com.example.w_corpandroidpedido.Models.Empresa.ListEmpresa;
+import com.example.w_corpandroidpedido.Models.Usuario.Usuario;
 import com.example.w_corpandroidpedido.Service.Empresa.EmpresaService;
 import com.example.w_corpandroidpedido.Service.Usuario.UsuarioService;
 import com.example.w_corpandroidpedido.Util.Adapter.Empresa.EmpresaAdapter;
@@ -53,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 
         EmpresaService empresaService = new EmpresaService();
-        ListenableFuture<BaseApi<List<Empresa>>> listEmpresa = empresaService.BuscarListEmpresa();
+        ListenableFuture<ListEmpresa> listEmpresa = empresaService.BuscarListEmpresa();
 
         listEmpresa.addListener(() ->{
             try{
                 runOnUiThread(() ->{
                     try {
-                        BaseApi<List<Empresa>> listEmpresaRetorno = listEmpresa.get();
+                        ListEmpresa listEmpresaRetorno = listEmpresa.get();
 
                         getEmpresa.setAdapter(new EmpresaAdapter(this, listEmpresaRetorno.retorno));
                     } catch (ExecutionException | InterruptedException e) {
@@ -95,10 +97,10 @@ public class MainActivity extends AppCompatActivity {
                 alert.show();
             }else{
                 UsuarioService usuarioService = new UsuarioService();
-                ListenableFuture<BaseApi<String>> tokenRetorno =  usuarioService.Login(nomeUsuario, senhaUsuario, idEmpresa);
+                ListenableFuture<Usuario> tokenRetorno =  usuarioService.Login(nomeUsuario, senhaUsuario, idEmpresa);
                 tokenRetorno.addListener(() ->{
                     try{
-                        BaseApi<String> tokenRetornoResult = tokenRetorno.get();
+                        Usuario tokenRetornoResult = tokenRetorno.get();
                         runOnUiThread(() ->{
                             if(tokenRetornoResult.validated){
                                 Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
