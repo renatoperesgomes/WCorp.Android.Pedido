@@ -13,6 +13,7 @@ import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecu
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
 import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
@@ -21,6 +22,7 @@ import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Material.ListMaterialCategoria;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
+import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
 import com.example.w_corpandroidpedido.Util.Adapter.Categoria.SubCategoriaAdapter;
@@ -44,6 +46,7 @@ public class SubCategoriaActivity extends AppCompatActivity {
     public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
     public static final String COMBO_CATEGORIA_FILHO = "com.example.w_corpandroidpedido.COMBOCATEGORIAFILHO";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
+    private Pedido pedidoAtual = DadosComanda.pedidoAtual;
     private DadosComanda dadosComanda = PesquisarPedidoActivity.dadosComanda;
     private String bearer;
 
@@ -62,6 +65,8 @@ public class SubCategoriaActivity extends AppCompatActivity {
         CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
         CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
+        TextView txtNumeroComanda = findViewById(R.id.txtIdComanda);
+        TextView txtValorComanda = findViewById(R.id.txtValorComanda);
 
         Intent intent = getIntent();
 
@@ -76,6 +81,14 @@ public class SubCategoriaActivity extends AppCompatActivity {
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
+
+        if(pedidoAtual != null){
+            txtNumeroComanda.setText(pedidoAtual.retorno.comanda);
+            txtValorComanda.setText(String.valueOf(pedidoAtual.retorno.valorTotalPedido));
+        }else{
+            txtNumeroComanda.setText(dadosComanda.numeroComanda);
+            txtValorComanda.setText(dadosComanda.valorComanda);
+        }
 
         pesquisarSubCategorias();
     }
@@ -93,19 +106,12 @@ public class SubCategoriaActivity extends AppCompatActivity {
                         if(comboCategoriaFilho){
                             finish();
                             irParaProdutos(this, idCategoria,true);
-                        }else{
+                        }else if(multiplaSelecaoCategoria){
+                            irParaProdutos(this, idCategoria,true, qtdSelecaoCategoria);
+                        }
+                        else{
                             getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, result.retorno),
                                     new VoltarAdapter(this, this, ViewType.SUB_CATEGORIA.ordinal())));
-                        }
-                    }else if(result.hasInconsistence){
-                        finish();
-                        if(multiplaSelecaoCategoria){
-                            irParaProdutos(this, idCategoria,true, qtdSelecaoCategoria);
-                        }else if(comboCategoriaFilho){
-                            irParaProdutos(this, idCategoria,true);
-                        }
-                        else {
-                            irParaProdutos(this, idCategoria);
                         }
                     }
                 });

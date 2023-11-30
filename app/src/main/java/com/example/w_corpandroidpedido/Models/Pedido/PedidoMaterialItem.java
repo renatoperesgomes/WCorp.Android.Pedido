@@ -9,9 +9,9 @@ public class PedidoMaterialItem {
     public double valorUnitario;
     public int quantidade;
     public int percDesconto;
-    public int valorDesconto;
+    public double valorDesconto;
     public double valorTotalDesconto;
-    public int valorTotalDescontoImpostos;
+    public double valorTotalDescontoImpostos;
     public int statusPedidoMaterialItem;
     public String observacao;
     public boolean bonificacao;

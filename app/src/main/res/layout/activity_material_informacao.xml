@@ -141,13 +141,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
-                    android:labelFor="@+id/textIdComanda"
+                    android:labelFor="@+id/txtIdComanda"
                     android:text="Comanda: "
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/textIdComanda"
+                    android:id="@+id/txtIdComanda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -175,7 +175,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/textValor"
+                    android:id="@+id/txtValorComanda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

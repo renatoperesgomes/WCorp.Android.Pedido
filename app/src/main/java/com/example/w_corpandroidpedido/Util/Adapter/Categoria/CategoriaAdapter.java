@@ -36,6 +36,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
     @Override
     public void onBindViewHolder(@NonNull CategoriaViewHolder holder, int position) {
         holder.nomeCategoria.setText(items.get(position).nome);
+
         holder.itemView.setOnClickListener(view -> {
             if (items.get(position).pdvMultiplaSelecao) {
                 new CategoriaActivity().irParaSubCategoria(context, items.get(position).id,

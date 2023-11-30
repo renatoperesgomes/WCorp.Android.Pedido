@@ -1,8 +1,9 @@
 package com.example.w_corpandroidpedido.Models.Material;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Material {
+public class Material implements Serializable {
         public int id;
         public int idEmpresa;
         public int idNCM;

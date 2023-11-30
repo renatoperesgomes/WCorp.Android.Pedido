@@ -17,7 +17,7 @@ public class MaterialCategoriaService {
         List<Pair<String,String>> listParametro = new ArrayList<Pair<String, String>>();
 
         if (idMaterialCategoria != null)
-            listParametro.add(new Pair<>("idMaterialCategoria", idMaterialCategoria.toString()));
+            listParametro.add(new Pair<>("idPai", idMaterialCategoria.toString()));
 
         return apiCall.CallApi("BuscarListaMaterialCategoria", bearer, listParametro);
     }

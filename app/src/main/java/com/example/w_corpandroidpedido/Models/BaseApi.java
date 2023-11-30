@@ -1,7 +1,6 @@
 package com.example.w_corpandroidpedido.Models;
 
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
-import com.example.w_corpandroidpedido.Models.Material.Material;
 
 import java.util.List;
 

@@ -62,8 +62,11 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
         navegacaoBarraApp.addClick(this);
 
         if(dadosComanda != null){
+            navegacaoBarraApp.addClick(this);
             numeroComanda.setText(dadosComanda.numeroComanda);
             valorComanda.setText(dadosComanda.valorComanda);
+        }else{
+            navegacaoBarraApp.addClickError(this);
         }
 
         btnPesquisar.setOnClickListener(view -> {
@@ -80,13 +83,17 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                         try {
                             Pedido retornoPedido = buscarPedido.get();
 
-                            if(retornoPedido.validated && retornoPedido.comanda.isEmpty()){
+                            if(retornoPedido.validated && retornoPedido.retorno == null){
+                                dadosComanda = new DadosComanda(nmrComanda);
                                 txtIdComanda.setText(nmrComanda);
                                 txtValorComanda.setText("0,00");
-
                             }else{
                                 dadosComanda = new DadosComanda(retornoPedido);
+                                txtIdComanda.setText(dadosComanda.numeroComanda);
+                                txtValorComanda.setText(dadosComanda.valorComanda);
                             }
+
+                            navegacaoBarraApp.addClick(this);
                         } catch (Exception e) {
                             System.out.println("Erro: " + e.getMessage());
                         }

@@ -15,12 +15,15 @@ import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecu
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
+import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
+import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
-import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Material.ListMaterial;
 import com.example.w_corpandroidpedido.Models.Material.Material;
+import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.R;
 
 import com.example.w_corpandroidpedido.Service.Material.MaterialService;
@@ -31,7 +34,6 @@ import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Flowable;
 
@@ -46,6 +48,8 @@ public class MaterialActivity extends AppCompatActivity {
     public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
     public static final String ITEMS = "com.example.w_corpandroidpedido.ITEMS";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
+    private Pedido pedidoAtual = DadosComanda.pedidoAtual;
+    private DadosComanda dadosComanda = PesquisarPedidoActivity.dadosComanda;
     private String bearer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class MaterialActivity extends AppCompatActivity {
         CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
         CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
+        TextView txtNumeroComanda = findViewById(R.id.txtIdComanda);
+        TextView txtValorComanda = findViewById(R.id.txtValorComanda);
 
         Intent intent = getIntent();
 
@@ -78,6 +84,14 @@ public class MaterialActivity extends AppCompatActivity {
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
+        if(pedidoAtual != null){
+            txtNumeroComanda.setText(pedidoAtual.retorno.comanda);
+            txtValorComanda.setText(String.valueOf(pedidoAtual.retorno.valorTotalPedido));
+        }else{
+            txtNumeroComanda.setText(dadosComanda.numeroComanda);
+            txtValorComanda.setText(dadosComanda.valorComanda);
+        }
+
         pesquisarMateriais();
 
     }
@@ -91,28 +105,28 @@ public class MaterialActivity extends AppCompatActivity {
     private void pesquisarMateriais(){
         MaterialService materialService = new MaterialService();
 
-        ListenableFuture<ListMaterial> materialCategoria = materialService.BuscarMaterial(bearer, null, idSubCategoria);
+        ListenableFuture<ListMaterial> listMaterial = materialService.BuscarMaterial(bearer, null ,idSubCategoria);
 
-        materialCategoria.addListener(() -> {
+        listMaterial.addListener(() -> {
             try{
-                ListMaterial result = materialCategoria.get();
+                ListMaterial retornoListaMaterial = listMaterial.get();
                 runOnUiThread(() ->{
-                    if(result.validated){
+                    if(retornoListaMaterial.validated){
                         if(multiplaSelecao){
-                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno, true, qtdSelecao),
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, retornoListaMaterial.retorno, true, qtdSelecao),
                                     new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
                         }else if(comboCategoriaFilho){
-                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno,true),
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, retornoListaMaterial.retorno,true),
                                     new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
                         }
                         else{
-                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, result.retorno),
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, retornoListaMaterial.retorno),
                                     new VoltarAdapter(this ,this, ViewType.MATERIAL.ordinal())));
                         }
-                    }else if(result.hasInconsistence){
+                    }else if(retornoListaMaterial.hasInconsistence){
                         AlertDialog.Builder alert = new AlertDialog.Builder(MaterialActivity.this);
                         alert.setTitle("Atenção");
-                        alert.setMessage(result.inconsistences.get(0).text);
+                        alert.setMessage(retornoListaMaterial.inconsistences.get(0).text);
                         alert.setCancelable(false);
                         alert.setPositiveButton("OK", null);
                         alert.show();
@@ -126,31 +140,30 @@ public class MaterialActivity extends AppCompatActivity {
         }, MoreExecutors.directExecutor());
     }
 
-    public void irParaMaterialInformacao(Context context, ArrayList<Integer> listIdMateriais){
+    public void irParaMaterialInformacao(Context context, ArrayList<Material> listMateriais){
         Intent intent = new Intent(context, MaterialInformacaoActivity.class);
-        int[] arr = listIdMateriais.stream().mapToInt(i -> i).toArray();
-        intent.putExtra(ITEMS, arr);
+        intent.putExtra(ITEMS, listMateriais);
 
         context.startActivity(intent);
     }
-    public void irParaMaterialInformacao(Context context, boolean multiplaSelecao, int qtdSelecao, ArrayList<Integer> listIdMateriais){
+    public void irParaMaterialInformacao(Context context, boolean multiplaSelecao, int qtdSelecao, ArrayList<Material> listMateriais){
         Intent intent = new Intent(context, MaterialInformacaoActivity.class);
 
         intent.putExtra(MULTIPLA_SELECAO, multiplaSelecao);
         intent.putExtra(QTD_SELECAO, qtdSelecao);
-        int[] arr = listIdMateriais.stream().mapToInt(i -> i).toArray();
-        intent.putExtra(ITEMS, arr);
+        System.out.println(listMateriais);
+        intent.putExtra(ITEMS, listMateriais);
 
         context.startActivity(intent);
     }
 
-    public void irParaMaterialInformacao(Context context, boolean comboCategoriaFilho, ArrayList<Integer> listIdMateriais){
+    public void irParaMaterialInformacao(Context context, boolean comboCategoriaFilho, ArrayList<Material> listMateriais){
         Intent intent = new Intent(context, MaterialInformacaoActivity.class);
 
         intent.putExtra(COMBO_CATEGORIA, comboCategoriaFilho);
         intent.putExtra(QTD_SELECAO, qtdSelecao);
-        int[] arr = listIdMateriais.stream().mapToInt(i -> i).toArray();
-        intent.putExtra(ITEMS, arr);
+
+        intent.putExtra(ITEMS, listMateriais);
 
         context.startActivity(intent);
     }

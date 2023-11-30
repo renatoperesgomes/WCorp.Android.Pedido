@@ -211,7 +211,7 @@
         android:padding="20dp">
 
         <Button
-            android:id="@+id/btnPagamento"
+            android:id="@+id/btnFazerPagamento"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"

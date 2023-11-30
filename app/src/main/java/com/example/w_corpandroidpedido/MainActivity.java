@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
+import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
 import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Empresa.Empresa;
 import com.example.w_corpandroidpedido.Models.Empresa.ListEmpresa;
@@ -35,7 +36,6 @@ import io.reactivex.Single;
 
 public class MainActivity extends AppCompatActivity {
     private static final Preferences.Key<String> STRING_KEY = new Preferences.Key<>("authentication");
-    private static final Preferences.Key<String> STRING_KEY_EMPRESA = new Preferences.Key<>("empresa");
     private EditText getTxtNomeUsuario;
     private EditText getTxtSenhaUsuario;
     private Button getBotaoLogin;
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void logarUsuario(Context context){
-        Intent intent = new Intent(context, CategoriaActivity.class);
+        Intent intent = new Intent(context, PesquisarPedidoActivity.class);
         startActivity(intent);
     }
 }

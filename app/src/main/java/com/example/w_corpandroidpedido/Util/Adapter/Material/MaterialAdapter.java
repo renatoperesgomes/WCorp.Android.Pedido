@@ -29,8 +29,9 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     private final int qtdSelecao;
     private final boolean comboCategoriaFilho;
     private boolean todasCategoriasPreenchidas;
-    private final ArrayList<Integer> idMateriais = new ArrayList<>();
+    private final ArrayList<Material> listMaterialSelecionado = new ArrayList<>();
     private final ArrayList<Integer> listCategoriasPreenchidas = new ArrayList<>();
+    private final ArrayList<MaterialAdapter.MaterialViewHolder> listMaterialViewHolder = new ArrayList<>();
     public MaterialAdapter(Context context, List<Material> items){
         this.context = context;
         this.items = items;
@@ -57,7 +58,9 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     @Override
     public MaterialViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemLista = LayoutInflater.from(context).inflate(R.layout.card_material, parent, false);
-        return new MaterialViewHolder(itemLista);
+        MaterialViewHolder materialViewHolder = new MaterialViewHolder(itemLista);
+        listMaterialViewHolder.add(materialViewHolder);
+        return materialViewHolder;
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
@@ -65,29 +68,37 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     public void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
 
         if (comboCategoriaFilho) {
-            int idMaterialCategoriaSelecionado = items.get(position).listMaterialCategoria.get(position).id;
+            int idMaterialCategoriaSelecionado = 0;
+            for(int i = 0; i < items.get(position).listMaterialCategoria.size(); i++){
+                if(items.get(position).listMaterialCategoria.get(i).pdvComboCategoriaFilho &&
+                    items.get(position).listMaterialCategoria.get(i).idPai != 0){
+                    idMaterialCategoriaSelecionado = items.get(position).listMaterialCategoria.get(i).id;
+                    break;
+                }
+            }
             holder.cardMaterial.setTag(idMaterialCategoriaSelecionado);
         }
 
         holder.cardMaterial.setId(position);
         holder.nomeProduto.setText(items.get(position).nome);
         holder.precoProduto.setText("R$ " + String.format("%.2f", items.get(position).preco));
+        holder.material = items.get(position);
 
         holder.itemView.setOnClickListener(view -> {
             if (!multiplaSelecao && !comboCategoriaFilho) {
-                idMateriais.add(contagemSelecao, items.get(position).id);
-                new MaterialActivity().irParaMaterialInformacao(context, idMateriais);
+                listMaterialSelecionado.add(contagemSelecao, items.get(position));
+                new MaterialActivity().irParaMaterialInformacao(context, listMaterialSelecionado);
             } else {
                 if (multiplaSelecao) {
-                    idMateriais.add(contagemSelecao, items.get(position).id);
 
                     holder.cardMaterial.setCardBackgroundColor(Color.parseColor("#009574"));
                     holder.cardMaterial.setClickable(false);
+
+                    listMaterialSelecionado.add(holder.material);
                     contagemSelecao++;
 
                     if (contagemSelecao == qtdSelecao) {
-
-                        new MaterialActivity().irParaMaterialInformacao(context, true, qtdSelecao, idMateriais);
+                        new MaterialActivity().irParaMaterialInformacao(context, true, qtdSelecao, listMaterialSelecionado);
                         contagemSelecao = 0;
                     }
                 } else {
@@ -96,7 +107,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
                     int idMaterialCategoriaSelecionado = holder.cardMaterial.getTag().hashCode();
 
-                    idMateriais.add(contagemSelecao, items.get(position).id);
+                    listMaterialSelecionado.add(contagemSelecao, items.get(position));
                     contagemSelecao++;
                     listCategoriasPreenchidas.add(idMaterialCategoriaSelecionado);
 
@@ -109,7 +120,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                                 cardHabilitarTodos.setClickable(false);
 
                                 listCategoriasPreenchidas.clear();
-                                idMateriais.clear();
+                                listMaterialSelecionado.clear();
                                 contagemSelecao = 0;
                             }
                         }
@@ -134,7 +145,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                         }
 
                         if (todasCategoriasPreenchidas) {
-                            new MaterialActivity().irParaMaterialInformacao(context, true, idMateriais);
+                            new MaterialActivity().irParaMaterialInformacao(context, true, listMaterialSelecionado);
                         }
 
                         cardSelecionado.setCardBackgroundColor(Color.parseColor("#009574"));
@@ -156,6 +167,9 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
         TextView nomeProduto = itemView.findViewById(R.id.nomeMaterial);
         TextView precoProduto = itemView.findViewById(R.id.precoMaterial);
 
+        public boolean Selecionado = false;
+
+        public Material material;
         public MaterialViewHolder(@NonNull View itemView) {
             super(itemView);
         }

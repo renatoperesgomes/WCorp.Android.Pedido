@@ -31,15 +31,15 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
     @Override
     public void onBindViewHolder(@NonNull PagamentoViewHolder holder, int position) {
         if(pedidoAtual == null){
-            holder.idMaterial.setText(String.valueOf(2));
-            holder.nomeMaterial.setText("Teste");
-            holder.valorMaterial.setText("R$ 1254,00");
-            holder.qtdMaterial.setText("1 Un.");
+            holder.idMaterial.setText(String.valueOf(0));
+            holder.nomeMaterial.setText("Não contém nenhum item adicionado");
+            holder.valorMaterial.setText("0,00");
+            holder.qtdMaterial.setText("0 Un.");
         }else{
-            holder.idMaterial.setText(String.valueOf(pedidoAtual.listPedidoMaterialItem.get(position).idMaterial));
-            holder.nomeMaterial.setText(String.valueOf(pedidoAtual.listPedidoMaterialItem.get(position).material.nome));
-            holder.valorMaterial.setText("R$ " + String.format("%.2f", pedidoAtual.listPedidoMaterialItem.get(position).material.preco));
-            holder.qtdMaterial.setText(String.valueOf(pedidoAtual.listPedidoMaterialItem.get(position).quantidade));
+            holder.idMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).idMaterial));
+            holder.nomeMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.nome));
+            holder.valorMaterial.setText("R$ " + String.format("%.2f", pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.preco));
+            holder.qtdMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).quantidade));
         }
     }
 
@@ -48,7 +48,7 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
         if(pedidoAtual == null){
             return 1;
         }
-        return pedidoAtual.listPedidoMaterialItem.size();
+        return pedidoAtual.retorno.listPedidoMaterialItem.size();
     }
 
     class PagamentoViewHolder extends RecyclerView.ViewHolder{

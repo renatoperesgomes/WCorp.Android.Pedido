@@ -41,6 +41,7 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation ("androidx.concurrent:concurrent-futures:1.1.0")
     implementation("androidx.datastore:datastore-preferences-rxjava2:1.0.0")
     implementation ("androidx.test.espresso:espresso-core:3.5.1")
