@@ -107,7 +107,11 @@ public class SubCategoriaActivity extends AppCompatActivity {
                             finish();
                             irParaProdutos(this, idCategoria,true);
                         }else if(multiplaSelecaoCategoria){
+                            finish();
                             irParaProdutos(this, idCategoria,true, qtdSelecaoCategoria);
+                        }else if(result.retorno.size() == 0){
+                            finish();
+                            irParaProdutos(this, idCategoria);
                         }
                         else{
                             getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, result.retorno),

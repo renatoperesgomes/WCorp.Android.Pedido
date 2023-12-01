@@ -167,8 +167,6 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
         TextView nomeProduto = itemView.findViewById(R.id.nomeMaterial);
         TextView precoProduto = itemView.findViewById(R.id.precoMaterial);
 
-        public boolean Selecionado = false;
-
         public Material material;
         public MaterialViewHolder(@NonNull View itemView) {
             super(itemView);

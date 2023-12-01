@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,27 +14,19 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.w_corpandroidpedido.Atividades.Impressora.Impressora;
 import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
-import com.example.w_corpandroidpedido.Models.BaseApi;
-import com.example.w_corpandroidpedido.Models.Material.ListMaterial;
 import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 import com.example.w_corpandroidpedido.R;
-import com.example.w_corpandroidpedido.Service.Material.MaterialService;
 import com.example.w_corpandroidpedido.Service.Pedido.AdicionarPedidoService;
 import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialInformacaoAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import io.reactivex.Flowable;
 
