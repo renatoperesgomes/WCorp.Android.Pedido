@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class AdicionarPedidoService {
     public ListenableFuture<Pedido> AdicionarPedido(String bearer, Integer idComanda, PedidoMaterialItem pedidoMaterialItem) {
-        ApiCall<Pedido> apiCall = new ApiCall<>(BaseApi.class);
+        ApiCall<Pedido> apiCall = new ApiCall<>(Pedido.class);
         ArrayList<Pair<String,String>> listParametro = new ArrayList<Pair<String, String>>();
 
         if (idComanda != null)
@@ -23,8 +23,8 @@ public class AdicionarPedidoService {
         listParametro.add(new Pair<>("valorUnitario", String.valueOf(pedidoMaterialItem.valorUnitario)));
         listParametro.add(new Pair<>("quantidade", String.valueOf(pedidoMaterialItem.quantidade)));
         listParametro.add(new Pair<>("observacao", pedidoMaterialItem.observacao));
-        listParametro.add(new Pair<>("bonificacao", String.valueOf(pedidoMaterialItem.bonificacao)));
+        //listParametro.add(new Pair<>("bonificacao", String.valueOf(pedidoMaterialItem.bonificacao)));
 
-        return apiCall.CallApi("AdicionarPedidoMaterialItemPorComanda", bearer, listParametro);
+        return apiCall.CallApi("AdicionarPedidoMaterialItemPorComanda", bearer, listParametro, true);
     }
 }

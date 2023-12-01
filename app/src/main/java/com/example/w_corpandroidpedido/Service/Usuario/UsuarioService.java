@@ -17,6 +17,6 @@ public class UsuarioService {
         listParametro.add(new Pair<>("senha", senha));
         listParametro.add(new Pair<>("idEmpresa", idEmpresa));
 
-        return apiCall.CallApi("Login", "", listParametro);
+        return apiCall.CallApi("Login", "", listParametro, false);
     }
 }

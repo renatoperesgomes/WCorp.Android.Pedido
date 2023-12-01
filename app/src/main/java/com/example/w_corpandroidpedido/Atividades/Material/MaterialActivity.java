@@ -141,24 +141,23 @@ public class MaterialActivity extends AppCompatActivity {
     }
 
     public void irParaMaterialInformacao(Context context, ArrayList<Material> listMateriais){
-        Intent intent = new Intent(context, MaterialInformacaoActivity.class);
+        Intent intent = new Intent(context, AdicionarMaterialActivity.class);
         intent.putExtra(ITEMS, listMateriais);
 
         context.startActivity(intent);
     }
     public void irParaMaterialInformacao(Context context, boolean multiplaSelecao, int qtdSelecao, ArrayList<Material> listMateriais){
-        Intent intent = new Intent(context, MaterialInformacaoActivity.class);
+        Intent intent = new Intent(context, AdicionarMaterialActivity.class);
 
         intent.putExtra(MULTIPLA_SELECAO, multiplaSelecao);
         intent.putExtra(QTD_SELECAO, qtdSelecao);
-        System.out.println(listMateriais);
         intent.putExtra(ITEMS, listMateriais);
 
         context.startActivity(intent);
     }
 
     public void irParaMaterialInformacao(Context context, boolean comboCategoriaFilho, ArrayList<Material> listMateriais){
-        Intent intent = new Intent(context, MaterialInformacaoActivity.class);
+        Intent intent = new Intent(context, AdicionarMaterialActivity.class);
 
         intent.putExtra(COMBO_CATEGORIA, comboCategoriaFilho);
         intent.putExtra(QTD_SELECAO, qtdSelecao);

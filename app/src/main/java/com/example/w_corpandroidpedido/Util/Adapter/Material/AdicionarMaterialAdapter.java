@@ -1,7 +1,5 @@
 package com.example.w_corpandroidpedido.Util.Adapter.Material;
 
-import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,12 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.w_corpandroidpedido.Models.Material.Material;
+import com.example.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 import com.example.w_corpandroidpedido.R;
 
 
 import java.util.ArrayList;
 
-public class MaterialInformacaoAdapter extends RecyclerView.Adapter<MaterialInformacaoAdapter.MaterialInformacaoViewHolder> {
+public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMaterialAdapter.MaterialInformacaoViewHolder> {
 
     private final Context context;
     private final boolean multiplaSelecao;
@@ -27,21 +26,21 @@ public class MaterialInformacaoAdapter extends RecyclerView.Adapter<MaterialInfo
     private double maiorValor = 0;
     private final ArrayList<Material> items;
 
-    public MaterialInformacaoAdapter(Context context, ArrayList<Material> items){
+    public AdicionarMaterialAdapter(Context context, ArrayList<Material> items){
         this.context = context;
         this.comboCategoriaFilho = false;
         this.multiplaSelecao = false;
         this.qtdMaterial = 0;
         this.items = items;
     }
-    public MaterialInformacaoAdapter(Context context,boolean comboCategoriaFilho, ArrayList<Material> items){
+    public AdicionarMaterialAdapter(Context context, boolean comboCategoriaFilho, ArrayList<Material> items){
         this.context = context;
         this.comboCategoriaFilho = comboCategoriaFilho;
         this.multiplaSelecao = false;
         this.qtdMaterial = items.size();
         this.items = items;
     }
-    public MaterialInformacaoAdapter(Context context,boolean multiplaSelecao, int qtdMaterial, ArrayList<Material> items){
+    public AdicionarMaterialAdapter(Context context, boolean multiplaSelecao, int qtdMaterial, ArrayList<Material> items){
         this.context = context;
         this.comboCategoriaFilho = false;
         this.multiplaSelecao = multiplaSelecao;
@@ -58,13 +57,14 @@ public class MaterialInformacaoAdapter extends RecyclerView.Adapter<MaterialInfo
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
-    public void onBindViewHolder(@NonNull MaterialInformacaoAdapter.MaterialInformacaoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdicionarMaterialAdapter.MaterialInformacaoViewHolder holder, int position) {
+
+
         if(!multiplaSelecao && !comboCategoriaFilho) {
             holder.idMaterial.setText(String.valueOf(items.get(position).id));
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
             holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).preco));
             holder.qtdMaterial.setText("1 Un.");
-
         }else if(multiplaSelecao){
             holder.idMaterial.setText(String.valueOf(items.get(position).id));
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
@@ -79,8 +79,8 @@ public class MaterialInformacaoAdapter extends RecyclerView.Adapter<MaterialInfo
 
             double divisaoMateriais = 1.0 / qtdMaterial;
             holder.qtdMaterial.setText(divisaoMateriais + " Un.");
-        }
-        else{
+
+        }else{
             holder.idMaterial.setText(String.valueOf(items.get(position).id));
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
             holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).preco));

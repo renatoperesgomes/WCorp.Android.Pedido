@@ -7,7 +7,7 @@ public class PedidoMaterialItem {
     public int idMaterial;
     public Material material;
     public double valorUnitario;
-    public int quantidade;
+    public double quantidade;
     public int percDesconto;
     public double valorDesconto;
     public double valorTotalDesconto;

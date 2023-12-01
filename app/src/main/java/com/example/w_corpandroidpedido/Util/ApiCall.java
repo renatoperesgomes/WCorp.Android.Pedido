@@ -12,8 +12,12 @@ import androidx.datastore.preferences.core.PreferencesKeys;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -42,7 +46,7 @@ public class ApiCall<ApiModel> {
     public ApiCall(Type modelType) {
         this.modelType = modelType;
     }
-    public ListenableFuture<ApiModel> CallApi(String function, String bearer, List<Pair<String, String>> listParameters)  {
+    public ListenableFuture<ApiModel> CallApi(String function, String bearer, List<Pair<String, String>> listParameters, boolean isRequestBody)  {
         return CallbackToFutureAdapter.getFuture(completer -> {
             executor.execute(() -> {
                 try {
@@ -50,8 +54,12 @@ public class ApiCall<ApiModel> {
                     HttpUrl.Builder httpUrl = HttpUrl.parse(URLchamada).newBuilder();
 
                     if(listParameters != null){
-                        for (int i = 0; i < listParameters.size(); i++){
-                            httpUrl.addQueryParameter(listParameters.get(i).first, listParameters.get(i).second);
+                        if(isRequestBody){
+                            httpUrl.addQueryParameter(listParameters.get(0).first, listParameters.get(0).second);
+                        }else{
+                            for (int i = 0; i < listParameters.size(); i++){
+                                httpUrl.addQueryParameter(listParameters.get(i).first, listParameters.get(i).second);
+                            }
                         }
                     }
 
@@ -60,8 +68,24 @@ public class ApiCall<ApiModel> {
                     if (bearer != null && !bearer.isEmpty())
                         httpURLConnection.setRequestProperty("Authorization", "Bearer " + bearer);
 
+                    httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                    httpURLConnection.setRequestProperty("Accept", "application/json");
                     httpURLConnection.setRequestMethod("POST");
                     httpURLConnection.setDoOutput(true);
+
+                    if(isRequestBody){
+                        JSONObject pedidoMaterialItem = new JSONObject();
+                        if(listParameters != null){
+                            for (int i = 1; i < listParameters.size(); i++){
+                                pedidoMaterialItem.put(listParameters.get(i).first, listParameters.get(i).second);
+                            }
+                        }
+                        httpURLConnection.setRequestProperty("Body", pedidoMaterialItem.toString());
+                        OutputStream wr = httpURLConnection.getOutputStream();
+                        wr.write(pedidoMaterialItem.toString().getBytes());
+                        wr.flush();
+                        wr.close();
+                    }
 
                     if (httpURLConnection.getResponseCode() != HttpURLConnection.HTTP_OK)
                         throw new RuntimeException("HTTP error code: " + httpURLConnection.getResponseCode());

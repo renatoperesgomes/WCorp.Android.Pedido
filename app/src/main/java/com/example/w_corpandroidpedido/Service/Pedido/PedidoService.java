@@ -17,6 +17,6 @@ public class PedidoService {
         if (idComanda != null)
             listParametro.add(new Pair<>("idComanda", idComanda.toString()));
 
-        return apiCall.CallApi("BuscarPedido", bearer, listParametro);
+        return apiCall.CallApi("BuscarPedido", bearer, listParametro, false);
     }
 }

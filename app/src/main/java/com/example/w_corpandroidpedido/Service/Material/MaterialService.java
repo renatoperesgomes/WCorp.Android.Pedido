@@ -31,6 +31,6 @@ public class MaterialService {
         if (idMaterialCategoria != null)
             listParametro.add(new Pair<>("idMaterialCategoria", idMaterialCategoria.toString()));
 
-        return apiCall.CallApi("BuscarMaterial", bearer, listParametro);
+        return apiCall.CallApi("BuscarMaterial", bearer, listParametro, false);
     }
 }

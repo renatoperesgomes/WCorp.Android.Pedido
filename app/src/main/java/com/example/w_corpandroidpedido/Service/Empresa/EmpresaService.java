@@ -11,7 +11,7 @@ public class EmpresaService {
     public ListenableFuture<ListEmpresa> BuscarListEmpresa()
     {
         ApiCall<ListEmpresa> apiCall = new ApiCall<>(ListEmpresa.class);
-        return apiCall.CallApi("BuscarListEmpresa", "", null);
+        return apiCall.CallApi("BuscarListEmpresa", "", null, false);
     }
 }
 

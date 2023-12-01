@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Atividades.Material.MaterialInformacaoActivity"
+            android:name=".Atividades.Material.AdicionarMaterialActivity"
             android:exported="false" />
         <activity
             android:name=".Atividades.Material.MaterialActivity"
