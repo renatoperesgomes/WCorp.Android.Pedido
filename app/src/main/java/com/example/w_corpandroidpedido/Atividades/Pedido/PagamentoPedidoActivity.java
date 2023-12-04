@@ -30,9 +30,9 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pagamento_pedido);
 
-        CardView inicio = findViewById(R.id.cardInicio);
-        CardView pagamento = findViewById(R.id.cardPagamento);
-        CardView comanda = findViewById(R.id.cardComanda);
+        CardView cardViewInicio = findViewById(R.id.cardInicio);
+        CardView cardViewPagamento = findViewById(R.id.cardPagamento);
+        CardView cardViewComanda = findViewById(R.id.cardComanda);
         TextView txtNumeroComanda = findViewById(R.id.txtIdComanda);
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
 
@@ -48,7 +48,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         getBtnFazerPagamento = findViewById(R.id.btnFazerPagamento);
 
 
-        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(inicio, pagamento,comanda);
+        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicio, cardViewPagamento,cardViewComanda);
         navegacaoBarraApp.addClick(this);
 
         if(dadosComanda.GetPedido() != null){

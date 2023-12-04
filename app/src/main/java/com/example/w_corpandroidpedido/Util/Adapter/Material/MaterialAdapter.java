@@ -90,16 +90,24 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                 new MaterialActivity().irParaMaterialInformacao(context, listMaterialSelecionado);
             } else {
                 if (multiplaSelecao) {
+                    CardView cardSelecionado = holder.cardMaterial;
 
-                    holder.cardMaterial.setCardBackgroundColor(Color.parseColor("#009574"));
-                    holder.cardMaterial.setClickable(false);
-
-                    listMaterialSelecionado.add(holder.material);
-                    contagemSelecao++;
-
-                    if (contagemSelecao == qtdSelecao) {
-                        new MaterialActivity().irParaMaterialInformacao(context, true, qtdSelecao, listMaterialSelecionado);
+                    if(cardSelecionado.isSelected()){
+                        cardSelecionado.setCardBackgroundColor(Color.parseColor("#005E49"));
+                        cardSelecionado.setSelected(false);
                         contagemSelecao = 0;
+                        listMaterialSelecionado.clear();
+                    }else{
+                        cardSelecionado.setCardBackgroundColor(Color.parseColor("#009574"));
+                        cardSelecionado.setSelected(true);
+
+                        listMaterialSelecionado.add(holder.material);
+                        contagemSelecao++;
+
+                        if (contagemSelecao == qtdSelecao) {
+                            new MaterialActivity().irParaMaterialInformacao(context, true, qtdSelecao, listMaterialSelecionado);
+                            contagemSelecao = 0;
+                        }
                     }
                 } else {
                     CardView cardSelecionado = holder.cardMaterial;

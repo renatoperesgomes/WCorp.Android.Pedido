@@ -48,8 +48,6 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
         CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
         CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
-        TextView numeroComanda = findViewById(R.id.txtIdComanda);
-        TextView valorComanda = findViewById(R.id.txtValorComanda);
 
         pesquisarComanda = findViewById(R.id.textPesquisarComanda);
         btnPesquisar = findViewById(R.id.btnPesquisar);
@@ -62,8 +60,8 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
 
         if(dadosComanda.GetPedido() != null){
             navegacaoBarraApp.addClick(this);
-            numeroComanda.setText(dadosComanda.GetNumeroComanda());
-            valorComanda.setText(dadosComanda.GetValorComanda());
+            txtIdComanda.setText(dadosComanda.GetNumeroComanda());
+            txtValorComanda.setText(dadosComanda.GetValorComanda());
         }else{
             navegacaoBarraApp.addClickError(this);
         }
