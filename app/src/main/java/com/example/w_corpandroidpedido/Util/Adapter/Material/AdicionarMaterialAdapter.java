@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,7 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
             holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).preco));
             holder.qtdMaterial.setText("1 Un.");
+
         }else if(multiplaSelecao){
             holder.idMaterial.setText(String.valueOf(items.get(position).id));
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));

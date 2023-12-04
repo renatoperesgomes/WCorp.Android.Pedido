@@ -32,8 +32,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
     private Button btnPesquisar;
     private String nmrComanda;
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
-    private String bearer;
-    public static DadosComanda dadosComanda;
+    private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +43,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
         Flowable<String> getBearer =
                 dataStore.data().map(prefs -> prefs.get(BEARER));
 
-        bearer = getBearer.blockingFirst();
+        String bearer = getBearer.blockingFirst();
 
         CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
@@ -61,10 +60,10 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
-        if(dadosComanda != null){
+        if(dadosComanda.GetPedido() != null){
             navegacaoBarraApp.addClick(this);
-            numeroComanda.setText(dadosComanda.numeroComanda);
-            valorComanda.setText(dadosComanda.valorComanda);
+            numeroComanda.setText(dadosComanda.GetNumeroComanda());
+            valorComanda.setText(dadosComanda.GetValorComanda());
         }else{
             navegacaoBarraApp.addClickError(this);
         }
@@ -83,14 +82,17 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                         try {
                             Pedido retornoPedido = buscarPedido.get();
 
-                            if(retornoPedido.validated && retornoPedido.retorno == null){
-                                dadosComanda = new DadosComanda(nmrComanda);
+                            if (retornoPedido.validated && retornoPedido.retorno == null) {
+                                dadosComanda.SetPedido(null);
+                                dadosComanda.SetNumeroComanda(nmrComanda);
+                                dadosComanda.SetValorComanda("0,00");
+
                                 txtIdComanda.setText(nmrComanda);
                                 txtValorComanda.setText("0,00");
-                            }else{
-                                dadosComanda = new DadosComanda(retornoPedido);
-                                txtIdComanda.setText(dadosComanda.numeroComanda);
-                                txtValorComanda.setText(dadosComanda.valorComanda);
+                            } else {
+                                dadosComanda.SetPedido(retornoPedido);
+                                txtIdComanda.setText(dadosComanda.GetNumeroComanda());
+                                txtValorComanda.setText(dadosComanda.GetValorComanda());
                             }
 
                             navegacaoBarraApp.addClick(this);

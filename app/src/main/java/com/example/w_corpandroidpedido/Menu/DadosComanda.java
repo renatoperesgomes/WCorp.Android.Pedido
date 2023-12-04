@@ -1,22 +1,48 @@
 package com.example.w_corpandroidpedido.Menu;
 
+import androidx.datastore.preferences.rxjava2.RxPreferenceDataStoreBuilder;
+
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
-import com.example.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 
 
 public class DadosComanda {
-    public static Pedido pedidoAtual;
-    public String numeroComanda;
-    public String valorComanda;
+    private static DadosComanda dadosComanda;
+    private static Pedido pedidoAtual;
+    private String numeroComanda;
+    private String valorComanda;
+    public DadosComanda() {}
+    public static DadosComanda GetDadosComanda() {
+        if (dadosComanda == null) {
+            dadosComanda = new DadosComanda();
+        }
+        return dadosComanda;
+    }
 
-    public DadosComanda(Pedido pedidoAtual){
-        this.pedidoAtual = pedidoAtual;
-        this.numeroComanda = pedidoAtual.retorno.comanda;
-        this.valorComanda = String.valueOf(pedidoAtual.retorno.valorTotalPedido);
+    public Pedido GetPedido() {
+        return pedidoAtual;
     }
-    public DadosComanda(String nmrComanda){
-        this.pedidoAtual = null;
-        this.numeroComanda = nmrComanda;
-        this.valorComanda = "0,00";
+
+    public void SetPedido(Pedido pedidoAtual) {
+        if(pedidoAtual == null){
+            DadosComanda.pedidoAtual = null;
+        }else{
+            DadosComanda.pedidoAtual = pedidoAtual;
+            this.numeroComanda = pedidoAtual.retorno.comanda;
+            this.valorComanda = String.valueOf(pedidoAtual.retorno.valorTotalPedido);
+        }
     }
+
+    public String GetNumeroComanda(){
+        return numeroComanda;
+    }
+    public void SetNumeroComanda(String numeroComanda){
+        this.numeroComanda = numeroComanda;
+    }
+    public String GetValorComanda(){
+        return valorComanda;
+    }
+    public void SetValorComanda(String valorComanda){
+        this.valorComanda = valorComanda;
+    }
+
 }

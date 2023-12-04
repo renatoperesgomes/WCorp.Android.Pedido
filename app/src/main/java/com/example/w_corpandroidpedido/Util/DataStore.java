@@ -17,8 +17,4 @@ public class DataStore {
         }
         return instance;
     }
-
-    public static RxDataStore<Preferences> getEmpresa(Context context) {
-        return new RxPreferenceDataStoreBuilder(context,  "empresa").build();
-    }
 }

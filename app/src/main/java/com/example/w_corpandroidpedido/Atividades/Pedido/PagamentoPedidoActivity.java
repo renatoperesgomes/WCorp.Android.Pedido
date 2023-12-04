@@ -2,10 +2,12 @@ package com.example.w_corpandroidpedido.Atividades.Pedido;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,14 +17,13 @@ import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
+import com.example.w_corpandroidpedido.Util.DataStore;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {
     private RecyclerView getRecyclerViewPagamento;
     private Button getBtnVoltar;
     private Button getBtnFazerPagamento;
-    private Pedido pedidoAtual = DadosComanda.pedidoAtual;
-
-    private DadosComanda dadosComanda = PesquisarPedidoActivity.dadosComanda;
+    private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +41,22 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         getRecyclerViewPagamento.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         getRecyclerViewPagamento.setHasFixedSize(true);
 
-        getRecyclerViewPagamento.setAdapter(new PagamentoAdapter(this, pedidoAtual));
+        getRecyclerViewPagamento.setAdapter(new PagamentoAdapter(this, dadosComanda.GetPedido()));
 
         getBtnVoltar = findViewById(R.id.btnVoltar);
 
-        getBtnFazerPagamento =findViewById(R.id.btnFazerPagamento);
+        getBtnFazerPagamento = findViewById(R.id.btnFazerPagamento);
 
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(inicio, pagamento,comanda);
         navegacaoBarraApp.addClick(this);
 
-        if(pedidoAtual != null){
-            txtNumeroComanda.setText(pedidoAtual.retorno.comanda);
-            txtValorComanda.setText(String.valueOf(pedidoAtual.retorno.valorTotalPedido));
+        if(dadosComanda.GetPedido() != null){
+            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
+            txtValorComanda.setText(String.valueOf(dadosComanda.GetValorComanda()));
         }else{
-            txtNumeroComanda.setText(dadosComanda.numeroComanda);
-            txtValorComanda.setText(dadosComanda.valorComanda);
+            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
+            txtValorComanda.setText(dadosComanda.GetValorComanda());
             getBtnFazerPagamento.setOnClickListener(view ->{
                 Toast.makeText(this,"Necessário adicionar um material para fazer o pagamento.",Toast.LENGTH_SHORT).show();
             });

@@ -41,8 +41,7 @@ public class CategoriaActivity extends AppCompatActivity {
     public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
     public static final String COMBO_CATEGORIA_FILHO = "com.example.w_corpandroidpedido.COMBOCATEGORIAFILHO";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
-    private Pedido pedidoAtual = DadosComanda.pedidoAtual;
-    private DadosComanda dadosComanda = PesquisarPedidoActivity.dadosComanda;
+    private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private String bearer;
 
     @Override
@@ -71,12 +70,12 @@ public class CategoriaActivity extends AppCompatActivity {
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
-        if(pedidoAtual != null){
-            txtNumeroComanda.setText(pedidoAtual.retorno.comanda);
-            txtValorComanda.setText(String.valueOf(pedidoAtual.retorno.valorTotalPedido));
+        if(dadosComanda.GetPedido() != null){
+            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
+            txtValorComanda.setText(dadosComanda.GetValorComanda());
         }else{
-            txtNumeroComanda.setText(dadosComanda.numeroComanda);
-            txtValorComanda.setText(dadosComanda.valorComanda);
+            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
+            txtValorComanda.setText(dadosComanda.GetValorComanda());
         }
 
         pesquisarCategorias();
