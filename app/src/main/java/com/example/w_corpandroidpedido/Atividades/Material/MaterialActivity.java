@@ -21,6 +21,7 @@ import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity
 import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
+import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Material.ListMaterial;
 import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
@@ -108,24 +109,29 @@ public class MaterialActivity extends AppCompatActivity {
 
         listMaterial.addListener(() -> {
             try{
-                ListMaterial retornoListaMaterial = listMaterial.get();
+                ListMaterial listaMaterialRetorno = listMaterial.get();
                 runOnUiThread(() ->{
-                    if(retornoListaMaterial.validated){
+                    if(listaMaterialRetorno.validated){
                         if(multiplaSelecao){
-                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, retornoListaMaterial.retorno, true, qtdSelecao),
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, listaMaterialRetorno.retorno, true, qtdSelecao),
                                     new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
                         }else if(comboCategoriaFilho){
-                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, retornoListaMaterial.retorno,true),
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, listaMaterialRetorno.retorno,true),
                                     new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
                         }
                         else{
-                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, retornoListaMaterial.retorno),
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, listaMaterialRetorno.retorno),
                                     new VoltarAdapter(this ,this, ViewType.MATERIAL.ordinal())));
                         }
-                    }else if(retornoListaMaterial.hasInconsistence){
+                    }else if(listaMaterialRetorno.hasInconsistence){
                         AlertDialog.Builder alert = new AlertDialog.Builder(MaterialActivity.this);
                         alert.setTitle("Atenção");
-                        alert.setMessage(retornoListaMaterial.inconsistences.get(0).text);
+
+                        for (Inconsistences inconsistences :
+                                listaMaterialRetorno.inconsistences) {
+                            alert.setMessage(String.join(",", inconsistences.text));
+                        }
+
                         alert.setCancelable(false);
                         alert.setPositiveButton("OK", null);
                         alert.show();

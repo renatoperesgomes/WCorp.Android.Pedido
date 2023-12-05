@@ -1,5 +1,6 @@
 package com.example.w_corpandroidpedido.Atividades.Pedido;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
@@ -13,8 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
@@ -79,21 +82,31 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         try {
                             Pedido retornoPedido = buscarPedido.get();
+                            if(retornoPedido.validated){
+                                if(retornoPedido.retorno == null){
+                                    dadosComanda.SetPedido(null);
+                                    dadosComanda.SetNumeroComanda(nmrComanda);
+                                    dadosComanda.SetValorComanda("0,00");
 
-                            if (retornoPedido.validated && retornoPedido.retorno == null) {
-                                dadosComanda.SetPedido(null);
-                                dadosComanda.SetNumeroComanda(nmrComanda);
-                                dadosComanda.SetValorComanda("0,00");
-
-                                txtIdComanda.setText(nmrComanda);
-                                txtValorComanda.setText("0,00");
-                            } else {
-                                dadosComanda.SetPedido(retornoPedido);
-                                txtIdComanda.setText(dadosComanda.GetNumeroComanda());
-                                txtValorComanda.setText(dadosComanda.GetValorComanda());
+                                    txtIdComanda.setText(nmrComanda);
+                                    txtValorComanda.setText("0,00");
+                                }else{
+                                    dadosComanda.SetPedido(retornoPedido);
+                                    txtIdComanda.setText(dadosComanda.GetNumeroComanda());
+                                    txtValorComanda.setText(dadosComanda.GetValorComanda());
+                                }
+                                navegacaoBarraApp.addClick(this);
+                            }else if(retornoPedido.hasInconsistence){
+                                AlertDialog.Builder alert = new AlertDialog.Builder(PesquisarPedidoActivity.this);
+                                alert.setTitle("Atenção");
+                                for (Inconsistences inconsistences :
+                                        retornoPedido.inconsistences) {
+                                    alert.setMessage(String.join(",", inconsistences.text));
+                                }
+                                alert.setCancelable(false);
+                                alert.setPositiveButton("OK", null);
+                                alert.show();
                             }
-
-                            navegacaoBarraApp.addClick(this);
                         } catch (Exception e) {
                             System.out.println("Erro: " + e.getMessage());
                         }

@@ -1,5 +1,6 @@
 package com.example.w_corpandroidpedido.Atividades.Categoria;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
@@ -20,6 +21,7 @@ import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Material.ListMaterialCategoria;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
@@ -99,23 +101,33 @@ public class SubCategoriaActivity extends AppCompatActivity {
 
         listMaterialCategoria.addListener(() -> {
             try{
-                ListMaterialCategoria result = listMaterialCategoria.get();
+                ListMaterialCategoria listaMaterialCategoriaRetorno = listMaterialCategoria.get();
                 runOnUiThread(() ->{
-                    if(result.validated){
+                    if(listaMaterialCategoriaRetorno.validated){
                         if(comboCategoriaFilho){
                             finish();
                             irParaProdutos(this, idCategoria,true);
                         }else if(multiplaSelecaoCategoria){
                             finish();
                             irParaProdutos(this, idCategoria,true, qtdSelecaoCategoria);
-                        }else if(result.retorno.size() == 0){
+                        }else if(listaMaterialCategoriaRetorno.retorno.size() == 0){
                             finish();
                             irParaProdutos(this, idCategoria);
                         }
                         else{
-                            getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, result.retorno),
+                            getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, listaMaterialCategoriaRetorno.retorno),
                                     new VoltarAdapter(this, this, ViewType.SUB_CATEGORIA.ordinal())));
                         }
+                    }else if(listaMaterialCategoriaRetorno.hasInconsistence) {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(SubCategoriaActivity.this);
+                        alert.setTitle("Atenção");
+                        for (Inconsistences inconsistences :
+                                listaMaterialCategoriaRetorno.inconsistences) {
+                            alert.setMessage(String.join(",", inconsistences.text));
+                        }
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("OK", null);
+                        alert.show();
                     }
                 });
             }catch (Exception e){

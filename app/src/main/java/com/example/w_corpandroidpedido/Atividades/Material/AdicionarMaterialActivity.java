@@ -1,5 +1,6 @@
 package com.example.w_corpandroidpedido.Atividades.Material;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
+import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
@@ -140,8 +142,8 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
                 pedidoMaterialItemAtual.observacao = observacao;
             }else{
                 pedidoMaterialItemAtual.idMaterial = item.id;
-                pedidoMaterialItemAtual.valorUnitario = maiorValor;
-                pedidoMaterialItemAtual.quantidade = divisaoMaterial;
+                pedidoMaterialItemAtual.valorUnitario = maiorValor / qtdSelecao;
+                pedidoMaterialItemAtual.quantidade = 1;
                 pedidoMaterialItemAtual.observacao = observacao;
             }
             listPedidoMaterialItem.add(pedidoMaterialItemAtual);
@@ -157,9 +159,23 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
             Future<Pedido> pedidoAtualizado = adicionarPedidoService.AdicionarPedido(bearer, Integer.valueOf(nmrComanda), pedidoMaterialItem);
 
             try {
-                dadosComanda.SetPedido(pedidoAtualizado.get());
-                dadosComanda.SetNumeroComanda(pedidoAtualizado.get().retorno.comanda);
-                dadosComanda.SetValorComanda(String.valueOf(pedidoAtualizado.get().retorno.valorTotalPedido));
+                Pedido pedidoAtualizadoRetorno = pedidoAtualizado.get();
+                if(pedidoAtualizadoRetorno.validated){
+                    dadosComanda.SetPedido(pedidoAtualizadoRetorno);
+                //TODO: Verificar se é necessário este código
+//                dadosComanda.SetNumeroComanda(pedidoAtualizado.get().retorno.comanda);
+//                dadosComanda.SetValorComanda(String.valueOf(pedidoAtualizado.get().retorno.valorTotalPedido));
+                }else if(pedidoAtualizadoRetorno.hasInconsistence){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
+                    alert.setTitle("Atenção");
+                    for (Inconsistences inconsistences :
+                            pedidoAtualizadoRetorno.inconsistences) {
+                        alert.setMessage(String.join(",", inconsistences.text));
+                    }
+                    alert.setCancelable(false);
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+                }
             } catch (Exception e) {
                 System.out.println("Erro: " + e.getMessage());
             }

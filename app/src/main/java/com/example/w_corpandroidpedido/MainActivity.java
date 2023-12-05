@@ -10,6 +10,7 @@ import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecu
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +23,7 @@ import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity
 import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Empresa.Empresa;
 import com.example.w_corpandroidpedido.Models.Empresa.ListEmpresa;
+import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Usuario.Usuario;
 import com.example.w_corpandroidpedido.Service.Empresa.EmpresaService;
 import com.example.w_corpandroidpedido.Service.Usuario.UsuarioService;
@@ -29,6 +31,7 @@ import com.example.w_corpandroidpedido.Util.Adapter.Empresa.EmpresaAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -87,42 +90,38 @@ public class MainActivity extends AppCompatActivity {
         getBotaoLogin.setOnClickListener(view -> {
             String nomeUsuario = getTxtNomeUsuario.getText().toString();
             String senhaUsuario = getTxtSenhaUsuario.getText().toString();
+            UsuarioService usuarioService = new UsuarioService();
+            ListenableFuture<Usuario> tokenRetorno = usuarioService.Login(nomeUsuario, senhaUsuario, idEmpresa);
+            tokenRetorno.addListener(() -> {
+                try {
+                    Usuario tokenRetornoResult = tokenRetorno.get();
+                    runOnUiThread(() -> {
+                        if (tokenRetornoResult.validated) {
+                            Single<Preferences> updateResult = dataStore.updateDataAsync(prefsIn -> {
+                                MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+                                mutablePreferences.set(STRING_KEY, tokenRetornoResult.retorno);
+                                return Single.just(mutablePreferences);
+                            });
+                            logarUsuario(this);
+                        } else if (tokenRetornoResult.hasInconsistence) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                            alert.setTitle("Atenção");
 
-            if(nomeUsuario.isEmpty() || senhaUsuario.isEmpty()){
-                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-                alert.setTitle("Atenção");
-                alert.setMessage("Usuário/Senha não preenchidos!");
-                alert.setCancelable(false);
-                alert.setPositiveButton("OK", null);
-                alert.show();
-            }else{
-                UsuarioService usuarioService = new UsuarioService();
-                ListenableFuture<Usuario> tokenRetorno =  usuarioService.Login(nomeUsuario, senhaUsuario, idEmpresa);
-                tokenRetorno.addListener(() ->{
-                    try{
-                        Usuario tokenRetornoResult = tokenRetorno.get();
-                        runOnUiThread(() ->{
-                            if(tokenRetornoResult.validated){
-                                Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
-                                    MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
-                                    mutablePreferences.set(STRING_KEY, tokenRetornoResult.retorno);
-                                    return Single.just(mutablePreferences);
-                                });
-                                logarUsuario(this);
-                            }else if(tokenRetornoResult.hasInconsistence){
-                                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-                                alert.setTitle("Atenção");
-                                alert.setMessage(tokenRetornoResult.inconsistences.get(0).text);
-                                alert.setCancelable(false);
-                                alert.setPositiveButton("OK", null);
-                                alert.show();
+                            for (Inconsistences inconsistences :
+                                    tokenRetornoResult.inconsistences) {
+                                alert.setMessage(String.join(",", inconsistences.text));
                             }
-                        });
-                    }catch (Exception e){
-                        System.out.println("Erro :" + e.getMessage());
-                    }
-                }, MoreExecutors.directExecutor());
-            }
+
+                            alert.setCancelable(false);
+                            alert.setPositiveButton("OK", null);
+                            alert.show();
+                        }
+                    });
+                } catch (Exception e) {
+                    System.out.println("Erro :" + e.getMessage());
+                }
+            }, MoreExecutors.directExecutor());
+
         });
     }
     private void logarUsuario(Context context){

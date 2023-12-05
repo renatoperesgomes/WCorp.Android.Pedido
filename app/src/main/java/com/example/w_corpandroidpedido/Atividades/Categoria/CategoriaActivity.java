@@ -21,6 +21,7 @@ import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Material.ListMaterialCategoria;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
@@ -89,14 +90,19 @@ public class CategoriaActivity extends AppCompatActivity {
 
         listMaterialCategoria.addListener(() -> {
             try{
-                ListMaterialCategoria result = listMaterialCategoria.get();
+                ListMaterialCategoria listaMaterialRetorno = listMaterialCategoria.get();
                 runOnUiThread(() ->{
-                    if(result.validated){
-                        getRecycleCategoria.setAdapter(new CategoriaAdapter(this, result.retorno));
-                    }else if(result.hasInconsistence){
+                    if(listaMaterialRetorno.validated){
+                        getRecycleCategoria.setAdapter(new CategoriaAdapter(this, listaMaterialRetorno.retorno));
+                    }else if(listaMaterialRetorno.hasInconsistence){
                         AlertDialog.Builder alert = new AlertDialog.Builder(CategoriaActivity.this);
                         alert.setTitle("Atenção");
-                        alert.setMessage(result.inconsistences.get(0).text);
+
+                        for (Inconsistences inconsistences :
+                                listaMaterialRetorno.inconsistences) {
+                            alert.setMessage(String.join(",", inconsistences.text));
+                        }
+
                         alert.setCancelable(false);
                         alert.setPositiveButton("OK", null);
                         alert.show();
