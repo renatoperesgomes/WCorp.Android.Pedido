@@ -2,22 +2,18 @@ package com.example.w_corpandroidpedido.Atividades.Pedido;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
-import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
-import com.example.w_corpandroidpedido.Util.DataStore;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {
     private RecyclerView getRecyclerViewPagamento;

@@ -1,11 +1,11 @@
 package com.example.w_corpandroidpedido.Atividades.Cliente;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
 
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Util.Adapter.Cliente.Cliente;

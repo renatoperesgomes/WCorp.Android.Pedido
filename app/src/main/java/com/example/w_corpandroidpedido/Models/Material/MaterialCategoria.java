@@ -1,9 +1,6 @@
 package com.example.w_corpandroidpedido.Models.Material;
 
-import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
-
 import java.io.Serializable;
-import java.util.List;
 
 public class MaterialCategoria implements Serializable {
         public int id;

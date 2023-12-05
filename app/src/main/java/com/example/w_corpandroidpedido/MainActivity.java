@@ -1,16 +1,7 @@
 package com.example.w_corpandroidpedido;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.datastore.preferences.core.MutablePreferences;
-import androidx.datastore.preferences.core.Preferences;
-import androidx.datastore.rxjava2.RxDataStore;
-import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
-
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,10 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.datastore.preferences.core.MutablePreferences;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.rxjava2.RxDataStore;
+import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
+
 import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
-import com.example.w_corpandroidpedido.Models.BaseApi;
-import com.example.w_corpandroidpedido.Models.Empresa.Empresa;
 import com.example.w_corpandroidpedido.Models.Empresa.ListEmpresa;
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Usuario.Usuario;
@@ -31,8 +26,6 @@ import com.example.w_corpandroidpedido.Util.Adapter.Empresa.EmpresaAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import io.reactivex.Single;

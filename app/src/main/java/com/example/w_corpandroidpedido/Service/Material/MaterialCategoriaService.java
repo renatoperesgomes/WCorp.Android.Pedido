@@ -1,24 +1,22 @@
 package com.example.w_corpandroidpedido.Service.Material;
 
-import android.util.Pair;
-
-import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Material.ListMaterialCategoria;
-import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.Util.ApiCall;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.Triple;
+
 public class MaterialCategoriaService {
     public ListenableFuture<ListMaterialCategoria> BuscarListaMaterialCategoria(String bearer, Integer idMaterialCategoria) {
         ApiCall<ListMaterialCategoria> apiCall = new ApiCall<>(ListMaterialCategoria.class);
-        List<Pair<String,String>> listParametro = new ArrayList<Pair<String, String>>();
+        List<Triple<String,String, Boolean>> listParametro = new ArrayList<Triple<String, String, Boolean>>();
 
         if (idMaterialCategoria != null)
-            listParametro.add(new Pair<>("idPai", idMaterialCategoria.toString()));
+            listParametro.add(new Triple<>("idPai", idMaterialCategoria.toString(), false));
 
-        return apiCall.CallApi("BuscarListaMaterialCategoria", bearer, listParametro, false);
+        return apiCall.CallApi("BuscarListaMaterialCategoria", bearer, listParametro);
     }
 }

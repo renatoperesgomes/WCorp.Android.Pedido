@@ -1,5 +1,11 @@
 package com.example.w_corpandroidpedido.Atividades.Pedido;
 
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -8,23 +14,14 @@ import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
-import com.example.w_corpandroidpedido.Models.BaseApi;
+import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
-import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Pedido.PedidoService;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
-
 
 import io.reactivex.Flowable;
 

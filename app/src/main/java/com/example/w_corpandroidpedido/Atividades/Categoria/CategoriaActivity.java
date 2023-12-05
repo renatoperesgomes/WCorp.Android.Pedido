@@ -1,6 +1,11 @@
 package com.example.w_corpandroidpedido.Atividades.Categoria;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -11,27 +16,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
-
-import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
-import com.example.w_corpandroidpedido.Models.BaseApi;
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Material.ListMaterialCategoria;
-import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
-import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
 import com.example.w_corpandroidpedido.Util.Adapter.Categoria.CategoriaAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
-
-import java.util.List;
 
 import io.reactivex.Flowable;
 

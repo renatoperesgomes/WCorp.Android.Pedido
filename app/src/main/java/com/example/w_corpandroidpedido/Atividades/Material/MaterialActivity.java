@@ -1,6 +1,11 @@
 package com.example.w_corpandroidpedido.Atividades.Material;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -12,21 +17,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
-
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
-import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Material.ListMaterial;
 import com.example.w_corpandroidpedido.Models.Material.Material;
-import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.R;
-
 import com.example.w_corpandroidpedido.Service.Material.MaterialService;
 import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialAdapter;
 import com.example.w_corpandroidpedido.Util.Adapter.Util.VoltarAdapter;

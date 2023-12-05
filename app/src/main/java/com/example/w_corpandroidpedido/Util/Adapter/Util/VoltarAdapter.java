@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
 import com.example.w_corpandroidpedido.Atividades.Material.MaterialActivity;
 import com.example.w_corpandroidpedido.R;
-import com.example.w_corpandroidpedido.Util.Adapter.Material.MaterialAdapter;
 import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 
 
