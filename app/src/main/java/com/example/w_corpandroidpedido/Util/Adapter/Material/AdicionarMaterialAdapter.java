@@ -77,7 +77,7 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
                 }
             }
 
-            holder.valorMaterial.setText("R$ " + String.format("%.2f", maiorValor / qtdMaterial));
+            holder.valorMaterial.setText("R$ " + String.format("%.2f", maiorValor));
 
             double divisaoMateriais = 1.0 / qtdMaterial;
             holder.qtdMaterial.setText(divisaoMateriais + " Un.");

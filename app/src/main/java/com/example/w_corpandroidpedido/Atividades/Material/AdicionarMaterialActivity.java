@@ -142,8 +142,8 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
                 pedidoMaterialItemAtual.observacao = observacao;
             }else{
                 pedidoMaterialItemAtual.idMaterial = item.id;
-                pedidoMaterialItemAtual.valorUnitario = maiorValor / qtdSelecao;
-                pedidoMaterialItemAtual.quantidade = 1;
+                pedidoMaterialItemAtual.valorUnitario = maiorValor;
+                pedidoMaterialItemAtual.quantidade = divisaoMaterial;
                 pedidoMaterialItemAtual.observacao = observacao;
             }
             listPedidoMaterialItem.add(pedidoMaterialItemAtual);
@@ -162,9 +162,6 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
                 Pedido pedidoAtualizadoRetorno = pedidoAtualizado.get();
                 if(pedidoAtualizadoRetorno.validated){
                     dadosComanda.SetPedido(pedidoAtualizadoRetorno);
-                //TODO: Verificar se é necessário este código
-//                dadosComanda.SetNumeroComanda(pedidoAtualizado.get().retorno.comanda);
-//                dadosComanda.SetValorComanda(String.valueOf(pedidoAtualizado.get().retorno.valorTotalPedido));
                 }else if(pedidoAtualizadoRetorno.hasInconsistence){
                     AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
                     alert.setTitle("Atenção");

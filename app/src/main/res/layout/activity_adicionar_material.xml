@@ -214,10 +214,10 @@
         <EditText
             android:id="@+id/txtObservacao"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:ems="10"
             android:hint="Observação"
-            android:inputType="text"/>
+            android:inputType="text" />
 
         <Button
             android:id="@+id/btnAdicionarProduto"
