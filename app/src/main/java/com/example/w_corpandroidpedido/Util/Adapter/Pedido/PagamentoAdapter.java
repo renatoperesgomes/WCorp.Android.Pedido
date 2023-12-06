@@ -23,7 +23,7 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
     @NonNull
     @Override
     public PagamentoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemLista = LayoutInflater.from(context).inflate(R.layout.listaprodutos, parent, false);
+        View itemLista = LayoutInflater.from(context).inflate(R.layout.lista_pagamento_produto, parent, false);
         return new PagamentoViewHolder(itemLista);
     }
 
@@ -31,12 +31,10 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
     @Override
     public void onBindViewHolder(@NonNull PagamentoViewHolder holder, int position) {
         if(pedidoAtual == null){
-            holder.idMaterial.setText(String.valueOf(0));
             holder.nomeMaterial.setText("Não contém nenhum item adicionado");
             holder.valorMaterial.setText("0,00");
             holder.qtdMaterial.setText("0 Un.");
         }else{
-            holder.idMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).idMaterial));
             holder.nomeMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.nome));
             holder.valorMaterial.setText("R$ " + String.format("%.2f", pedidoAtual.retorno.listPedidoMaterialItem.get(position).valorUnitario));
             holder.qtdMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).quantidade));
@@ -52,10 +50,9 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
     }
 
     class PagamentoViewHolder extends RecyclerView.ViewHolder{
-        TextView idMaterial = itemView.findViewById(R.id.idMaterial);
+        TextView qtdMaterial = itemView.findViewById(R.id.qtdMaterial);
         TextView nomeMaterial = itemView.findViewById(R.id.nomeMaterial);
         TextView valorMaterial = itemView.findViewById(R.id.valorMaterial);
-        TextView qtdMaterial = itemView.findViewById(R.id.qtdMaterial);
         public PagamentoViewHolder(@NonNull View itemView) {
             super(itemView);
         }

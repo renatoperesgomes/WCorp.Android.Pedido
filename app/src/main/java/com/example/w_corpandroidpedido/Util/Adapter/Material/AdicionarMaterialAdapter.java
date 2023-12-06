@@ -49,7 +49,7 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
     @NonNull
     @Override
     public MaterialInformacaoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemLista = LayoutInflater.from(context).inflate(R.layout.listaprodutos, parent, false);
+        View itemLista = LayoutInflater.from(context).inflate(R.layout.lista_card_produtos, parent, false);
         return new MaterialInformacaoViewHolder(itemLista);
     }
 
@@ -57,15 +57,12 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
     @Override
     public void onBindViewHolder(@NonNull AdicionarMaterialAdapter.MaterialInformacaoViewHolder holder, int position) {
 
-
         if(!multiplaSelecao && !comboCategoriaFilho) {
-            holder.idMaterial.setText(String.valueOf(items.get(position).id));
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
             holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).preco));
             holder.qtdMaterial.setText("1 Un.");
 
         }else if(multiplaSelecao){
-            holder.idMaterial.setText(String.valueOf(items.get(position).id));
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
 
             for(int i = 0; i < items.size(); i++){
@@ -80,7 +77,6 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
             holder.qtdMaterial.setText(divisaoMateriais + " Un.");
 
         }else{
-            holder.idMaterial.setText(String.valueOf(items.get(position).id));
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
             holder.valorMaterial.setText("R$ " + String.format("%.2f", items.get(position).preco));
             holder.qtdMaterial.setText("1 Un.");
@@ -92,7 +88,6 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
     }
 
     static class MaterialInformacaoViewHolder extends RecyclerView.ViewHolder{
-        TextView idMaterial = itemView.findViewById(R.id.idMaterial);
         TextView nomeMaterial = itemView.findViewById(R.id.nomeMaterial);
         TextView valorMaterial = itemView.findViewById(R.id.valorMaterial);
         TextView qtdMaterial = itemView.findViewById(R.id.qtdMaterial);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +14,10 @@ import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
@@ -25,6 +28,7 @@ import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 import com.example.w_corpandroidpedido.R;
 import com.example.w_corpandroidpedido.Service.Pedido.AdicionarPedidoService;
+import com.example.w_corpandroidpedido.Util.Adapter.Material.AdicionarBotaoAdapter;
 import com.example.w_corpandroidpedido.Util.Adapter.Material.AdicionarMaterialAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 
@@ -35,6 +39,7 @@ import io.reactivex.Flowable;
 
 public class AdicionarMaterialActivity extends AppCompatActivity {
     private RecyclerView getRecycleMaterialInformacao;
+    private RecyclerView getGetRecyclerViewBotao;
     TextView txtNumeroComanda;
     TextView txtValorComanda;
     EditText txtObservacao;
@@ -65,7 +70,6 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
         CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
 
-
         Intent intent = getIntent();
 
         multiplaSelecao = intent.getBooleanExtra(MaterialActivity.MULTIPLA_SELECAO, false);
@@ -77,10 +81,14 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         txtValorComanda = findViewById(R.id.txtValorComanda);
         txtObservacao = findViewById(R.id.txtObservacao);
         getRecycleMaterialInformacao = findViewById(R.id.viewMaterialInformacao);
+        getGetRecyclerViewBotao = findViewById(R.id.viewBotaoQtd);
 
         getRecycleMaterialInformacao.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         getRecycleMaterialInformacao.setHasFixedSize(true);
 
+        getGetRecyclerViewBotao.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
+        getGetRecyclerViewBotao.setHasFixedSize(true);
+        getGetRecyclerViewBotao.setAdapter(new AdicionarBotaoAdapter(this));
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu, cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
@@ -115,12 +123,20 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
 
     private void adicionarProduto(){
         ArrayList<PedidoMaterialItem> listPedidoMaterialItem = new ArrayList<>();
+        boolean quantidadeValidar = false;
+        double quantidade = 0;
         double maiorValor = 0;
-        double divisaoMaterial = 1.0 / listMaterial.size();
         String observacao = txtObservacao.getText().toString();
 
-        if(observacao.isEmpty())
-            observacao = "";
+        for(int i = 1; i <= 10; i++){
+            CardView cardSelecionado = getGetRecyclerViewBotao.findViewById(i);
+            if(cardSelecionado.isSelected()){
+                quantidade = cardSelecionado.getId();
+                quantidadeValidar = true;
+            }
+        }
+
+        double divisaoMaterial = quantidade / listMaterial.size();
 
         if(multiplaSelecao){
             for(int i = 0; i < listMaterial.size(); i++){
@@ -138,7 +154,7 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
             if(!multiplaSelecao){
                 pedidoMaterialItemAtual.idMaterial = item.id;
                 pedidoMaterialItemAtual.valorUnitario = item.preco;
-                pedidoMaterialItemAtual.quantidade = 1;
+                pedidoMaterialItemAtual.quantidade = quantidade;
                 pedidoMaterialItemAtual.observacao = observacao;
             }else{
                 pedidoMaterialItemAtual.idMaterial = item.id;
@@ -148,7 +164,12 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
             }
             listPedidoMaterialItem.add(pedidoMaterialItemAtual);
         }
-        atualizarPedido(this, dadosComanda.GetNumeroComanda(), listPedidoMaterialItem);
+
+        if(quantidadeValidar){
+            atualizarPedido(this, dadosComanda.GetNumeroComanda(), listPedidoMaterialItem);
+        }else{
+            Toast.makeText(this ,"Necessário selecionar uma quantidade!", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void atualizarPedido(Context context, String nmrComanda, ArrayList<PedidoMaterialItem> pedidoMaterialItemAtual) {

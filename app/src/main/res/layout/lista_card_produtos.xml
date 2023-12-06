@@ -9,34 +9,30 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardMaterialSlc"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="10dp">
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="5dp">
-
-            <TextView
-                android:id="@+id/idMaterial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ID" />
             <TextView
                 android:id="@+id/nomeMaterial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:textSize="22sp"
                 android:text="NOMEDOMATERIAL" />
             <TextView
                 android:id="@+id/valorMaterial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
                 android:text="VALORDOMATERIAL"
                 android:gravity="right"/>
             <TextView
                 android:id="@+id/qtdMaterial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
                 android:text="QTDMATERIAL"
                 android:gravity="right"/>
         </TableLayout>

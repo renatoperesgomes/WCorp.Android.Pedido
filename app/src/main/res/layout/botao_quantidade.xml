@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
+    android:layout_margin="5dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card"
-        android:layout_width="150dp"
-        android:layout_height="110dp"
+        android:id="@+id/cardQuantidade"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:cardBackgroundColor="@color/md_theme_light_secondary"
         app:cardCornerRadius="10dp">
 
         <TextView
-            android:id="@+id/nome"
+            android:id="@+id/valorQtd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:textSize="14sp"
-            android:text="TextView"
-            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:text="0"
+            android:textColor="@android:color/black"
             android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>

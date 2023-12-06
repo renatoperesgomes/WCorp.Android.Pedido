@@ -22,7 +22,7 @@ import okhttp3.HttpUrl;
 
 public class ApiCall<ApiModel> {
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
-    static String baseUrl = "http://dashboard.wcorp.com.br:5000/";
+    static String baseUrl = "http://192.168.2.189:45455/";
     private Type modelType;
     private Executor executor = Executors.newSingleThreadExecutor();
     public ApiCall(Type modelType) {
@@ -38,7 +38,7 @@ public class ApiCall<ApiModel> {
                     if(listParameters != null) {
                         for (int i = 0; i < listParameters.size(); i++) {
                             if (!listParameters.get(i).getThird()) {
-                                httpUrl.addQueryParameter(listParameters.get(i).getFirst(), listParameters.get(i).getSecond().toString());
+                                httpUrl.addQueryParameter(listParameters.get(i).getFirst(), listParameters.get(i).getSecond());
                             }
                         }
                     }

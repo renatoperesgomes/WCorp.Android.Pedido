@@ -1,5 +1,7 @@
 package com.example.w_corpandroidpedido.Atividades.Pedido;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
+import com.example.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.example.w_corpandroidpedido.Menu.DadosComanda;
 import com.example.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -93,6 +96,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                                     txtValorComanda.setText(dadosComanda.GetValorComanda());
                                 }
                                 navegacaoBarraApp.addClick(this);
+                                irParaPaginaInicial(this);
                             }else if(retornoPedido.hasInconsistence){
                                 AlertDialog.Builder alert = new AlertDialog.Builder(PesquisarPedidoActivity.this);
                                 alert.setTitle("Atenção");
@@ -111,5 +115,10 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                 }, MoreExecutors.directExecutor());
             }
         });
+    }
+
+    private void irParaPaginaInicial(Context context){
+        Intent intent = new Intent(context , CategoriaActivity.class);
+        this.startActivity(intent);
     }
 }

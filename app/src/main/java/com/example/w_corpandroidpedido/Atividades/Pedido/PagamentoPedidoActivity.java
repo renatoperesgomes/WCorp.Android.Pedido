@@ -17,6 +17,7 @@ import com.example.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {
     private RecyclerView getRecyclerViewPagamento;
+
     private Button getBtnVoltar;
     private Button getBtnFazerPagamento;
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
@@ -34,10 +35,11 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
 
         getRecyclerViewPagamento = findViewById(R.id.viewCarrinhoPagamento);
 
+
         getRecyclerViewPagamento.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         getRecyclerViewPagamento.setHasFixedSize(true);
-
         getRecyclerViewPagamento.setAdapter(new PagamentoAdapter(this, dadosComanda.GetPedido()));
+
 
         getBtnVoltar = findViewById(R.id.btnVoltar);
 

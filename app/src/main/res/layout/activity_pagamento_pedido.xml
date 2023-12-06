@@ -151,7 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="9999999"
+                    android:text="----"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -180,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:labelFor="@+id/textValor"
-                    android:text="9.999.999"
+                    android:text="----"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
@@ -195,10 +195,34 @@
         android:layout_height="2dp"
         android:layout_marginVertical="10dp"
         android:background="?android:attr/listDivider" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="DESCRIÇÃO" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="80dp"
+            android:text="QTD" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="VALOR" />
+
+    </RelativeLayout>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:fillViewport="true">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/viewCarrinhoPagamento"
@@ -208,14 +232,11 @@
             android:padding="20dp"/>
     </androidx.core.widget.NestedScrollView>
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="20dp">
-
         <Button
             android:id="@+id/btnFazerPagamento"
             android:layout_width="match_parent"
