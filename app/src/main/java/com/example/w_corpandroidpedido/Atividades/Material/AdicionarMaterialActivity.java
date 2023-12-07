@@ -33,6 +33,7 @@ import com.example.w_corpandroidpedido.Util.Adapter.Material.AdicionarMaterialAd
 import com.example.w_corpandroidpedido.Util.DataStore;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.Future;
 
 import io.reactivex.Flowable;
@@ -124,24 +125,26 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
     private void adicionarProduto(){
         ArrayList<PedidoMaterialItem> listPedidoMaterialItem = new ArrayList<>();
         boolean quantidadeValidar = false;
-        double quantidade = 0;
-        double maiorValor = 0;
-        String observacao = txtObservacao.getText().toString();
+        double quantidadeMaterialPedido = 0;
+        double maiorValorMaterial = 0;
+        int nmrQtdItem = Objects.requireNonNull(getGetRecyclerViewBotao.getAdapter()).getItemCount();
+        String observacaoPedido = txtObservacao.getText().toString();
 
-        for(int i = 1; i <= 10; i++){
+
+        for(int i = 1; i <= nmrQtdItem; i++){
             CardView cardSelecionado = getGetRecyclerViewBotao.findViewById(i);
             if(cardSelecionado.isSelected()){
-                quantidade = cardSelecionado.getId();
+                quantidadeMaterialPedido = cardSelecionado.getId();
                 quantidadeValidar = true;
             }
         }
 
-        double divisaoMaterial = quantidade / listMaterial.size();
+        double divisaoMaterialMultiplaSelecao = quantidadeMaterialPedido / listMaterial.size();
 
         if(multiplaSelecao){
             for(int i = 0; i < listMaterial.size(); i++){
-                if(maiorValor < listMaterial.get(i).preco){
-                    maiorValor = listMaterial.get(i).preco;
+                if(maiorValorMaterial < listMaterial.get(i).preco){
+                    maiorValorMaterial = listMaterial.get(i).preco;
                 }
             }
         }
@@ -154,13 +157,13 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
             if(!multiplaSelecao){
                 pedidoMaterialItemAtual.idMaterial = item.id;
                 pedidoMaterialItemAtual.valorUnitario = item.preco;
-                pedidoMaterialItemAtual.quantidade = quantidade;
-                pedidoMaterialItemAtual.observacao = observacao;
+                pedidoMaterialItemAtual.quantidade = quantidadeMaterialPedido;
+                pedidoMaterialItemAtual.observacao = observacaoPedido;
             }else{
                 pedidoMaterialItemAtual.idMaterial = item.id;
-                pedidoMaterialItemAtual.valorUnitario = maiorValor;
-                pedidoMaterialItemAtual.quantidade = divisaoMaterial;
-                pedidoMaterialItemAtual.observacao = observacao;
+                pedidoMaterialItemAtual.valorUnitario = maiorValorMaterial;
+                pedidoMaterialItemAtual.quantidade = divisaoMaterialMultiplaSelecao;
+                pedidoMaterialItemAtual.observacao = observacaoPedido;
             }
             listPedidoMaterialItem.add(pedidoMaterialItemAtual);
         }

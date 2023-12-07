@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Inicio"
+                        android:text="@string/inicio"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -85,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Pagamento"
+                        android:text="@string/pagamento"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -142,7 +142,7 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     android:labelFor="@+id/textIdComanda"
-                    android:text="Comanda: "
+                    android:text="@string/comanda"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
@@ -170,7 +170,7 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     android:labelFor="@+id/textValor"
-                    android:text="Valor: R$"
+                    android:text="@string/valor_rs"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
@@ -195,6 +195,7 @@
         android:layout_height="2dp"
         android:layout_marginVertical="10dp"
         android:background="?android:attr/listDivider" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -204,20 +205,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:text="DESCRIÇÃO" />
+            android:text="@string/descricao" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="80dp"
-            android:text="QTD" />
+            android:layout_marginEnd="125dp"
+            android:text="@string/quantidade" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="VALOR" />
+            android:layout_marginEnd="55dp"
+            android:text="@string/valor" />
 
     </RelativeLayout>
     <androidx.core.widget.NestedScrollView

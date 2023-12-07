@@ -19,7 +19,8 @@ import java.util.ArrayList;
 public class AdicionarBotaoAdapter extends RecyclerView.Adapter<AdicionarBotaoAdapter.AdicionarBotaoViewHolder> {
     private Context context;
     private ArrayList<AdicionarBotaoViewHolder> listCardQuantidade = new ArrayList<>();
-    int nmrQuantidade = 1;
+    int txtQuantidadeCard = 1;
+    int valorQtdItemDivisao = 0;
 
     public AdicionarBotaoAdapter(Context context){
         this.context = context;;
@@ -28,43 +29,50 @@ public class AdicionarBotaoAdapter extends RecyclerView.Adapter<AdicionarBotaoAd
     @Override
     public AdicionarBotaoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemLista = LayoutInflater.from(context).inflate(R.layout.botao_quantidade, parent, false);
-        AdicionarBotaoViewHolder pagamentoBotaoViewHolder = new AdicionarBotaoViewHolder(itemLista);
-        listCardQuantidade.add(pagamentoBotaoViewHolder);
-        return pagamentoBotaoViewHolder;
+        AdicionarBotaoViewHolder adicionarQuantidadeBotaoViewHolder = new AdicionarBotaoViewHolder(itemLista);
+        listCardQuantidade.add(adicionarQuantidadeBotaoViewHolder);
+
+        if(getItemCount() % 2 == 0){
+            valorQtdItemDivisao = getItemCount() / 2;
+        }else {
+            valorQtdItemDivisao = (getItemCount() / 2) + 1;
+        }
+
+        return adicionarQuantidadeBotaoViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdicionarBotaoViewHolder holder, int position) {
 
         if(position % 2 == 1){
-            holder.txtQuantidade.setText(String.valueOf(nmrQuantidade + 5));
-            holder.btnQuantidade.setId(nmrQuantidade + 5);
-            nmrQuantidade++;
+            holder.txtViewQuantidade.setText(String.valueOf(txtQuantidadeCard + valorQtdItemDivisao));
+            holder.cardQuantidade.setId(txtQuantidadeCard + valorQtdItemDivisao);
+            txtQuantidadeCard++;
         }else{
-            holder.txtQuantidade.setText(String.valueOf(nmrQuantidade));
-            holder.btnQuantidade.setId(nmrQuantidade);
+            holder.txtViewQuantidade.setText(String.valueOf(txtQuantidadeCard));
+            holder.cardQuantidade.setId(txtQuantidadeCard);
         }
 
-        holder.btnQuantidade.setOnClickListener(view ->{
+        holder.cardQuantidade.setOnClickListener(view ->{
 
-            if(listCardQuantidade.get(position).btnQuantidade.isSelected()){
+            if(listCardQuantidade.get(position).cardQuantidade.isSelected()){
                 for (AdicionarBotaoViewHolder botaoQuantidadeViewHolder:
                         listCardQuantidade) {
-                     botaoQuantidadeViewHolder.btnQuantidade.setCardBackgroundColor(Color.parseColor("#005E49"));
-                     botaoQuantidadeViewHolder.btnQuantidade.setClickable(true);
-                     botaoQuantidadeViewHolder.btnQuantidade.setSelected(false);
+                     botaoQuantidadeViewHolder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#005E49"));
+                     botaoQuantidadeViewHolder.cardQuantidade.setClickable(true);
+                     botaoQuantidadeViewHolder.cardQuantidade.setSelected(false);
                 }
 
             }else{
-                listCardQuantidade.get(position).btnQuantidade.setCardBackgroundColor(Color.parseColor("#009574"));
-                listCardQuantidade.get(position).btnQuantidade.setSelected(true);
+                listCardQuantidade.get(position).cardQuantidade.setCardBackgroundColor(Color.parseColor("#009574"));
+                listCardQuantidade.get(position).cardQuantidade.setSelected(true);
 
                 for (AdicionarBotaoViewHolder botaoQuantidadeViewHolder:
                      listCardQuantidade) {
-                    if(!botaoQuantidadeViewHolder.btnQuantidade.isSelected()){
-                        botaoQuantidadeViewHolder.btnQuantidade.setCardBackgroundColor(Color.parseColor("#001c13"));
-                        botaoQuantidadeViewHolder.btnQuantidade.setClickable(false);
-                        botaoQuantidadeViewHolder.btnQuantidade.setSelected(false);
+                    if(!botaoQuantidadeViewHolder.cardQuantidade.isSelected()){
+                        botaoQuantidadeViewHolder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#001c13"));
+                        botaoQuantidadeViewHolder.cardQuantidade.setClickable(false);
+                        botaoQuantidadeViewHolder.cardQuantidade.setSelected(false);
                     }
                 }
             }
@@ -76,8 +84,8 @@ public class AdicionarBotaoAdapter extends RecyclerView.Adapter<AdicionarBotaoAd
     }
 
     static class AdicionarBotaoViewHolder extends RecyclerView.ViewHolder{
-        CardView btnQuantidade = itemView.findViewById(R.id.cardQuantidade);
-        TextView txtQuantidade = itemView.findViewById(R.id.valorQtd);
+        CardView cardQuantidade = itemView.findViewById(R.id.cardQuantidade);
+        TextView txtViewQuantidade = itemView.findViewById(R.id.txtViewQuantidade);
         public AdicionarBotaoViewHolder(@NonNull View itemView) {
             super(itemView);
         }
