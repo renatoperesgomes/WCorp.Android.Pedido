@@ -14,7 +14,6 @@ import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -96,10 +95,10 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
 
         if(dadosComanda.GetPedido() != null){
             txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(dadosComanda.GetValorComanda());
+            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
         }else{
             txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(dadosComanda.GetValorComanda());
+            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
         }
 
         if (multiplaSelecao) {

@@ -24,7 +24,6 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
     private final Context context;
     private final List<Material> items;
-    private int contagemSelecao = 0;
     private final boolean multiplaSelecao;
     private final int qtdSelecao;
     private final boolean comboCategoriaFilho;
@@ -63,6 +62,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
         return materialViewHolder;
     }
 
+
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
@@ -85,7 +85,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
         holder.itemView.setOnClickListener(view -> {
             if (!multiplaSelecao && !comboCategoriaFilho) {
-                listMaterialSelecionado.add(contagemSelecao, items.get(position));
+                listMaterialSelecionado.add(items.get(position));
                 new MaterialActivity().irParaMaterialInformacao(context, listMaterialSelecionado);
             } else {
                 if (multiplaSelecao) {

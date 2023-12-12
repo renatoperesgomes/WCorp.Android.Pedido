@@ -2,6 +2,7 @@ package com.example.w_corpandroidpedido.Atividades.Pedido;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,15 +58,16 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
         txtIdComanda = findViewById(R.id.txtIdComanda);
         txtValorComanda = findViewById(R.id.txtValorComanda);
 
-
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
         if(dadosComanda.GetPedido() != null){
             navegacaoBarraApp.addClick(this);
             txtIdComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(dadosComanda.GetValorComanda());
+            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
         }else{
+            txtIdComanda.setTextColor(Color.parseColor("#FF0000"));
+            txtValorComanda.setTextColor(Color.parseColor("#FF0000"));
             navegacaoBarraApp.addClickError(this);
         }
 
@@ -86,16 +88,10 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                                 if(retornoPedido.retorno == null){
                                     dadosComanda.SetPedido(null);
                                     dadosComanda.SetNumeroComanda(nmrComanda);
-                                    dadosComanda.SetValorComanda("0,00");
-
-                                    txtIdComanda.setText(nmrComanda);
-                                    txtValorComanda.setText("0,00");
+                                    dadosComanda.SetValorComanda(0.00);
                                 }else{
                                     dadosComanda.SetPedido(retornoPedido);
-                                    txtIdComanda.setText(dadosComanda.GetNumeroComanda());
-                                    txtValorComanda.setText(dadosComanda.GetValorComanda());
                                 }
-                                navegacaoBarraApp.addClick(this);
                                 irParaPaginaInicial(this);
                             }else if(retornoPedido.hasInconsistence){
                                 AlertDialog.Builder alert = new AlertDialog.Builder(PesquisarPedidoActivity.this);

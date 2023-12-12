@@ -1,6 +1,5 @@
 package com.example.w_corpandroidpedido.Util.Adapter.Material;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -37,7 +36,6 @@ public class AdicionarBotaoAdapter extends RecyclerView.Adapter<AdicionarBotaoAd
         }else {
             valorQtdItemDivisao = (getItemCount() / 2) + 1;
         }
-
         return adicionarQuantidadeBotaoViewHolder;
     }
 

@@ -1,8 +1,6 @@
 package com.example.w_corpandroidpedido.Util;
 
 import androidx.concurrent.futures.CallbackToFutureAdapter;
-import androidx.datastore.preferences.core.Preferences;
-import androidx.datastore.preferences.core.PreferencesKeys;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
@@ -21,7 +19,6 @@ import okhttp3.HttpUrl;
 
 
 public class ApiCall<ApiModel> {
-    Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     static String baseUrl = "http://192.168.2.189:45455/";
     private Type modelType;
     private Executor executor = Executors.newSingleThreadExecutor();

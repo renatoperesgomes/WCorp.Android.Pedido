@@ -83,10 +83,10 @@ public class MaterialActivity extends AppCompatActivity {
 
         if(dadosComanda.GetPedido() != null){
             txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.valueOf(dadosComanda.GetValorComanda()));
+            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
         }else{
             txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(dadosComanda.GetValorComanda());
+            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
         }
 
         pesquisarMateriais();

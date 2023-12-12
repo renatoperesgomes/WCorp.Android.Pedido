@@ -77,12 +77,12 @@ public class SubCategoriaActivity extends AppCompatActivity {
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
-        if(dadosComanda != null){
+        if(dadosComanda.GetPedido() != null){
             txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.valueOf(dadosComanda.GetValorComanda()));
+            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
         }else{
             txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(dadosComanda.GetValorComanda());
+            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
         }
 
         pesquisarSubCategorias();

@@ -14,8 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.w_corpandroidpedido.MainActivity;
-import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.example.w_corpandroidpedido.R;
 

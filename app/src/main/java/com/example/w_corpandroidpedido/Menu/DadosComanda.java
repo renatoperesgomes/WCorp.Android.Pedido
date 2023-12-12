@@ -1,15 +1,13 @@
 package com.example.w_corpandroidpedido.Menu;
 
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
-import com.example.w_corpandroidpedido.Util.FormatarValor;
 
 
 public class DadosComanda {
     private static DadosComanda dadosComanda;
-    private FormatarValor valorFormatar = new FormatarValor();
     private static Pedido pedidoAtual;
     private String numeroComanda;
-    private String valorComanda;
+    private double valorComanda;
     public DadosComanda() {}
     public static DadosComanda GetDadosComanda() {
         if (dadosComanda == null) {
@@ -28,7 +26,7 @@ public class DadosComanda {
         }else{
             DadosComanda.pedidoAtual = pedidoAtual;
             this.numeroComanda = pedidoAtual.retorno.comanda;
-            this.valorComanda = valorFormatar.customFormat("###,###.###",pedidoAtual.retorno.valorTotalPedido);
+            this.valorComanda = pedidoAtual.retorno.valorTotalPedido;
         }
     }
 
@@ -38,10 +36,10 @@ public class DadosComanda {
     public void SetNumeroComanda(String numeroComanda){
         this.numeroComanda = numeroComanda;
     }
-    public String GetValorComanda(){
+    public double GetValorComanda(){
         return valorComanda;
     }
-    public void SetValorComanda(String valorComanda){
+    public void SetValorComanda(double valorComanda){
         this.valorComanda = valorComanda;
     }
 
