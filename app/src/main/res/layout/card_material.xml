@@ -10,6 +10,7 @@
         android:id="@+id/cardMaterial"
         android:layout_width="150dp"
         android:layout_height="110dp"
+        android:layout_marginHorizontal="15dp"
         app:cardBackgroundColor="@color/md_theme_light_secondary"
         app:cardCornerRadius="10dp"
         app:strokeColor="@color/md_theme_light_secondary"
