@@ -64,11 +64,14 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         });
 
         btnCalcular.setOnClickListener(view ->{
-            float nmrDivisao = Integer.parseInt(nmrDivPessoas.getText().toString());
-            double resultadoDivisaoPessoas = dadosComanda.GetValorComanda() / nmrDivisao;
+            try{
+                float nmrDivisao = Integer.parseInt(nmrDivPessoas.getText().toString());
+                double resultadoDivisaoPessoas = dadosComanda.GetValorComanda() / nmrDivisao;
 
-            txtValorDivPessoas.setText(String.format(java.util.Locale.US,"%.2f",resultadoDivisaoPessoas));
-
+                txtValorDivPessoas.setText(String.format(java.util.Locale.US,"%.2f",resultadoDivisaoPessoas));
+            }catch (Exception e){
+                Toast.makeText(this, "Necessário colocar a quantidade de pessoas!", Toast.LENGTH_SHORT).show();
+            }
         });
 
         getRecyclerViewPagamento = findViewById(R.id.viewCarrinhoPagamento);
