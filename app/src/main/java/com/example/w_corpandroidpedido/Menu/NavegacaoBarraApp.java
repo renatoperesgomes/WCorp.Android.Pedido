@@ -31,13 +31,11 @@ public class NavegacaoBarraApp {
 
         pagamento.setOnClickListener(view->{
             Intent intent = new Intent(context, PagamentoPedidoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent);
         });
 
         comanda.setOnClickListener(view->{
             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent);
         });
     }
