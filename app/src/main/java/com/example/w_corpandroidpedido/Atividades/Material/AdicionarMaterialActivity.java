@@ -223,7 +223,6 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         progressBarDialog = new Dialog(this);
         progressBarDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progressBarDialog.setContentView(R.layout.loading);
-        Objects.requireNonNull(progressBarDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         progressBarDialog.setCancelable(false);
 
         progressBarDialog.show();
