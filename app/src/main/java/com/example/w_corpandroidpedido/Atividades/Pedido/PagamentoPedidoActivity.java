@@ -79,16 +79,15 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         CardView cardViewComanda = findViewById(R.id.cardComanda);
         TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
-        EditText txtQtdPessoasDividir = findViewById(R.id.txtQtdPessoasDividir);
         TextView txtValorTotal = findViewById(R.id.txtValorTotal);
         TextView txtValorDivididoPessoas = findViewById(R.id.txtValorDivPessoas);
-
+        EditText txtQtdPessoasDividir = findViewById(R.id.txtQtdPessoasDividir);
         txtValorDivididoPessoas.setText(formatNumero.format(dadosComanda.GetValorComanda()));
         txtValorTotal.setText(formatNumero.format(dadosComanda.GetValorComanda()));
-        txtQtdPessoasDividir.setText("1");
 
         Button btnCalcularValorDividido = findViewById(R.id.btnCalcularValorDividido);
         btnCalcularValorDividido.setOnClickListener(view ->{
+
             try{
                 float nmrDivisao = Integer.parseInt(txtQtdPessoasDividir.getText().toString());
                 double resultadoDivisaoPessoas = dadosComanda.GetValorComanda() / nmrDivisao;

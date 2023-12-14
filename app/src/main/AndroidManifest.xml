@@ -47,7 +47,8 @@
             android:exported="true" />
         <activity
             android:name=".Atividades.Pedido.PagamentoPedidoActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
 
         <service
             android:name=".Service.Usuario.UsuarioService"

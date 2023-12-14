@@ -87,13 +87,14 @@
                     <EditText
                         android:id="@+id/txtQtdPessoasDividir"
                         android:layout_width="60dp"
-                        android:layout_height="50dp"
+                        android:layout_height="40dp"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:gravity="center"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:text="1"/>
 
                     <Button
                         android:id="@+id/btnCalcularValorDividido"
