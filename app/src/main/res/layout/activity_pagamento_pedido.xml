@@ -45,7 +45,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="400dp"
         android:fillViewport="true">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/viewCarrinhoPagamento"
@@ -54,62 +54,18 @@
             android:orientation="vertical"
             android:padding="20dp"/>
     </androidx.core.widget.NestedScrollView>
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/cardPagamentoDividido"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.511"
-            tools:layout_editor_absoluteX="-55dp"
-            android:padding="5dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/fixed_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardPagamentoDividido"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:orientation="vertical"
-                    app:cardBackgroundColor="@color/md_theme_light_background"
-                    app:cardCornerRadius="10dp"
-                    tools:ignore="MissingConstraints">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Dividir pagamento"
-                        android:layout_gravity="center"
-                        android:textSize="18sp"/>
-
-                    <ImageButton
-                        android:id="@+id/btnControleView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:background="@color/md_theme_light_background"
-                        android:src="@drawable/baseline_arrow_drop_down_24"
-                        android:padding="20dp"/>
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
             <LinearLayout
                 android:id="@+id/extViewPagamentoDividido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fixed_layout">
+                android:layout_above="@+id/layout_botao">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -174,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:text="Valor parcelado: "
+                        android:text="Valor dividido: "
                         android:labelFor="@+id/txtValorDivPessoas"
                         android:textColor="#000000"
                         android:textSize="14sp"/>
@@ -190,28 +146,29 @@
                 </LinearLayout>
             </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
-            <Button
-                android:id="@+id/btnFazerPagamento"
+            <LinearLayout
+                android:id="@+id/layout_botao"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:text="Fazer o pagamento" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true">
+                <Button
+                    android:id="@+id/btnFazerPagamento"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Fazer o pagamento"/>
 
-            <Button
-                android:id="@+id/btnVoltar"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/md_theme_light_error"
-                android:text="@string/voltar" />
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btnVoltar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/md_theme_light_error"
+                    android:text="@string/voltar"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 

@@ -75,8 +75,19 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
             holder.nomeMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.nome));
             holder.valorMaterial.setText(formatNumero.format(pedidoAtual.retorno.listPedidoMaterialItem.get(position).valorUnitario));
             holder.qtdMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).quantidade));
+
             holder.btnExcluirItem.setOnClickListener(view -> {
-                new PagamentoPedidoActivity().ExcluirPedidoMaterialItem(context, bearer ,pedidoAtual.retorno.listPedidoMaterialItem.get(position).id);
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Atenção");
+                alert.setMessage("Você deseja excluir este item?" + "\n" + pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.nome);
+                alert.setPositiveButton("Excluir", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new PagamentoPedidoActivity().ExcluirPedidoMaterialItem(context, bearer ,pedidoAtual.retorno.listPedidoMaterialItem.get(position).id);
+                    }
+                });
+                alert.setNegativeButton("Cancelar", null);
+                alert.show();
             });
         }
     }

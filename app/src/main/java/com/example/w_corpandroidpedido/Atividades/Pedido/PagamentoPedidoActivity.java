@@ -79,34 +79,16 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         CardView cardViewComanda = findViewById(R.id.cardComanda);
         TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
+        EditText txtQtdPessoasDividir = findViewById(R.id.txtQtdPessoasDividir);
+        TextView txtValorTotal = findViewById(R.id.txtValorTotal);
+        TextView txtValorDivididoPessoas = findViewById(R.id.txtValorDivPessoas);
 
-        ImageView btnControleCardPagamentoDividido = findViewById(R.id.btnControleView);
-
-        btnControleCardPagamentoDividido.setOnClickListener(view -> {
-            TextView txtValorTotal = findViewById(R.id.txtValorTotal);
-            CardView getCardPagamentoDividido = findViewById(R.id.cardPagamentoDividido);
-            LinearLayout extViewPagamentoDividido = findViewById(R.id.extViewPagamentoDividido);
-
-            txtValorTotal.setText(formatNumero.format(dadosComanda.GetValorComanda()));
-
-            if (extViewPagamentoDividido.getVisibility() == View.VISIBLE) {
-                TransitionManager.beginDelayedTransition(getCardPagamentoDividido,
-                        new AutoTransition());
-                extViewPagamentoDividido.setVisibility(View.GONE);
-                btnControleCardPagamentoDividido.setImageResource(R.drawable.baseline_arrow_drop_down_24);
-            } else {
-                TransitionManager.beginDelayedTransition(getCardPagamentoDividido,
-                        new AutoTransition());
-                extViewPagamentoDividido.setVisibility(View.VISIBLE);
-                btnControleCardPagamentoDividido.setImageResource(R.drawable.baseline_arrow_drop_up_24);
-            }
-        });
+        txtValorDivididoPessoas.setText(formatNumero.format(dadosComanda.GetValorComanda()));
+        txtValorTotal.setText(formatNumero.format(dadosComanda.GetValorComanda()));
+        txtQtdPessoasDividir.setText("1");
 
         Button btnCalcularValorDividido = findViewById(R.id.btnCalcularValorDividido);
         btnCalcularValorDividido.setOnClickListener(view ->{
-            EditText txtQtdPessoasDividir = findViewById(R.id.txtQtdPessoasDividir);
-            TextView txtValorDivididoPessoas = findViewById(R.id.txtValorDivPessoas);
-
             try{
                 float nmrDivisao = Integer.parseInt(txtQtdPessoasDividir.getText().toString());
                 double resultadoDivisaoPessoas = dadosComanda.GetValorComanda() / nmrDivisao;
@@ -159,13 +141,14 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
 
             try {
                 Pedido pedidoMaterialExcluidoRetorno = removerPedidoMaterialItem.get();
+                runOnUiThread(() -> {
+                    if (pedidoMaterialExcluidoRetorno.validated) {
+                        dadosComanda.SetPedido(pedidoMaterialExcluidoRetorno);
 
-                if(pedidoMaterialExcluidoRetorno.validated){
-                    dadosComanda.SetPedido(pedidoMaterialExcluidoRetorno);
-                    Intent intent = new Intent(context, CategoriaActivity.class);
-                    context.startActivity(intent);
-                } else if (pedidoMaterialExcluidoRetorno.hasInconsistence) {
-                    runOnUiThread(() ->{
+                        Intent intent = new Intent(context, CategoriaActivity.class);
+                        context.startActivity(intent);
+                    } else if (pedidoMaterialExcluidoRetorno.hasInconsistence) {
+
                         AlertDialog.Builder alert = new AlertDialog.Builder(context);
                         alert.setTitle("Atenção");
                         StringBuilder inconsistencesJoin = new StringBuilder();
@@ -177,8 +160,8 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
                         alert.setCancelable(false);
                         alert.setPositiveButton("OK", null);
                         alert.show();
-                    });
-                }
+                    }
+                });
                 progressBarDialog.dismiss();
             } catch (Exception e) {
                 System.out.println("Erro: " + e.getMessage());

@@ -132,7 +132,6 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
 
         ArrayList<PedidoMaterialItem> listPedidoMaterialItem = new ArrayList<>();
 
-        boolean quantidadeValidar = false;
         double quantidadeMaterialPedido = 0;
         double maiorValorMaterial = 0;
         int nmrQtdItem = Objects.requireNonNull(getGetRecyclerViewBotao.getAdapter()).getItemCount();
@@ -142,7 +141,6 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
             CardView cardSelecionado = getGetRecyclerViewBotao.findViewById(i);
             if(cardSelecionado.isSelected()){
                 quantidadeMaterialPedido = cardSelecionado.getId();
-                quantidadeValidar = true;
             }
         }
 
@@ -174,12 +172,7 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
             }
             listPedidoMaterialItem.add(pedidoMaterialItemAtual);
         }
-
-            atualizarPedido(this, dadosComanda.GetNumeroComanda(), listPedidoMaterialItem);
-
-//            Toast.makeText(this ,"Necessário selecionar uma quantidade!", Toast.LENGTH_LONG).show();
-//            progressBarDialog.dismiss();
-
+        atualizarPedido(this, dadosComanda.GetNumeroComanda(), listPedidoMaterialItem);
     }
 
     private void atualizarPedido(Context context, String nmrComanda, ArrayList<PedidoMaterialItem> pedidoMaterialItemAtual) {

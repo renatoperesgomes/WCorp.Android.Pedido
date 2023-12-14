@@ -41,6 +41,12 @@ public class AdicionarBotaoAdapter extends RecyclerView.Adapter<AdicionarBotaoAd
 
     @Override
     public void onBindViewHolder(@NonNull AdicionarBotaoViewHolder holder, int position) {
+        holder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#001c13"));
+
+        if(position == 0){
+            holder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#009574"));
+            holder.cardQuantidade.setSelected(true);
+        }
 
         if(position % 2 == 1){
             holder.txtViewQuantidade.setText(String.valueOf(txtQuantidadeCard + valorQtdItemDivisao));
@@ -52,28 +58,14 @@ public class AdicionarBotaoAdapter extends RecyclerView.Adapter<AdicionarBotaoAd
         }
 
         holder.cardQuantidade.setOnClickListener(view ->{
-
-            if(listCardQuantidade.get(position).cardQuantidade.isSelected()){
-                for (AdicionarBotaoViewHolder botaoQuantidadeViewHolder:
-                        listCardQuantidade) {
-                     botaoQuantidadeViewHolder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#005E49"));
-                     botaoQuantidadeViewHolder.cardQuantidade.setClickable(true);
-                     botaoQuantidadeViewHolder.cardQuantidade.setSelected(false);
-                }
-
-            }else{
-                listCardQuantidade.get(position).cardQuantidade.setCardBackgroundColor(Color.parseColor("#009574"));
-                listCardQuantidade.get(position).cardQuantidade.setSelected(true);
-
-                for (AdicionarBotaoViewHolder botaoQuantidadeViewHolder:
-                     listCardQuantidade) {
-                    if(!botaoQuantidadeViewHolder.cardQuantidade.isSelected()){
-                        botaoQuantidadeViewHolder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#001c13"));
-                        botaoQuantidadeViewHolder.cardQuantidade.setClickable(false);
-                        botaoQuantidadeViewHolder.cardQuantidade.setSelected(false);
-                    }
-                }
+            for (AdicionarBotaoViewHolder botaoQuantidadeViewHolder:
+                    listCardQuantidade) {
+                botaoQuantidadeViewHolder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#001c13"));
+                botaoQuantidadeViewHolder.cardQuantidade.setSelected(false);
             }
+
+            listCardQuantidade.get(position).cardQuantidade.setSelected(true);
+            listCardQuantidade.get(position).cardQuantidade.setCardBackgroundColor(Color.parseColor("#009574"));
         });
     }
     @Override
