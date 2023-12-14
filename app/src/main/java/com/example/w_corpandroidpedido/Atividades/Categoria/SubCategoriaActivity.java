@@ -118,7 +118,7 @@ public class SubCategoriaActivity extends AppCompatActivity {
                         StringBuilder inconsistencesJoin = new StringBuilder();
                         for (Inconsistences inconsistences :
                                 listaMaterialCategoriaRetorno.inconsistences) {
-                            inconsistencesJoin.append(inconsistences.text);
+                            inconsistencesJoin.append(inconsistences.text + "\n");
                         }
                         alert.setMessage(inconsistencesJoin);
                         alert.setCancelable(false);

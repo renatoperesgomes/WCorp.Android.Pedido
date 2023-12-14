@@ -171,7 +171,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
                         StringBuilder inconsistencesJoin = new StringBuilder();
                         for (Inconsistences inconsistences :
                                 pedidoMaterialExcluidoRetorno.inconsistences) {
-                            inconsistencesJoin.append(inconsistences.text);
+                            inconsistencesJoin.append(inconsistences.text + "\n");
                         }
                         alert.setMessage(inconsistencesJoin);
                         alert.setCancelable(false);

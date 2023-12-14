@@ -103,7 +103,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                                 StringBuilder inconsistencesJoin = new StringBuilder();
                                 for (Inconsistences inconsistences :
                                         retornoPedido.inconsistences) {
-                                    inconsistencesJoin.append(inconsistences.text);
+                                    inconsistencesJoin.append(inconsistences.text + "\n");
                                 }
                                 alert.setMessage(inconsistencesJoin);
                                 alert.setCancelable(false);

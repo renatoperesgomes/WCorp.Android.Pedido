@@ -99,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
                         } else if (tokenRetornoResult.hasInconsistence) {
                             AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                             alert.setTitle("Atenção");
-
+                            StringBuilder inconsistencesJoin = new StringBuilder();
                             for (Inconsistences inconsistences :
                                     tokenRetornoResult.inconsistences) {
-                                alert.setMessage(String.join(",", inconsistences.text));
+                                inconsistencesJoin.append(inconsistences.text + "\n");
                             }
-
+                            alert.setMessage(inconsistencesJoin);
                             alert.setCancelable(false);
                             alert.setPositiveButton("OK", null);
                             alert.show();

@@ -70,15 +70,15 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
             holder.nomeMaterial.setText("Não contém nenhum item adicionado");
             holder.valorMaterial.setText("0,00");
             holder.qtdMaterial.setText("0 Un.");
+            holder.btnExcluirItem.setVisibility(View.GONE);
         }else{
             holder.nomeMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.nome));
             holder.valorMaterial.setText(formatNumero.format(pedidoAtual.retorno.listPedidoMaterialItem.get(position).valorUnitario));
             holder.qtdMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).quantidade));
+            holder.btnExcluirItem.setOnClickListener(view -> {
+                new PagamentoPedidoActivity().ExcluirPedidoMaterialItem(context, bearer ,pedidoAtual.retorno.listPedidoMaterialItem.get(position).id);
+            });
         }
-
-        holder.btnExcluirItem.setOnClickListener(view -> {
-            new PagamentoPedidoActivity().ExcluirPedidoMaterialItem(context, bearer ,pedidoAtual.retorno.listPedidoMaterialItem.get(position).id);
-        });
     }
 
     @Override

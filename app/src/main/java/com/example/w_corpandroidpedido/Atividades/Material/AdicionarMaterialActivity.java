@@ -185,17 +185,15 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
     private void atualizarPedido(Context context, String nmrComanda, ArrayList<PedidoMaterialItem> pedidoMaterialItemAtual) {
         AdicionarPedidoService adicionarPedidoService = new AdicionarPedidoService();
         executor.execute(() ->{
+            boolean todosMateriaisAdicionados = false;
             for (PedidoMaterialItem pedidoMaterialItem :
                     pedidoMaterialItemAtual) {
                 Future<Pedido> pedidoAtualizado = adicionarPedidoService.AdicionarPedido(bearer, Integer.valueOf(nmrComanda), pedidoMaterialItem);
                 try {
                     Pedido pedidoAtualizadoRetorno = pedidoAtualizado.get();
-
                     if (pedidoAtualizadoRetorno.validated) {
                         dadosComanda.SetPedido(pedidoAtualizadoRetorno);
-
-                        Intent intent = new Intent(context, CategoriaActivity.class);
-                        context.startActivity(intent);
+                        todosMateriaisAdicionados = true;
                     } else if (pedidoAtualizadoRetorno.hasInconsistence) {
                         runOnUiThread(() ->{
                             AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
@@ -203,7 +201,7 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
                             StringBuilder inconsistencesJoin = new StringBuilder();
                             for (Inconsistences inconsistences :
                                     pedidoAtualizadoRetorno.inconsistences) {
-                                inconsistencesJoin.append(inconsistences.text);
+                                inconsistencesJoin.append(inconsistences.text + "\n");
                             }
                             alert.setMessage(inconsistencesJoin);
                             alert.setCancelable(false);
@@ -216,6 +214,11 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
                 }
             }
             progressBarDialog.dismiss();
+
+            if(todosMateriaisAdicionados){
+                Intent intent = new Intent(context, CategoriaActivity.class);
+                context.startActivity(intent);
+            }
         });
     }
 
