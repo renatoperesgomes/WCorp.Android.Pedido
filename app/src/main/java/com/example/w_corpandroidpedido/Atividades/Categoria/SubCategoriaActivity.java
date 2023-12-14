@@ -29,6 +29,9 @@ import com.example.w_corpandroidpedido.Util.DataStore;
 import com.example.w_corpandroidpedido.Util.Enum.ViewType;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import io.reactivex.Flowable;
 
 public class SubCategoriaActivity extends AppCompatActivity {
@@ -60,7 +63,7 @@ public class SubCategoriaActivity extends AppCompatActivity {
         CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
         CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
-        TextView txtNumeroComanda = findViewById(R.id.txtIdComanda);
+        TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
 
         Intent intent = getIntent();
@@ -71,19 +74,16 @@ public class SubCategoriaActivity extends AppCompatActivity {
         comboCategoriaFilho = intent.getBooleanExtra(CategoriaActivity.COMBO_CATEGORIA_FILHO, false);
 
         getRecycleSubCategoria = findViewById(R.id.viewSubCategoria);
-        getRecycleSubCategoria.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.VERTICAL, false));
+        getRecycleSubCategoria.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
         getRecycleSubCategoria.setHasFixedSize(true);
 
-        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
+        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu, cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
-        if(dadosComanda.GetPedido() != null){
-            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
-        }else{
-            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
-        }
+        NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
+        txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
+
 
         pesquisarSubCategorias();
     }
@@ -115,10 +115,12 @@ public class SubCategoriaActivity extends AppCompatActivity {
                     }else if(listaMaterialCategoriaRetorno.hasInconsistence) {
                         AlertDialog.Builder alert = new AlertDialog.Builder(SubCategoriaActivity.this);
                         alert.setTitle("Atenção");
+                        StringBuilder inconsistencesJoin = new StringBuilder();
                         for (Inconsistences inconsistences :
                                 listaMaterialCategoriaRetorno.inconsistences) {
-                            alert.setMessage(String.join(",", inconsistences.text));
+                            inconsistencesJoin.append(inconsistences.text);
                         }
+                        alert.setMessage(inconsistencesJoin);
                         alert.setCancelable(false);
                         alert.setPositiveButton("OK", null);
                         alert.show();

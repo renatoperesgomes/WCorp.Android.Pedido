@@ -141,7 +141,7 @@
                     android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/txtIdComanda"
+                    android:id="@+id/txtNumeroComanda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -164,7 +164,7 @@
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     android:labelFor="@+id/txtValor"
-                    android:text="Valor: R$"
+                    android:text="Valor: "
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 

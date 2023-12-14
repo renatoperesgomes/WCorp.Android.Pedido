@@ -27,10 +27,13 @@ import com.example.w_corpandroidpedido.Service.Pedido.PedidoService;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import io.reactivex.Flowable;
 
 public class PesquisarPedidoActivity extends AppCompatActivity {
-    private TextView txtIdComanda;
+    private TextView txtNumeroComanda;
     private TextView txtValorComanda;
     private EditText pesquisarComanda;
     private Button btnPesquisar;
@@ -55,7 +58,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
 
         pesquisarComanda = findViewById(R.id.textPesquisarComanda);
         btnPesquisar = findViewById(R.id.btnPesquisar);
-        txtIdComanda = findViewById(R.id.txtIdComanda);
+        txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         txtValorComanda = findViewById(R.id.txtValorComanda);
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
@@ -63,10 +66,11 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
 
         if(dadosComanda.GetPedido() != null){
             navegacaoBarraApp.addClick(this);
-            txtIdComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
+            NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
+            txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
         }else{
-            txtIdComanda.setTextColor(Color.parseColor("#FF0000"));
+            txtNumeroComanda.setTextColor(Color.parseColor("#FF0000"));
             txtValorComanda.setTextColor(Color.parseColor("#FF0000"));
             navegacaoBarraApp.addClickError(this);
         }
@@ -96,10 +100,12 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                             }else if(retornoPedido.hasInconsistence){
                                 AlertDialog.Builder alert = new AlertDialog.Builder(PesquisarPedidoActivity.this);
                                 alert.setTitle("Atenção");
+                                StringBuilder inconsistencesJoin = new StringBuilder();
                                 for (Inconsistences inconsistences :
                                         retornoPedido.inconsistences) {
-                                    alert.setMessage(String.join(",", inconsistences.text));
+                                    inconsistencesJoin.append(inconsistences.text);
                                 }
+                                alert.setMessage(inconsistencesJoin);
                                 alert.setCancelable(false);
                                 alert.setPositiveButton("OK", null);
                                 alert.show();

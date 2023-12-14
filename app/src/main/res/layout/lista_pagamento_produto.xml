@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="10dp">
     <LinearLayout
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true">
         <TextView
             android:id="@+id/nomeMaterial"
             android:layout_width="match_parent"
@@ -21,7 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="120dp"
-        android:text="QTD" />
+        android:text="QTD"
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/valorMaterial"
@@ -29,14 +31,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="50dp"
-        android:text="VALOR" />
-    <ImageView
-        android:id="@+id/imageExcluir"
+        android:text="VALOR"
+        android:layout_centerVertical="true"/>
+    <ImageButton
+        android:id="@+id/btnImageExcluir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/excluir"
         android:clickable="true"
         android:focusable="true"
-        android:layout_alignParentEnd="true"/>
+        android:background="@color/md_theme_light_background"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true" />
 </RelativeLayout>

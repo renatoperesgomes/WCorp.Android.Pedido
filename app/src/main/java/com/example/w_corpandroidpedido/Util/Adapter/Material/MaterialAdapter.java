@@ -17,8 +17,10 @@ import com.example.w_corpandroidpedido.Models.Material.Material;
 import com.example.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.example.w_corpandroidpedido.R;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.MaterialViewHolder> {
 
@@ -63,9 +65,9 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
     }
 
 
-    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onBindViewHolder(@NonNull MaterialAdapter.MaterialViewHolder holder, int position) {
+        NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
         if(comboCategoriaFilho){
             for(int i = 0; i < items.get(position).listMaterialCategoria.size(); i++){
@@ -79,7 +81,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
         holder.cardMaterial.setId(position);
         holder.nomeProduto.setText(items.get(position).nome);
-        holder.precoProduto.setText("R$ " + String.format("%.2f", items.get(position).preco));
+        holder.precoProduto.setText(formatNumero.format(items.get(position).preco));
         holder.material = items.get(position);
         holder.listMaterialCategoria = items.get(position).listMaterialCategoria;
 

@@ -54,7 +54,6 @@
             android:orientation="vertical"
             android:padding="20dp"/>
     </androidx.core.widget.NestedScrollView>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +90,7 @@
                         android:textSize="18sp"/>
 
                     <ImageButton
-                        android:id="@+id/arrow_button"
+                        android:id="@+id/btnControleView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
@@ -102,7 +101,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
-                android:id="@+id/hidden_view"
+                android:id="@+id/extViewPagamentoDividido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -130,7 +129,7 @@
                         android:textSize="14sp" />
 
                     <EditText
-                        android:id="@+id/qtdPessoas"
+                        android:id="@+id/txtQtdPessoasDividir"
                         android:layout_width="60dp"
                         android:layout_height="50dp"
                         android:layout_marginStart="20dp"
@@ -141,7 +140,7 @@
                         android:inputType="number"/>
 
                     <Button
-                        android:id="@+id/btnCalcular"
+                        android:id="@+id/btnCalcularValorDividido"
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:text="Calcular"/>

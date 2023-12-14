@@ -2,6 +2,9 @@ package com.example.w_corpandroidpedido.Menu;
 
 import com.example.w_corpandroidpedido.Models.Pedido.Pedido;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 
 public class DadosComanda {
     private static DadosComanda dadosComanda;

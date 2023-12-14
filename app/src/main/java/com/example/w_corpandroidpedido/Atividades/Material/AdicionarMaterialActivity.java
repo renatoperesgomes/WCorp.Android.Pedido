@@ -1,8 +1,11 @@
 package com.example.w_corpandroidpedido.Atividades.Material;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,8 +34,12 @@ import com.example.w_corpandroidpedido.Util.Adapter.Material.AdicionarBotaoAdapt
 import com.example.w_corpandroidpedido.Util.Adapter.Material.AdicionarMaterialAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import io.reactivex.Flowable;
@@ -52,12 +59,13 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private String bearer;
     DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
+    private Dialog progressBarDialog;
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_material);
-
 
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 
@@ -77,7 +85,7 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         qtdSelecao = intent.getIntExtra(MaterialActivity.QTD_SELECAO, 0);
         listMaterial = (ArrayList<Material>) intent.getSerializableExtra(MaterialActivity.ITEMS);
 
-        txtNumeroComanda = findViewById(R.id.txtIdComanda);
+        txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         txtValorComanda = findViewById(R.id.txtValorComanda);
         txtObservacao = findViewById(R.id.txtObservacao);
         getRecycleMaterialInformacao = findViewById(R.id.viewMaterialInformacao);
@@ -93,13 +101,11 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu, cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
-        if(dadosComanda.GetPedido() != null){
-            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
-        }else{
-            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
-        }
+        NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+        txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
+        txtValorComanda.setText(formatNumero.format( dadosComanda.GetValorComanda()));
+
 
         if (multiplaSelecao) {
             getRecycleMaterialInformacao.setAdapter(new AdicionarMaterialAdapter(this, true, qtdSelecao, listMaterial));
@@ -112,23 +118,25 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         getBtnAdicionar = findViewById(R.id.btnAdicionarProduto);
         getBtnVoltar = findViewById(R.id.btnVoltar);
 
-        getBtnAdicionar.setOnClickListener(view ->{
+        getBtnAdicionar.setOnClickListener(view -> {
             adicionarProduto();
         });
 
-        getBtnVoltar.setOnClickListener(view ->{
+        getBtnVoltar.setOnClickListener(view -> {
             voltarParaMaterialActivity();
         });
     }
 
     private void adicionarProduto(){
+        abrirDialogAlerta();
+
         ArrayList<PedidoMaterialItem> listPedidoMaterialItem = new ArrayList<>();
+
         boolean quantidadeValidar = false;
         double quantidadeMaterialPedido = 0;
         double maiorValorMaterial = 0;
         int nmrQtdItem = Objects.requireNonNull(getGetRecyclerViewBotao.getAdapter()).getItemCount();
         String observacaoPedido = txtObservacao.getText().toString();
-
 
         for(int i = 1; i <= nmrQtdItem; i++){
             CardView cardSelecionado = getGetRecyclerViewBotao.findViewById(i);
@@ -167,42 +175,58 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
             listPedidoMaterialItem.add(pedidoMaterialItemAtual);
         }
 
-        if(quantidadeValidar){
             atualizarPedido(this, dadosComanda.GetNumeroComanda(), listPedidoMaterialItem);
-        }else{
-            Toast.makeText(this ,"Necessário selecionar uma quantidade!", Toast.LENGTH_LONG).show();
-        }
+
+//            Toast.makeText(this ,"Necessário selecionar uma quantidade!", Toast.LENGTH_LONG).show();
+//            progressBarDialog.dismiss();
+
     }
 
     private void atualizarPedido(Context context, String nmrComanda, ArrayList<PedidoMaterialItem> pedidoMaterialItemAtual) {
         AdicionarPedidoService adicionarPedidoService = new AdicionarPedidoService();
+        executor.execute(() ->{
+            for (PedidoMaterialItem pedidoMaterialItem :
+                    pedidoMaterialItemAtual) {
+                Future<Pedido> pedidoAtualizado = adicionarPedidoService.AdicionarPedido(bearer, Integer.valueOf(nmrComanda), pedidoMaterialItem);
+                try {
+                    Pedido pedidoAtualizadoRetorno = pedidoAtualizado.get();
 
-        for (PedidoMaterialItem pedidoMaterialItem :
-                pedidoMaterialItemAtual) {
-            Future<Pedido> pedidoAtualizado = adicionarPedidoService.AdicionarPedido(bearer, Integer.valueOf(nmrComanda), pedidoMaterialItem);
+                    if (pedidoAtualizadoRetorno.validated) {
+                        dadosComanda.SetPedido(pedidoAtualizadoRetorno);
 
-            try {
-                Pedido pedidoAtualizadoRetorno = pedidoAtualizado.get();
-                if(pedidoAtualizadoRetorno.validated){
-                    dadosComanda.SetPedido(pedidoAtualizadoRetorno);
-                }else if(pedidoAtualizadoRetorno.hasInconsistence){
-                    AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
-                    alert.setTitle("Atenção");
-                    for (Inconsistences inconsistences :
-                            pedidoAtualizadoRetorno.inconsistences) {
-                        alert.setMessage(String.join(",", inconsistences.text));
+                        Intent intent = new Intent(context, CategoriaActivity.class);
+                        context.startActivity(intent);
+                    } else if (pedidoAtualizadoRetorno.hasInconsistence) {
+                        runOnUiThread(() ->{
+                            AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
+                            alert.setTitle("Atenção");
+                            StringBuilder inconsistencesJoin = new StringBuilder();
+                            for (Inconsistences inconsistences :
+                                    pedidoAtualizadoRetorno.inconsistences) {
+                                inconsistencesJoin.append(inconsistences.text);
+                            }
+                            alert.setMessage(inconsistencesJoin);
+                            alert.setCancelable(false);
+                            alert.setPositiveButton("OK", null);
+                            alert.show();
+                        });
                     }
-                    alert.setCancelable(false);
-                    alert.setPositiveButton("OK", null);
-                    alert.show();
+                } catch (Exception e) {
+                    System.out.println("Erro: " + e.getMessage());
                 }
-            } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
             }
-        }
+            progressBarDialog.dismiss();
+        });
+    }
 
-        Intent intent = new Intent(context, CategoriaActivity.class);
-        context.startActivity(intent);
+    private void abrirDialogAlerta(){
+        progressBarDialog = new Dialog(this);
+        progressBarDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressBarDialog.setContentView(R.layout.loading);
+        Objects.requireNonNull(progressBarDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        progressBarDialog.setCancelable(false);
+
+        progressBarDialog.show();
     }
 
     private void voltarParaMaterialActivity(){

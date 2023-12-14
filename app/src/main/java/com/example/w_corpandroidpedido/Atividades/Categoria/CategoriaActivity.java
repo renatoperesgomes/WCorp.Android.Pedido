@@ -26,6 +26,9 @@ import com.example.w_corpandroidpedido.Util.Adapter.Categoria.CategoriaAdapter;
 import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import io.reactivex.Flowable;
 
 public class CategoriaActivity extends AppCompatActivity {
@@ -53,24 +56,22 @@ public class CategoriaActivity extends AppCompatActivity {
         CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
         CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
-        TextView txtNumeroComanda = findViewById(R.id.txtIdComanda);
+        TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
 
         getRecycleCategoria = findViewById(R.id.viewCategoria);
 
-        getRecycleCategoria.setLayoutManager(new GridLayoutManager(this,2, GridLayoutManager.VERTICAL, false));
+        getRecycleCategoria.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
         getRecycleCategoria.setHasFixedSize(true);
 
-        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
+        NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu, cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);
 
-        if(dadosComanda.GetPedido() != null){
-            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
-        }else{
-            txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
-            txtValorComanda.setText(String.format(java.util.Locale.US,"%,.2f",dadosComanda.GetValorComanda()));
-        }
+        NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+        txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
+        txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
+
 
         pesquisarCategorias();
     }
@@ -90,12 +91,12 @@ public class CategoriaActivity extends AppCompatActivity {
                     }else if(listaMaterialRetorno.hasInconsistence){
                         AlertDialog.Builder alert = new AlertDialog.Builder(CategoriaActivity.this);
                         alert.setTitle("Atenção");
-
+                        StringBuilder inconsistencesJoin = new StringBuilder();
                         for (Inconsistences inconsistences :
                                 listaMaterialRetorno.inconsistences) {
-                            alert.setMessage(String.join(",", inconsistences.text));
+                            inconsistencesJoin.append(inconsistences.text);
                         }
-
+                        alert.setMessage(inconsistencesJoin);
                         alert.setCancelable(false);
                         alert.setPositiveButton("OK", null);
                         alert.show();
@@ -107,14 +108,14 @@ public class CategoriaActivity extends AppCompatActivity {
         }, MoreExecutors.directExecutor());
     }
 
-    public void irParaSubCategoria(Context context, int idCategoria){
+    public void IrParaSubCategoria(Context context, int idCategoria){
         Intent intent = new Intent(context, SubCategoriaActivity.class);
 
         intent.putExtra(ID_CATEGORIA, idCategoria);
 
         context.startActivity(intent);
     }
-    public void irParaSubCategoria(Context context, int idCategoria, boolean comboCategoriaFilho){
+    public void IrParaSubCategoria(Context context, int idCategoria, boolean comboCategoriaFilho){
         Intent intent = new Intent(context, SubCategoriaActivity.class);
 
         intent.putExtra(ID_CATEGORIA, idCategoria);
@@ -123,7 +124,7 @@ public class CategoriaActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
-    public void irParaSubCategoria(Context context, int idCategoria, boolean multiplaSelecaoCategoria, int qtdSelecaoCategoria){
+    public void IrParaSubCategoria(Context context, int idCategoria, boolean multiplaSelecaoCategoria, int qtdSelecaoCategoria){
         Intent intent = new Intent(context, SubCategoriaActivity.class);
 
         intent.putExtra(ID_CATEGORIA, idCategoria);

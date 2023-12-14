@@ -37,16 +37,16 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
 
         holder.itemView.setOnClickListener(view -> {
             if (items.get(position).pdvMultiplaSelecao) {
-                new CategoriaActivity().irParaSubCategoria(context, items.get(position).id,
+                new CategoriaActivity().IrParaSubCategoria(context, items.get(position).id,
                         items.get(position).pdvMultiplaSelecao,
                         items.get(position).pdvMultiplaSelecaoQuantidade);
             }else if(items.get(position).pdvComboCategoriaFilho){
 
-                new CategoriaActivity().irParaSubCategoria(context, items.get(position).id,
+                new CategoriaActivity().IrParaSubCategoria(context, items.get(position).id,
                         items.get(position).pdvComboCategoriaFilho);
 
             } else {
-                new CategoriaActivity().irParaSubCategoria(context, items.get(position).id);
+                new CategoriaActivity().IrParaSubCategoria(context, items.get(position).id);
             }
         });
     }
