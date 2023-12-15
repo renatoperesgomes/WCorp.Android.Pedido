@@ -28,4 +28,52 @@
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
+
+    <style name="TEXT">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="CARDVIEW">
+        <item name="cardBackgroundColor">@color/md_theme_light_background</item>
+    </style>
+    <style name="TEXTCARD">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CARDVIEWCATEGORIAS">
+        <item name="cardBackgroundColor">@color/md_theme_light_secondary</item>
+    </style>
+    <style name="TEXTCARDMATERIAL">
+        <item name="android:textColor">@color/md_theme_light_onPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CARDVIEWMATERIAL">
+        <item name="android:background">@color/md_theme_light_onPrimary</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="CARDVIEWVOLTAR">
+        <item name="cardBackgroundColor">@color/md_theme_light_error</item>
+    </style>
+    <style name="TEXTCARDVOLTAR">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="ICONE">
+        <item name="tint">@android:color/black</item>
+    </style>
+    <style name="BACKGROUNDIMAGEBUTTON">
+        <item name="backgroundTint">@color/md_theme_light_background</item>
+        <item name="tint">@android:color/black</item>
+    </style>
+    <style name="BOTAOVERDE">
+        <item name="backgroundTint">@color/md_theme_light_primary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="BOTAOVOLTAR">
+        <item name="backgroundTint">@color/md_theme_light_error</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="IMAGEM">
+        <item name="android:src">@drawable/logowcorp</item>
+    </style>
 </resources>

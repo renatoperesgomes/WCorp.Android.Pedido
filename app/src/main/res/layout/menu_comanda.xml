@@ -12,6 +12,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <androidx.cardview.widget.CardView
+                style="@style/CARDVIEW"
                 android:id="@+id/cardInicio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -21,7 +22,6 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical"
-                app:cardBackgroundColor="@color/md_theme_light_background"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -30,26 +30,27 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        style="@style/ICONE"
                         android:id="@+id/imageInicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/casa"
-                        app:tint="@android:color/black" />
+                        android:src="@drawable/casa" />
 
                     <TextView
+                        style="@style/TEXT"
                         android:id="@+id/txtInicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Inicio"
-                        android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                style="@style/CARDVIEW"
                 android:id="@+id/cardPagamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -58,7 +59,6 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical"
-                app:cardBackgroundColor="@color/md_theme_light_background"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -67,25 +67,26 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        style="@style/ICONE"
                         android:id="@+id/imagePagamento"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/pagar"
-                        app:tint="@android:color/black" />
+                        android:src="@drawable/pagar" />
 
                     <TextView
+                        style="@style/TEXT"
                         android:id="@+id/txtPagamento"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Pagamento"
-                        android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                style="@style/CARDVIEW"
                 android:id="@+id/cardComanda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -94,7 +95,6 @@
                 android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="@color/md_theme_light_background"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -103,20 +103,20 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        style="@style/ICONE"
                         android:id="@+id/imageComanda"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/lupa"
-                        app:tint="@android:color/black" />
+                        android:src="@drawable/lupa" />
 
                     <TextView
+                        style="@style/TEXT"
                         android:id="@+id/txtComando"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Comanda"
-                        android:textColor="@android:color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -131,22 +131,22 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/TEXT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     android:labelFor="@+id/txtIdComanda"
                     android:text="Comanda: "
-                    android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
                 <TextView
+                    style="@style/TEXT"
                     android:id="@+id/txtNumeroComanda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="----"
-                    android:textColor="@android:color/black"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -159,23 +159,23 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    style="@style/TEXT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     android:labelFor="@+id/txtValor"
                     android:text="Valor: "
-                    android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
                 <TextView
+                    style="@style/TEXT"
                     android:id="@+id/txtValorComanda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:labelFor="@+id/textValor"
                     android:text="----"
-                    android:textColor="@android:color/black"
                     android:textSize="20sp" />
 
             </LinearLayout>

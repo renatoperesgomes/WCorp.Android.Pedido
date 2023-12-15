@@ -34,6 +34,7 @@
         android:text="VALOR"
         android:layout_centerVertical="true"/>
     <ImageButton
+        style="@style/BACKGROUNDIMAGEBUTTON"
         android:id="@+id/btnImageExcluir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +42,6 @@
         android:src="@drawable/excluir"
         android:clickable="true"
         android:focusable="true"
-        android:background="@color/md_theme_light_background"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true" />
 </RelativeLayout>

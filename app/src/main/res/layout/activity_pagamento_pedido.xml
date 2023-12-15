@@ -96,6 +96,7 @@
                         android:text="1"/>
 
                     <Button
+                        style="@style/BOTAOVERDE"
                         android:id="@+id/btnCalcularValorDividido"
                         android:layout_width="110dp"
                         android:layout_height="40dp"
@@ -146,18 +147,19 @@
                 android:orientation="vertical"
                 android:layout_alignParentBottom="true">
                 <Button
+                    style="@style/BOTAOVERDE"
                     android:id="@+id/btnFazerPagamento"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
-                    android:text="Fazer o pagamento"/>
+                    android:text="@string/fazer_o_pagamento"/>
 
                 <Button
+                    style="@style/BOTAOVOLTAR"
                     android:id="@+id/btnVoltar"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="@color/md_theme_light_error"
                     android:text="@string/voltar"
                     />
             </LinearLayout>

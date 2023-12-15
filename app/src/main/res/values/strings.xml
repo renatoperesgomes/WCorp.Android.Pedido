@@ -108,4 +108,5 @@
     <string name="valor_rs">Valor: R$</string>
     <string name="pagamento">Pagamento</string>
     <string name="inicio">Inicio</string>
+    <string name="fazer_o_pagamento">Fazer o pagamento</string>
 </resources>

@@ -7,13 +7,14 @@
     android:layout_margin="5dp">
 
     <androidx.cardview.widget.CardView
+        style="@style/CARDVIEWCATEGORIAS"
         android:id="@+id/cardQuantidade"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:cardBackgroundColor="@color/md_theme_light_secondary"
         app:cardCornerRadius="10dp">
 
         <TextView
+            style="@style/TEXT"
             android:id="@+id/txtViewQuantidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +22,6 @@
             android:layout_margin="10dp"
             android:textSize="22sp"
             android:text="0"
-            android:textColor="@android:color/black"
             android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
