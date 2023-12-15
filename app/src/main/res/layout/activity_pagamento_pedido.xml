@@ -45,7 +45,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="350dp"
         android:fillViewport="true">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/viewCarrinhoPagamento"
@@ -81,7 +81,6 @@
                         android:layout_marginTop="10dp"
                         android:text="Qtd. Pessoas"
                         android:labelFor="@+id/qtdPessoas"
-                        android:textColor="#000000"
                         android:textSize="14sp" />
 
                     <EditText
@@ -98,7 +97,7 @@
 
                     <Button
                         android:id="@+id/btnCalcularValorDividido"
-                        android:layout_width="100dp"
+                        android:layout_width="110dp"
                         android:layout_height="40dp"
                         android:text="Calcular"/>
                 </LinearLayout>
@@ -111,38 +110,31 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
                         android:text="Valor total: "
                         android:labelFor="@+id/txtValorTotal"
-                        android:textColor="#000000"
                         android:textSize="14sp" />
                     <TextView
                         android:id="@+id/txtValorTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:text="VALORTOTAL"
-                        android:textColor="#000000"
+                        android:text="1.000,0000000"
                         android:textSize="14sp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:text="Valor dividido: "
                         android:labelFor="@+id/txtValorDivPessoas"
-                        android:textColor="#000000"
                         android:textSize="14sp"/>
                     <TextView
                         android:id="@+id/txtValorDivPessoas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:text="0,00"
-                        android:textColor="#000000"
+                        android:text="0,00000000000"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>

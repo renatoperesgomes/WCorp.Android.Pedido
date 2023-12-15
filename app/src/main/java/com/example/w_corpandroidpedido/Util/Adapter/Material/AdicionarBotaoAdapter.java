@@ -41,7 +41,7 @@ public class AdicionarBotaoAdapter extends RecyclerView.Adapter<AdicionarBotaoAd
 
     @Override
     public void onBindViewHolder(@NonNull AdicionarBotaoViewHolder holder, int position) {
-        holder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#001c13"));
+        holder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#005E49"));
 
         if(position == 0){
             holder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#009574"));
@@ -60,7 +60,7 @@ public class AdicionarBotaoAdapter extends RecyclerView.Adapter<AdicionarBotaoAd
         holder.cardQuantidade.setOnClickListener(view ->{
             for (AdicionarBotaoViewHolder botaoQuantidadeViewHolder:
                     listCardQuantidade) {
-                botaoQuantidadeViewHolder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#001c13"));
+                botaoQuantidadeViewHolder.cardQuantidade.setCardBackgroundColor(Color.parseColor("#005E49"));
                 botaoQuantidadeViewHolder.cardQuantidade.setSelected(false);
             }
 

@@ -20,13 +20,15 @@
 
         <activity
             android:name=".Atividades.Pedido.PesquisarPedidoActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Atividades.Impressora.Impressora"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +37,8 @@
         </activity>
         <activity
             android:name=".Atividades.Material.AdicionarMaterialActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Atividades.Material.MaterialActivity"
             android:exported="false" />
