@@ -94,7 +94,7 @@ public class CategoriaActivity extends AppCompatActivity {
                         StringBuilder inconsistencesJoin = new StringBuilder();
                         for (Inconsistences inconsistences :
                                 listaMaterialRetorno.inconsistences) {
-                            inconsistencesJoin.append(inconsistences.text + "\n");
+                            inconsistencesJoin.append(inconsistences.text).append("\n");
                         }
                         alert.setMessage(inconsistencesJoin);
                         alert.setCancelable(false);

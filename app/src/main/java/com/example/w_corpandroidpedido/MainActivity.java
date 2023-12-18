@@ -1,9 +1,11 @@
 package com.example.w_corpandroidpedido;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +18,7 @@ import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.rxjava2.RxDataStore;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
+import com.example.w_corpandroidpedido.Atividades.Material.AdicionarMaterialActivity;
 import com.example.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
 import com.example.w_corpandroidpedido.Models.Empresa.ListEmpresa;
 import com.example.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -27,6 +30,9 @@ import com.example.w_corpandroidpedido.Util.DataStore;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import io.reactivex.Single;
 
@@ -37,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private Button getBotaoLogin;
     private Spinner getEmpresa;
     private String idEmpresa;
+    private Dialog progressBarDialog;
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,24 +59,34 @@ public class MainActivity extends AppCompatActivity {
         RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
 
         EmpresaService empresaService = new EmpresaService();
-        ListenableFuture<ListEmpresa> listEmpresa = empresaService.BuscarListEmpresa();
+        abrirDialogAlerta();
 
-        listEmpresa.addListener(() ->{
-            try{
-                runOnUiThread(() ->{
-                    try {
-                        ListEmpresa listEmpresaRetorno = listEmpresa.get();
-
+        Future<ListEmpresa> listEmpresa = empresaService.BuscarListEmpresa();
+        executor.execute(() ->{
+            try {
+                ListEmpresa listEmpresaRetorno = listEmpresa.get();
+                runOnUiThread(() -> {
+                    if (listEmpresaRetorno.validated) {
                         getEmpresa.setAdapter(new EmpresaAdapter(this, listEmpresaRetorno.retorno));
-                    } catch (ExecutionException | InterruptedException e) {
-                        throw new RuntimeException(e.getCause());
+                    } else if (listEmpresaRetorno.hasInconsistence) {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                        alert.setTitle("Atenção");
+                        StringBuilder inconsistencesJoin = new StringBuilder();
+                        for (Inconsistences inconsistences :
+                                listEmpresaRetorno.inconsistences) {
+                            inconsistencesJoin.append(inconsistences.text).append("\n");
+                        }
+                        alert.setMessage(inconsistencesJoin);
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("OK", null);
+                        alert.show();
                     }
                 });
-            }catch(Exception e){
+                progressBarDialog.dismiss();
+            }catch(Exception e) {
                 System.out.println("Erro :" + e.getMessage());
             }
-        }, MoreExecutors.directExecutor());
-
+        });
         getEmpresa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -120,6 +138,15 @@ public class MainActivity extends AppCompatActivity {
     private void logarUsuario(Context context){
         Intent intent = new Intent(context, PesquisarPedidoActivity.class);
         startActivity(intent);
+    }
+
+    private void abrirDialogAlerta(){
+        progressBarDialog = new Dialog(this);
+        progressBarDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressBarDialog.setContentView(R.layout.loading);
+        progressBarDialog.setCancelable(false);
+
+        progressBarDialog.show();
     }
 }
 

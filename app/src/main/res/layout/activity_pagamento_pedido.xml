@@ -46,7 +46,9 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/viewCarrinhoPagamento"
             android:layout_width="match_parent"
