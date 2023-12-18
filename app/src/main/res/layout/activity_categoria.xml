@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".Atividades.Categoria.CategoriaActivity">
+    tools:context="com.wcorp.w_corpandroidpedidoAtividades.Categoria.CategoriaActivity">
 
     <include layout="@layout/menu_comanda"/>
 

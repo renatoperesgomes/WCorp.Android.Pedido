@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.w_corpandroidpedido"
+    namespace = "com.wcorp.w_corpandroidpedido"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.w_corpandroidpedido"
+        applicationId = "com.wcorp.w_corpandroidpedido"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Atividades.Pedido.PagamentoPedidoActivity">
+    tools:context="com.wcorp.w_corpandroidpedido.Atividades.Pedido.PagamentoPedidoActivity">
 
     <include layout="@layout/menu_comanda"/>
 
