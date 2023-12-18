@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.w_corpandroidpedido",
+  "applicationId": "com.wcorp.w_corpandroidpedido",
   "variantName": "release",
   "elements": [
     {

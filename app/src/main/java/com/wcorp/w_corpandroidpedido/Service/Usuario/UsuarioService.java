@@ -1,8 +1,8 @@
 package com.wcorp.w_corpandroidpedido.Service.Usuario;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Models.Usuario.Usuario;
 import com.wcorp.w_corpandroidpedido.Util.ApiCall;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.ArrayList;
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -24,7 +25,6 @@ import com.wcorp.w_corpandroidpedido.R;
 import com.wcorp.w_corpandroidpedido.Service.Material.MaterialCategoriaService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Categoria.CategoriaAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.text.NumberFormat;
 import java.util.Locale;

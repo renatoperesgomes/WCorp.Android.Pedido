@@ -18,6 +18,7 @@ import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.rxjava2.RxDataStore;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
 import com.wcorp.w_corpandroidpedido.Models.Empresa.ListEmpresa;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -26,11 +27,11 @@ import com.wcorp.w_corpandroidpedido.Service.Empresa.EmpresaService;
 import com.wcorp.w_corpandroidpedido.Service.Usuario.UsuarioService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Empresa.EmpresaAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
 import io.reactivex.Single;
 
 public class MainActivity extends AppCompatActivity {

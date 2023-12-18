@@ -17,6 +17,7 @@ import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
@@ -25,7 +26,6 @@ import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.R;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.PedidoService;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
-import com.google.common.util.concurrent.ListenableFuture;
 
 import java.text.NumberFormat;
 import java.util.Locale;
