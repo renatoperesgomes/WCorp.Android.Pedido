@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        style="@style/CARDINFORMACAOPRODUTO"
         android:id="@+id/cardMaterialSlc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

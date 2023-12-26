@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        style="@style/CARDVIEWCATEGORIAS"
+        style="@style/CARDVIEWMATERIAL"
         android:id="@+id/cardMaterial"
         android:layout_width="150dp"
         android:layout_height="110dp"
@@ -28,7 +28,7 @@
             android:textStyle="bold" />
 
         <TextView
-            style="@style/CARDVIEWMATERIAL"
+            style="@style/PRECOMATERIAL"
             android:id="@+id/precoMaterial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

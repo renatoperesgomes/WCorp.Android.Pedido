@@ -94,11 +94,11 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                     CardView cardSelecionado = holder.cardMaterial;
 
                     if (cardSelecionado.isSelected()) {
-                        cardSelecionado.setCardBackgroundColor(Color.parseColor("#005E49"));
+                        cardSelecionado.setCardBackgroundColor(Color.parseColor("#76B947"));
                         cardSelecionado.setSelected(false);
                         listMaterialSelecionado.clear();
                     } else {
-                        cardSelecionado.setCardBackgroundColor(Color.parseColor("#009574"));
+                        cardSelecionado.setCardBackgroundColor(Color.parseColor("#588a34"));
                         cardSelecionado.setSelected(true);
                     }
 
@@ -122,7 +122,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                     if(cardSelecionado.isSelected()){
                         for (MaterialViewHolder materialViewHolder:
                              listMaterialViewHolder) {
-                            materialViewHolder.cardMaterial.setCardBackgroundColor(Color.parseColor("#005E49"));
+                            materialViewHolder.cardMaterial.setCardBackgroundColor(Color.parseColor("#76B947"));
                             materialViewHolder.cardMaterial.setSelected(false);
                             materialViewHolder.cardMaterial.setClickable(false);
                         }
@@ -136,7 +136,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
 
                             if (holder.idMaterialCategoria == materialViewHolder.idMaterialCategoria &&
                                     position != materialViewHolder.cardMaterial.getId()) {
-                                materialViewHolder.cardMaterial.setCardBackgroundColor(Color.parseColor("#001C13"));
+                                materialViewHolder.cardMaterial.setCardBackgroundColor(Color.parseColor("#2a4219"));
                                 materialViewHolder.cardMaterial.setSelected(false);
                                 materialViewHolder.cardMaterial.setClickable(true);
                             }
@@ -149,7 +149,7 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.Materi
                             new MaterialActivity().irParaMaterialInformacao(context, true, listMaterialSelecionado);
                         }
 
-                        cardSelecionado.setCardBackgroundColor(Color.parseColor("#009574"));
+                        cardSelecionado.setCardBackgroundColor(Color.parseColor("#588a34"));
                         cardSelecionado.setSelected(true);
                     }
                 }
