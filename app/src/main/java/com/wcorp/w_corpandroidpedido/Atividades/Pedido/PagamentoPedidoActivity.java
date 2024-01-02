@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
+import com.wcorp.w_corpandroidpedido.Atividades.Impressora.Impressora;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -29,21 +30,30 @@ import com.wcorp.w_corpandroidpedido.Service.Pedido.RemoverPedidoItemService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPag;
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagActivationData;
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagAppIdentification;
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagInitializationResult;
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPaymentData;
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagTransactionResult;
 import io.reactivex.Flowable;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {
+    public static final String VALORPAGO = "com.example.w_corpandroidpedido.VALORPAGO";
     private RecyclerView getRecyclerViewPagamento;
     private Button getBtnVoltar;
     private Button getBtnFazerPagamento;
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private Dialog progressBarDialog;
+    private int valorPagoInt = 0;
     private Executor executor = Executors.newSingleThreadExecutor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +80,20 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         txtValorDivididoPessoas.setText(formatNumero.format(dadosComanda.GetValorComanda()));
         txtValorTotal.setText(formatNumero.format(dadosComanda.GetValorComanda()));
 
+        valorPagoInt = Integer.parseInt(String.valueOf(dadosComanda.GetValorComanda()).replace(".", ""));
+
         Button btnCalcularValorDividido = findViewById(R.id.btnCalcularValorDividido);
         btnCalcularValorDividido.setOnClickListener(view ->{
 
             try{
                 float nmrDivisao = Integer.parseInt(txtQtdPessoasDividir.getText().toString());
-                double resultadoDivisaoPessoas = dadosComanda.GetValorComanda() / nmrDivisao;
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+                double resultadoDivisaoPessoas = Double.parseDouble(decimalFormat.format(dadosComanda.GetValorComanda() / nmrDivisao));
+
+                String resultadoDivisaoPessoasString = String.valueOf(resultadoDivisaoPessoas).replace(".", "");
+
+                valorPagoInt = Integer.parseInt(resultadoDivisaoPessoasString);
 
                 txtValorDivididoPessoas.setText(formatNumero.format(resultadoDivisaoPessoas));
             }catch (Exception e){
@@ -97,6 +115,12 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
 
         getBtnFazerPagamento = findViewById(R.id.btnFazerPagamento);
 
+
+        getBtnFazerPagamento.setOnClickListener( view ->{
+            //irPaginaImpressao(this);
+            irPaginaTipoPagamento(this, valorPagoInt);
+        });
+
         if(dadosComanda.GetPedido() == null){
             getBtnFazerPagamento.setOnClickListener(view ->{
                 Toast.makeText(this,"Necessário adicionar um material para fazer o pagamento.",Toast.LENGTH_SHORT).show();
@@ -112,6 +136,17 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
 
     private void voltarParaPaginaInicial(){
         finish();
+    }
+
+    private void irPaginaImpressao(Context context){
+        Intent intent = new Intent(context , Impressora.class);
+        this.startActivity(intent);
+    }
+
+    private void irPaginaTipoPagamento(Context context, int valorPago){
+        Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
+        intent.putExtra(VALORPAGO, valorPago);
+        this.startActivity(intent);
     }
 
     public void ExcluirPedidoMaterialItem(Context context, String bearer ,Integer idPedidoMaterialItem){

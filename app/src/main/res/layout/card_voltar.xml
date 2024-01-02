@@ -10,8 +10,8 @@
     <androidx.cardview.widget.CardView
         style="@style/CARDVIEWVOLTAR"
         android:id="@+id/cardVoltar"
-        android:layout_width="150dp"
-        android:layout_height="110dp"
+        android:layout_width="135dp"
+        android:layout_height="105dp"
         android:layout_marginHorizontal="15dp"
         app:cardCornerRadius="10dp">
 

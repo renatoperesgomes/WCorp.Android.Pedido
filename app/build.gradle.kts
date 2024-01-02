@@ -36,7 +36,6 @@ android {
 }
 
 dependencies {
-
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -46,7 +45,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences-rxjava2:1.0.0")
     implementation ("androidx.test.espresso:espresso-core:3.5.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation(files("libs\\PrinterModule_1.1.0.jar"))
+    implementation("br.com.uol.pagseguro.plugpagservice.wrapper:wrapper:1.26.1")
     implementation("com.google.ar.sceneform:filament-android:1.17.1")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation("junit:junit:4.13.2")
