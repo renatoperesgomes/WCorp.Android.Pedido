@@ -37,12 +37,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPag;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagActivationData;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagAppIdentification;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagInitializationResult;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPaymentData;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagTransactionResult;
 import io.reactivex.Flowable;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {

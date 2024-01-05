@@ -1,36 +1,26 @@
 package com.wcorp.w_corpandroidpedido.Atividades.Pedido;
 
+import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.IniciarDialog;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
-import androidx.datastore.rxjava2.RxDataStore;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.R;
-import com.wcorp.w_corpandroidpedido.Util.DataStore;
 import com.wcorp.w_corpandroidpedido.Util.Pagamento.InfoPagamento;
 import com.wcorp.w_corpandroidpedido.Util.Pagamento.PagamentoCall;
 
 import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPag;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagActivationData;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagAppIdentification;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagInitializationResult;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPaymentData;
-import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagTransactionResult;
-import io.reactivex.Flowable;
 
 public class TipoPagamentoPedidoActivity extends AppCompatActivity {
 
@@ -45,7 +35,6 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         valorPago = intent.getIntExtra(PagamentoPedidoActivity.VALORPAGO, 0);
-        System.out.println(valorPago);
 
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
@@ -65,51 +54,33 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         navegacaoBarraApp.addClick(this);
 
         btnDebito.setOnClickListener(view ->{
-            InfoPagamento infoPagamento = new InfoPagamento();
-            PagamentoCall pagamentoCall = new PagamentoCall();
-
-            infoPagamento.TipoPagamento = PlugPag.TYPE_DEBITO;
-            infoPagamento.ValorPago = valorPago;
-            infoPagamento.TipoParcela = PlugPag.INSTALLMENT_TYPE_A_VISTA;
-            infoPagamento.NumeroParcela = 1;
-
-            pagamentoCall.EfetuarPagamento(this, infoPagamento);
+            chamarPagamento(PlugPag.TYPE_DEBITO, valorPago, PlugPag.INSTALLMENT_TYPE_A_VISTA, 1);
         });
 
         btnCredito.setOnClickListener(view ->{
-            InfoPagamento infoPagamento = new InfoPagamento();
-            PagamentoCall pagamentoCall = new PagamentoCall();
-
-            infoPagamento.TipoPagamento = PlugPag.TYPE_CREDITO;
-            infoPagamento.ValorPago = valorPago;
-            infoPagamento.TipoParcela = PlugPag.INSTALLMENT_TYPE_A_VISTA;
-            infoPagamento.NumeroParcela = 1;
-
-            pagamentoCall.EfetuarPagamento(this, infoPagamento);
+            chamarPagamento(PlugPag.TYPE_CREDITO, valorPago, PlugPag.INSTALLMENT_TYPE_A_VISTA, 1);
         });
 
         btnCreditoParcelado.setOnClickListener(view ->{
-            InfoPagamento infoPagamento = new InfoPagamento();
-            PagamentoCall pagamentoCall = new PagamentoCall();
-
-            infoPagamento.TipoPagamento = PlugPag.TYPE_CREDITO;
-            infoPagamento.ValorPago = valorPago;
-            infoPagamento.TipoParcela = PlugPag.INSTALLMENT_TYPE_PARC_VENDEDOR;
-            infoPagamento.NumeroParcela = 3;
-
-            pagamentoCall.EfetuarPagamento(this, infoPagamento);
+            chamarPagamento(PlugPag.TYPE_CREDITO, valorPago, PlugPag.INSTALLMENT_TYPE_PARC_VENDEDOR, 3);
         });
 
         btnPix.setOnClickListener(view ->{
-            InfoPagamento infoPagamento = new InfoPagamento();
-            PagamentoCall pagamentoCall = new PagamentoCall();
-
-            infoPagamento.TipoPagamento = PlugPag.TYPE_PIX;
-            infoPagamento.ValorPago = valorPago;
-            infoPagamento.TipoParcela = PlugPag.INSTALLMENT_TYPE_A_VISTA;
-            infoPagamento.NumeroParcela = 1;
-
-            pagamentoCall.EfetuarPagamento(this, infoPagamento);
+            chamarPagamento(PlugPag.TYPE_PIX, valorPago, PlugPag.INSTALLMENT_TYPE_A_VISTA, 1);
         });
+    }
+
+    private void chamarPagamento(int tipoPagamento, int valorPago, int tipoParcela, int numeroParcela){
+        PagamentoCall pagamentoCall = new PagamentoCall();
+        InfoPagamento infoPagamento = new InfoPagamento();
+
+        infoPagamento.TipoPagamento = tipoPagamento;
+        infoPagamento.ValorPago = valorPago;
+        infoPagamento.TipoParcela = tipoParcela;
+        infoPagamento.NumeroParcela = numeroParcela;
+
+        IniciarDialog(this);
+
+        pagamentoCall.EfetuarPagamento(this, infoPagamento);
     }
 }

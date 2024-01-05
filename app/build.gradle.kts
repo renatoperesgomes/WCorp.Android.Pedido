@@ -46,6 +46,7 @@ dependencies {
     implementation ("androidx.test.espresso:espresso-core:3.5.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("br.com.uol.pagseguro.plugpagservice.wrapper:wrapper:1.26.1")
+    implementation("io.reactivex.rxjava2:rxandroid:2.0.0")
     implementation("com.google.ar.sceneform:filament-android:1.17.1")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     testImplementation("junit:junit:4.13.2")
