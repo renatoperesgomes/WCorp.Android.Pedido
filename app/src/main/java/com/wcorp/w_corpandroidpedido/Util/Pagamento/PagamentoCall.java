@@ -47,25 +47,17 @@ public class PagamentoCall {
 
                     @Override
                     public void onError(@NonNull PlugPagTransactionResult plugPagTransactionResult) {
-                        FecharDialog();
-                        System.out.println(plugPagTransactionResult.getMessage());
-                        System.out.println(plugPagTransactionResult.getErrorCode());
-                        plugPag.asyncAbort(new PlugPagAbortListener() {
-                            @Override
-                            public void onAbortRequested(boolean b) {
-
-                            }
-
-                            @Override
-                            public void onError(@NonNull String s) {
-                                System.out.println(s);
-                            }
-                        });
+                        MostrarDialog(context, plugPagTransactionResult.getErrorCode() + " - " + plugPagTransactionResult.getMessage());
                     }
 
                     @Override
                     public void onPaymentProgress(@NonNull PlugPagEventData plugPagEventData) {
-                        MostrarDialog(context, plugPagEventData.getCustomMessage());
+                        if(plugPagEventData.getEventCode() == PlugPagEventData.EVENT_CODE_DIGIT_PASSWORD ||
+                        plugPagEventData.getEventCode() == PlugPagEventData.EVENT_CODE_NO_PASSWORD){
+                            MostrarDialog(context, checkMessagePassword(plugPagEventData.getEventCode()));
+                        }else{
+                            MostrarDialog(context, plugPagEventData.getCustomMessage());
+                        }
                     }
 
                     @Override

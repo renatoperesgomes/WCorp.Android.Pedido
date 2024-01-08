@@ -109,4 +109,5 @@
     <string name="pagamento">Pagamento</string>
     <string name="inicio">Inicio</string>
     <string name="fazer_o_pagamento">Fazer o pagamento</string>
+    <string name="r_0_00">R$ 0,00</string>
 </resources>

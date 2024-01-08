@@ -28,6 +28,15 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="20dp">
+                <EditText
+                    android:id="@+id/txtValorPago"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:gravity="center"
+                    android:hint="@string/r_0_00"
+                    android:layout_marginTop="10dp"/>
             <androidx.cardview.widget.CardView
                 style="@style/CARDVIEWCATEGORIAS"
                 android:id="@+id/cardDebito"

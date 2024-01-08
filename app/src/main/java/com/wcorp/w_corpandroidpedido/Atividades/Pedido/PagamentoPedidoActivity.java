@@ -74,22 +74,15 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         txtValorDivididoPessoas.setText(formatNumero.format(dadosComanda.GetValorComanda()));
         txtValorTotal.setText(formatNumero.format(dadosComanda.GetValorComanda()));
 
-        valorPagoInt = Integer.parseInt(String.valueOf(dadosComanda.GetValorComanda()).replace(".", ""));
-
         Button btnCalcularValorDividido = findViewById(R.id.btnCalcularValorDividido);
         btnCalcularValorDividido.setOnClickListener(view ->{
 
             try{
-                float nmrDivisao = Integer.parseInt(txtQtdPessoasDividir.getText().toString());
-                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                float nmrDivisao = Float.parseFloat(txtQtdPessoasDividir.getText().toString());
 
-                double resultadoDivisaoPessoas = Double.parseDouble(decimalFormat.format(dadosComanda.GetValorComanda() / nmrDivisao));
-
-                String resultadoDivisaoPessoasString = String.valueOf(resultadoDivisaoPessoas).replace(".", "");
-
-                valorPagoInt = Integer.parseInt(resultadoDivisaoPessoasString);
-
+                double resultadoDivisaoPessoas = dadosComanda.GetValorComanda() / nmrDivisao;
                 txtValorDivididoPessoas.setText(formatNumero.format(resultadoDivisaoPessoas));
+
             }catch (Exception e){
                 Toast.makeText(this, "Necessário colocar a quantidade de pessoas!", Toast.LENGTH_SHORT).show();
             }
