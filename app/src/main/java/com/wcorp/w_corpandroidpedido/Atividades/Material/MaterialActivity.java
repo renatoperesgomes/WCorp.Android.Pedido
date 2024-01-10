@@ -161,7 +161,6 @@ public class MaterialActivity extends AppCompatActivity {
 
         intent.putExtra(COMBO_CATEGORIA, comboCategoriaFilho);
         intent.putExtra(QTD_SELECAO, qtdSelecao);
-
         intent.putExtra(ITEMS, listMateriais);
 
         context.startActivity(intent);

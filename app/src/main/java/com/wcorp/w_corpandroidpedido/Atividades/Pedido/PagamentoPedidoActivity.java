@@ -40,7 +40,6 @@ import java.util.concurrent.Future;
 import io.reactivex.Flowable;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {
-    public static final String VALORPAGO = "com.example.w_corpandroidpedido.VALORPAGO";
     private RecyclerView getRecyclerViewPagamento;
     private Button getBtnVoltar;
     private Button getBtnFazerPagamento;
@@ -104,8 +103,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
 
 
         getBtnFazerPagamento.setOnClickListener( view ->{
-            //irPaginaImpressao(this);
-            irPaginaTipoPagamento(this, valorPagoInt);
+            irPaginaTipoPagamento(this);
         });
 
         if(dadosComanda.GetPedido() == null){
@@ -125,14 +123,8 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         finish();
     }
 
-    private void irPaginaImpressao(Context context){
-        Intent intent = new Intent(context , Impressora.class);
-        this.startActivity(intent);
-    }
-
-    private void irPaginaTipoPagamento(Context context, int valorPago){
+    private void irPaginaTipoPagamento(Context context){
         Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
-        intent.putExtra(VALORPAGO, valorPago);
         this.startActivity(intent);
     }
 

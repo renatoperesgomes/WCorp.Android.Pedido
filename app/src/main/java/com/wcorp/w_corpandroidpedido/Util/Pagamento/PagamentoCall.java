@@ -4,8 +4,12 @@ import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.Fecha
 import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.MostrarDialog;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
+
+import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PagamentoPedidoActivity;
+import com.wcorp.w_corpandroidpedido.Atividades.Pedido.TipoPagamentoPedidoActivity;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -19,11 +23,11 @@ import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPaymentData;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPrintResult;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagTransactionResult;
 import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagAbortListener;
+import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagActivationListener;
 import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagPaymentListener;
 
 public class PagamentoCall {
     private Executor executor = Executors.newSingleThreadExecutor();
-    private PlugPag plugPag;
     int countPassword;
     public void EfetuarPagamento(Context context, InfoPagamento infoPagamento) {
         executor.execute(() ->{
@@ -32,17 +36,19 @@ public class PagamentoCall {
             PlugPagAppIdentification appIdentification =
                     new PlugPagAppIdentification(context);
 
-            plugPag = PlugPagInstance.getInstance(context);
+            PlugPag plugPag = PlugPagInstance.getInstance(context);
 
             // Ativa terminal e faz o pagamento
             PlugPagInitializationResult initResult = plugPag.initializeAndActivatePinpad(new
-                    PlugPagActivationData("749879"));
+                PlugPagActivationData("749879"));
 
             if(initResult.getResult() == PlugPag.RET_OK){
                 plugPag.doAsyncPayment(paymentData, new PlugPagPaymentListener() {
                     @Override
                     public void onSuccess(@NonNull PlugPagTransactionResult plugPagTransactionResult) {
                         FecharDialog();
+                        Intent intent = new Intent(context, PagamentoPedidoActivity.class);
+                        context.startActivity(intent);
                     }
 
                     @Override
@@ -70,6 +76,8 @@ public class PagamentoCall {
                         System.out.println(plugPagPrintResult.getMessage());
                     }
                 });
+            }else{
+                System.out.println(initResult.getErrorCode() + " - " + initResult.getErrorMessage());
             }
         });
     }

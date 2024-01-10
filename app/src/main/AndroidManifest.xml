@@ -21,13 +21,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Atividades.Pedido.ParcelamentoActivity"
+            android:exported="false" />
+        <activity
             android:name=".Atividades.Pedido.TipoPagamentoPedidoActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Atividades.Pedido.PesquisarPedidoActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Atividades.Impressora.Impressora"
             android:exported="false" />
