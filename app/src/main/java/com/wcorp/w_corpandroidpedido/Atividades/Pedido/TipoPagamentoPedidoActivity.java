@@ -2,6 +2,8 @@ package com.wcorp.w_corpandroidpedido.Atividades.Pedido;
 
 import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.IniciarDialog;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +11,16 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 
-import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
-import com.wcorp.w_corpandroidpedido.Atividades.Categoria.SubCategoriaActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.R;
@@ -41,12 +42,16 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
     private Boolean firstOpen = true;
     private DecimalFormat decimalFormat = new DecimalFormat("#,##");
     private int valorPago;
+    private Boolean isParcelado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tipo_pagamento_pedido);
 
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        Intent intent = getIntent();
+        isParcelado = intent.getBooleanExtra("isParcelado", false);
+
 
         txtValorPago = findViewById(R.id.txtValorPago);
         TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
@@ -88,8 +93,24 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
                 //Não faz nada
             }
         });
+
+        if(isParcelado){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            int tipoPagamento = intent.getIntExtra("tipoPagamento", 0);
+            int valorTotal = intent.getIntExtra("valorTotal", 0);
+            int tipoParcela = intent.getIntExtra("tipoParcela", 0);
+            int nmrParcela = intent.getIntExtra("nmrParcela", 0);
+            txtValorPago.setText(String.valueOf(valorTotal));
+            chamarPagamento(this,tipoPagamento,tipoParcela ,valorTotal, nmrParcela);
+        }
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        firstOpen = true;
+    }
     private void addEventosClick(Context context){
         CardView btnDebito = findViewById(R.id.cardDebito);
         CardView btnCredito = findViewById(R.id.cardCredito);
@@ -97,11 +118,11 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         CardView btnPix = findViewById(R.id.cardPix);
 
         btnDebito.setOnClickListener(btnCardView -> {
-            chamarPagamento(context, btnCardView, PlugPag.TYPE_DEBITO, valorPago, PlugPag.INSTALLMENT_TYPE_A_VISTA, 1);
+            chamarPagamento(context, btnCardView, PlugPag.TYPE_DEBITO, valorPago);
         });
 
         btnCredito.setOnClickListener(btnCardView -> {
-            chamarPagamento(context , btnCardView, PlugPag.TYPE_CREDITO, valorPago, PlugPag.INSTALLMENT_TYPE_A_VISTA, 1);
+            chamarPagamento(context , btnCardView, PlugPag.TYPE_CREDITO, valorPago);
         });
 
         btnCreditoParcelado.setOnClickListener(btnCardView -> {
@@ -109,7 +130,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         });
 
         btnPix.setOnClickListener(btnCardView -> {
-            chamarPagamento(context, btnCardView, PlugPag.TYPE_PIX, valorPago, PlugPag.INSTALLMENT_TYPE_A_VISTA, 1);
+            chamarPagamento(context, btnCardView, PlugPag.TYPE_PIX, valorPago);
         });
     }
 
@@ -122,19 +143,34 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         intent.putExtra(VALORTOTAL, valorPago);
         context.startActivity(intent);
     }
-    private void chamarPagamento(Context context, View btnClicado, int tipoPagamento, int valorPago, int tipoParcela, int numeroParcela) {
+    private void chamarPagamento(Context context, View btnClicado, int tipoPagamento, int valorPago) {
         btnClicado.setClickable(false);
         PagamentoCall pagamentoCall = new PagamentoCall();
         InfoPagamento infoPagamento = new InfoPagamento();
 
         infoPagamento.TipoPagamento = tipoPagamento;
         infoPagamento.ValorPago = valorPago;
-        infoPagamento.TipoParcela = tipoParcela;
-        infoPagamento.NumeroParcela = numeroParcela;
+        infoPagamento.TipoParcela = PlugPag.INSTALLMENT_TYPE_A_VISTA;
+        infoPagamento.NumeroParcela = 1;
 
         pagamentoCall.EfetuarPagamento(context, infoPagamento);
         IniciarDialog(context, firstOpen);
         firstOpen = false;
         btnClicado.setClickable(true);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+    private void chamarPagamento(Context context, int tipoPagamento, int tipoParcela ,int valorPago, int nmrParcela) {
+        PagamentoCall pagamentoCall = new PagamentoCall();
+        InfoPagamento infoPagamento = new InfoPagamento();
+
+        infoPagamento.TipoPagamento = tipoPagamento;
+        infoPagamento.ValorPago = valorPago;
+        infoPagamento.TipoParcela = tipoParcela;
+        infoPagamento.NumeroParcela = nmrParcela;
+
+        pagamentoCall.EfetuarPagamento(context, infoPagamento);
+        IniciarDialog(context, firstOpen);
+        firstOpen = false;
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }

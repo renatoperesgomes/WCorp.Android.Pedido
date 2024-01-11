@@ -1,5 +1,6 @@
 package com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
         return new PagamentoViewHolder(itemLista);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull PagamentoViewHolder holder, int position) {
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -53,11 +55,11 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
             holder.btnExcluirItem.setOnClickListener(view -> {
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 alert.setTitle("Atenção");
-                alert.setMessage("Você deseja excluir este item?" + "\n" + pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.nome);
+                alert.setMessage("Você deseja excluir este item?" + "\n" + pedidoAtual.retorno.listPedidoMaterialItem.get(holder.getAbsoluteAdapterPosition()).material.nome);
                 alert.setPositiveButton("Excluir", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        new PagamentoPedidoActivity().ExcluirPedidoMaterialItem(context, bearer ,pedidoAtual.retorno.listPedidoMaterialItem.get(position).id);
+                        new PagamentoPedidoActivity().ExcluirPedidoMaterialItem(context, bearer ,pedidoAtual.retorno.listPedidoMaterialItem.get(holder.getAbsoluteAdapterPosition()).id);
                     }
                 });
                 alert.setNegativeButton("Cancelar", null);

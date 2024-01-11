@@ -5,31 +5,38 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:orientation="vertical">
-
     <androidx.cardview.widget.CardView
+        style="@style/CARDINFORMACAOPRODUTO"
         android:id="@+id/cardParcelamento"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp">
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp"
-            android:layout_marginTop="15dp">
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="15dp"
+        app:cardCornerRadius="10dp"
+        app:strokeWidth="10dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
             <TextView
                 android:id="@+id/txtNmrParcelamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="22sp"
-                android:text="NUMEROPARCELAMENTO" />
+                android:text="2"
+                android:layout_marginHorizontal="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X"/>
             <TextView
                 android:id="@+id/txtValorParcelado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:text="VALORPARCELADO"
-                android:gravity="right"/>
-        </TableLayout>
+                android:text="9999"
+                android:layout_marginHorizontal="15dp"/>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 </FrameLayout>

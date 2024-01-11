@@ -31,14 +31,10 @@ public class DialogPagamento {
         sDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "FECHAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                PlugPag plugPag = PlugPagInstance.getInstance(context);
+                PlugPag plugPag = new PlugPag(context);
                 plugPag.asyncAbort(new PlugPagAbortListener() {
                     @Override
-                    public void onAbortRequested(boolean abort) {
-                        if(abort){
-                            FecharDialog();
-                        }
-                    }
+                    public void onAbortRequested(boolean abort) {}
                     @Override
                     public void onError(@NonNull String s) {
                         System.out.println(s);

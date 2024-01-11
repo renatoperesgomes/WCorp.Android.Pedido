@@ -36,7 +36,7 @@ public class PagamentoCall {
             PlugPagAppIdentification appIdentification =
                     new PlugPagAppIdentification(context);
 
-            PlugPag plugPag = PlugPagInstance.getInstance(context);
+            PlugPag plugPag = new PlugPag(context);
 
             // Ativa terminal e faz o pagamento
             PlugPagInitializationResult initResult = plugPag.initializeAndActivatePinpad(new

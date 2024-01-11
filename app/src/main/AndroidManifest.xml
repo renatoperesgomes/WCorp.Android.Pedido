@@ -25,7 +25,7 @@
             android:exported="false" />
         <activity
             android:name=".Atividades.Pedido.TipoPagamentoPedidoActivity"
-            android:exported="false"></activity>
+            android:exported="false"/>
         <activity
             android:name=".Atividades.Pedido.PesquisarPedidoActivity"
             android:exported="false"
