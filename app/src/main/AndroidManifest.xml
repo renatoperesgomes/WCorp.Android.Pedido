@@ -21,11 +21,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Atividades.Pedido.TipoCreditoActivity"
+            android:exported="false" />
+        <activity
             android:name=".Atividades.Pedido.ParcelamentoActivity"
             android:exported="false" />
         <activity
             android:name=".Atividades.Pedido.TipoPagamentoPedidoActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Atividades.Pedido.PesquisarPedidoActivity"
             android:exported="false"

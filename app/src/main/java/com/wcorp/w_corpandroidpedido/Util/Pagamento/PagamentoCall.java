@@ -9,7 +9,6 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PagamentoPedidoActivity;
-import com.wcorp.w_corpandroidpedido.Atividades.Pedido.TipoPagamentoPedidoActivity;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -22,8 +21,6 @@ import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagInitializationResult;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPaymentData;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPrintResult;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagTransactionResult;
-import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagAbortListener;
-import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagActivationListener;
 import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagPaymentListener;
 
 public class PagamentoCall {

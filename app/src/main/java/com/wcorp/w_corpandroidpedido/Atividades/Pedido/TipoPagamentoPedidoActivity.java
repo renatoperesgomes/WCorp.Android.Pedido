@@ -2,8 +2,6 @@ package com.wcorp.w_corpandroidpedido.Atividades.Pedido;
 
 import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.IniciarDialog;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +9,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,7 +24,6 @@ import com.wcorp.w_corpandroidpedido.R;
 import com.wcorp.w_corpandroidpedido.Util.Pagamento.InfoPagamento;
 import com.wcorp.w_corpandroidpedido.Util.Pagamento.PagamentoCall;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -40,7 +36,6 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
     public static final String VALORTOTAL = "com.example.w_corpandroidpedido.VALORTOTAL";
     private EditText txtValorPago;
     private Boolean firstOpen = true;
-    private DecimalFormat decimalFormat = new DecimalFormat("#,##");
     private int valorPago;
     private Boolean isParcelado;
     @Override
@@ -50,8 +45,8 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
 
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         Intent intent = getIntent();
-        isParcelado = intent.getBooleanExtra("isParcelado", false);
 
+        isParcelado = intent.getBooleanExtra("isParcelado", false);
 
         txtValorPago = findViewById(R.id.txtValorPago);
         TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
@@ -139,7 +134,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
     }
 
     private void startActivityParcelamento(Context context){
-        Intent intent = new Intent(context, ParcelamentoActivity.class);
+        Intent intent = new Intent(context, TipoCreditoActivity.class);
         intent.putExtra(VALORTOTAL, valorPago);
         context.startActivity(intent);
     }

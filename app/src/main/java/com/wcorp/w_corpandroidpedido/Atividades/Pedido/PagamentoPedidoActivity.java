@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
-import com.wcorp.w_corpandroidpedido.Atividades.Impressora.Impressora;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -30,7 +29,6 @@ import com.wcorp.w_corpandroidpedido.Service.Pedido.RemoverPedidoItemService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.concurrent.Executor;

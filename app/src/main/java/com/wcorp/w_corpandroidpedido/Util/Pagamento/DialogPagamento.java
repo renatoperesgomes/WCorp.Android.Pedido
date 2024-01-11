@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 
 import androidx.annotation.NonNull;
 
-import com.wcorp.w_corpandroidpedido.Atividades.Pedido.TipoPagamentoPedidoActivity;
-
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPag;
 import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagAbortListener;
 
