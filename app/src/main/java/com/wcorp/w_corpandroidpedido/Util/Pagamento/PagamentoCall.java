@@ -34,7 +34,6 @@ public class PagamentoCall {
                     new PlugPagAppIdentification(context);
 
             PlugPag plugPag = new PlugPag(context);
-
             // Ativa terminal e faz o pagamento
             PlugPagInitializationResult initResult = plugPag.initializeAndActivatePinpad(new
                 PlugPagActivationData("749879"));
@@ -64,13 +63,11 @@ public class PagamentoCall {
                     }
 
                     @Override
-                    public void onPrinterSuccess(@NonNull PlugPagPrintResult plugPagPrintResult) {
-                        System.out.println(plugPagPrintResult.getMessage());
-                    }
+                    public void onPrinterSuccess(@NonNull PlugPagPrintResult plugPagPrintResult) {}
 
                     @Override
                     public void onPrinterError(@NonNull PlugPagPrintResult plugPagPrintResult) {
-                        System.out.println(plugPagPrintResult.getMessage());
+                        MostrarDialog(context, plugPagPrintResult.getMessage());
                     }
                 });
             }else{
