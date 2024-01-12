@@ -43,7 +43,7 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
     public void onBindViewHolder(@NonNull PagamentoViewHolder holder, int position) {
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         if(pedidoAtual == null){
-            holder.nomeMaterial.setText("Não contém nenhum item adicionado");
+            holder.nomeMaterial.setText("Não contém item");
             holder.valorMaterial.setText("0,00");
             holder.qtdMaterial.setText("0 Un.");
             holder.btnExcluirItem.setVisibility(View.GONE);

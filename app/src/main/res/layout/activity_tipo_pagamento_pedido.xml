@@ -117,6 +117,26 @@
                     android:textStyle="bold" />
 
             </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    style="@style/CARDVIEWCATEGORIAS"
+                    android:id="@+id/cardEstorno"
+                    android:layout_width="match_parent"
+                    android:layout_height="105dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10dp">
+
+                    <TextView
+                        style="@style/TEXTCARDMATERIAL"
+                        android:id="@+id/nomeEstorno"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:textSize="14sp"
+                        android:text="Estorno"
+                        android:textStyle="bold" />
+
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 </LinearLayout>
