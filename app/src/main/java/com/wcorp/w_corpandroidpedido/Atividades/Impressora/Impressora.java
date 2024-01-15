@@ -3,23 +3,22 @@ package com.wcorp.w_corpandroidpedido.Atividades.Impressora;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.renderscript.ScriptGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
+import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
+import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
+import com.wcorp.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 import com.wcorp.w_corpandroidpedido.R;
 import com.wcorp.w_corpandroidpedido.Util.Util;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -30,7 +29,8 @@ import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPrinterData;
 public class Impressora extends Activity {
     private Button mImpressao;
     private Executor executor = Executors.newSingleThreadExecutor();
-    ImageView ivReceipt;
+    DadosComanda dadosComanda  = DadosComanda.GetDadosComanda();
+    NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class Impressora extends Activity {
         mImpressao.setOnClickListener(view ->{
             printFile(this);
         });
-        ivReceipt = findViewById(R.id.imageReceipt);
     }
 
     private void printFile(Context context) {
@@ -48,6 +47,7 @@ public class Impressora extends Activity {
         executor.execute(() -> {
             // Cria a referência do PlugPag
             PlugPag plugPag = new PlugPag(context);
+
             boolean isSalvo = Util.SalvarImagemEmExternalStorage(context, bitmap, "receipt.bmp");
 
             if(isSalvo) {
@@ -62,59 +62,59 @@ public class Impressora extends Activity {
     }
 
     private Bitmap gerarBitmap(){
+        Pedido pedidoAtual = dadosComanda.GetPedido();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
+        Date data = new Date();
+        String dataFomatada = simpleDateFormat.format(data);
+        double valorMaisPorcentagem = pedidoAtual.retorno.valorTotalPedido * 1.1;
         ReceiptBuilder receipt = new ReceiptBuilder(1200);
         receipt.setMargin(30, 20).
                 setAlign(Paint.Align.CENTER).
                 setColor(Color.BLACK).
-                setTextSize(60).
+                setTypeface(this, "fonts/RobotoMono-Bold.ttf").
+                setTextSize(100).
                 addText("WCorp Software").
-                addText("Caçapava, São Paulo").
-                addText("999-999-9999").
                 addBlankSpace(30).
+                setTextSize(60).
+                setTypeface(this, "fonts/RobotoMono-Regular.ttf").
                 setAlign(Paint.Align.LEFT).
-                addText("Terminal ID: 123456", false).
+                addText(dataFomatada, false).
                 setAlign(Paint.Align.RIGHT).
-                addText("1234").
+                addText("MÁQUINA 01").
                 setAlign(Paint.Align.LEFT).
                 addLine().
-                addText("08/15/16", false).
-                setAlign(Paint.Align.RIGHT).
-                addText("SERVER #4").
+                addBlankSpace(10).
                 setAlign(Paint.Align.LEFT).
-                addParagraph().
-                addText("CHASE VISA - INSERT").
-                addText("AID: A000000000011111").
-                addText("ACCT #: *********1111").
-                addParagraph().
-                addText("CREDIT SALE").
-                addText("UID: 12345678", false).
+                addText("ITEM", false).
                 setAlign(Paint.Align.RIGHT).
-                addText("REF #: 1234").
+                addText("VALOR").
+                addBlankSpace(10).
+                addParagraph();
+
+        for (PedidoMaterialItem pedido:
+                pedidoAtual.retorno.listPedidoMaterialItem) {
+            receipt.
+                setTypeface(this, "fonts/RobotoMono-Regular.ttf").
                 setAlign(Paint.Align.LEFT).
-                addText("BATCH #: 091", false).
+                addText(pedido.material.nome, false).
                 setAlign(Paint.Align.RIGHT).
-                addText("AUTH #: 0701C").
+                addText(formatNumero.format(pedido.valorUnitario * pedido.quantidade)).
+                addBlankSpace(30);
+        }
+            receipt.
                 setAlign(Paint.Align.LEFT).
+                addLine().
                 addParagraph().
-                addText("AMOUNT", false).
-                setAlign(Paint.Align.RIGHT).
-                addText("$ 15.00").
                 setAlign(Paint.Align.LEFT).
-                addParagraph().
-                addText("TIP", false).
+                setTypeface(this, "fonts/RobotoMono-Regular.ttf").
+                addText("VALOR TOTAL", false).
                 setAlign(Paint.Align.RIGHT).
-                addText("$        ").
-                addLine(180).
+                addText(formatNumero.format(pedidoAtual.retorno.valorTotalPedido)).
+                addParagraph().
                 setAlign(Paint.Align.LEFT).
-                addParagraph().
-                addText("TOTAL", false).
+                addText("VALOR C/ 10%", false).
                 setAlign(Paint.Align.RIGHT).
-                addText("$        ").
-                addLine(180).
-                addParagraph().
-                setAlign(Paint.Align.CENTER).
-                addText("APPROVED");
-        ivReceipt.setImageBitmap(receipt.build());
+                addText(formatNumero.format(valorMaisPorcentagem));
         return receipt.build();
     }
 }

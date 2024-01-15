@@ -45,7 +45,6 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private Dialog progressBarDialog;
-    private int valorPagoInt = 0;
     private Executor executor = Executors.newSingleThreadExecutor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
