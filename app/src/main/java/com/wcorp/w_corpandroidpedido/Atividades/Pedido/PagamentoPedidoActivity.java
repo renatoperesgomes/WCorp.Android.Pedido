@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
+import com.wcorp.w_corpandroidpedido.Atividades.Impressora.Impressora;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -122,7 +123,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
     }
 
     private void irPaginaTipoPagamento(Context context){
-        Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
+        Intent intent = new Intent(context , Impressora.class);
         this.startActivity(intent);
     }
 

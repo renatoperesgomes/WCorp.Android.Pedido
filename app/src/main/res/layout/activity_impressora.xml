@@ -5,10 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context="com.wcorp.w_corpandroidpedido.Atividades.Impressora.Impressora">
+    tools:context="com.wcorp.w_corpandroidpedido.Atividades.Impressora.Impressora"
+    android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/imageReceipt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="200dp"/>
     <Button
-        android:id="@+id/id_printer_receiptpositivo"
+        android:id="@+id/btnPrinter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Imprimir"
