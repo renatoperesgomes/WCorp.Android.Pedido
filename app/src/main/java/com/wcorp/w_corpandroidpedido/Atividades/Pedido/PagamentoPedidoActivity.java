@@ -122,7 +122,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
     }
 
     private void irPaginaTipoPagamento(Context context){
-        Intent intent = new Intent(context , Impressora.class);
+        Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
         this.startActivity(intent);
     }
 

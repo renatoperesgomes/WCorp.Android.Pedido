@@ -1,6 +1,7 @@
 package com.wcorp.w_corpandroidpedido.Atividades.Pedido;
 
 import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.IniciarDialog;
+import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.MostrarDialog;
 
 import android.content.Context;
 import android.content.Intent;
@@ -150,6 +151,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
 
         pagamentoCall.EfetuarPagamento(context, infoPagamento);
         IniciarDialog(context, firstOpen);
+        MostrarDialog(context, "Aguarde...");
         firstOpen = false;
         btnClicado.setClickable(true);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -165,6 +167,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
 
         pagamentoCall.EfetuarPagamento(context, infoPagamento);
         IniciarDialog(context, firstOpen);
+        MostrarDialog(context, "Aguarde...");
         firstOpen = false;
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
