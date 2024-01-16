@@ -3,6 +3,7 @@ package com.wcorp.w_corpandroidpedido.Atividades.Pedido;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Button;
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
-import com.wcorp.w_corpandroidpedido.Atividades.Impressora.Impressora;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -29,6 +29,8 @@ import com.wcorp.w_corpandroidpedido.R;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.RemoverPedidoItemService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
+import com.wcorp.w_corpandroidpedido.Util.Impressora.GerarBitmap;
+import com.wcorp.w_corpandroidpedido.Util.Util;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -36,10 +38,14 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPag;
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPrintResult;
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPrinterData;
 import io.reactivex.Flowable;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {
     private RecyclerView getRecyclerViewPagamento;
+    private Button mImpressao;
     private Button getBtnVoltar;
     private Button getBtnFazerPagamento;
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
@@ -110,11 +116,17 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
             });
         }
 
+        mImpressao = findViewById(R.id.btnPrinter);
+        mImpressao.setOnClickListener(view ->{
+            imprimirArquivo(this);
+        });
+
         getBtnVoltar = findViewById(R.id.btnVoltar);
 
         getBtnVoltar.setOnClickListener(view ->{
             voltarParaPaginaInicial();
         });
+
     }
 
     private void voltarParaPaginaInicial(){
@@ -165,6 +177,24 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         });
     }
 
+    private void imprimirArquivo(Context context) {
+        Bitmap bitmap = GerarBitmap.GerarBitmap(context);
+        executor.execute(() -> {
+            // Cria a referência do PlugPag
+            PlugPag plugPag = new PlugPag(context);
+
+            boolean isSalvo = Util.SalvarImagemEmExternalStorage(context, bitmap, "receipt.bmp");
+
+            if(isSalvo) {
+                // Cria objeto com informações da impressão
+                PlugPagPrinterData plugPagPrinterData = new PlugPagPrinterData(
+                        "/storage/emulated/0/Android/data/com.wcorp.w_corpandroidpedido/files/Download/receipt.bmp",
+                        4, 10 * 12);
+
+                PlugPagPrintResult result = plugPag.printFromFile(plugPagPrinterData);
+            }
+        });
+    }
     private void abrirDialogAlerta(Context context){
         progressBarDialog = new Dialog(context);
         progressBarDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
