@@ -20,6 +20,7 @@ import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecu
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
+import com.wcorp.w_corpandroidpedido.Models.Empresa.Empresa;
 import com.wcorp.w_corpandroidpedido.Models.Empresa.ListEmpresa;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Usuario.Usuario;
@@ -36,6 +37,7 @@ import io.reactivex.Single;
 
 public class MainActivity extends AppCompatActivity {
     private static final Preferences.Key<String> STRING_KEY = new Preferences.Key<>("authentication");
+    private static Empresa EmpresaSelecionada = new Empresa();
     private EditText getTxtNomeUsuario;
     private EditText getTxtSenhaUsuario;
     private Button getBotaoLogin;
@@ -43,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private String idEmpresa;
     private Dialog progressBarDialog;
     private Executor executor = Executors.newSingleThreadExecutor();
+
+    public static Empresa EmpresaSelecionada() {
+        return EmpresaSelecionada;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         getEmpresa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                EmpresaSelecionada.id = Integer.parseInt(String.valueOf(id));
+                EmpresaSelecionada.nomeFantasia = parent.getSelectedView().getTag().toString();
                 idEmpresa = String.valueOf(id);
             }
             @Override

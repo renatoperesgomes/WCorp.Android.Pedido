@@ -16,6 +16,7 @@ public class Pedido extends BaseApi{
                 public String observacaoInterna;
                 public double valorFrete;
                 public double valorTotalProduto;
+                public double valorTotalPago;
                 public double valorTotalPedido;
                 public int origemPedido;
                 public int tipoPedidoEnum;

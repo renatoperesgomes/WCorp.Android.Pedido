@@ -32,7 +32,9 @@ public class DialogPagamento {
                 PlugPag plugPag = new PlugPag(context);
                 plugPag.asyncAbort(new PlugPagAbortListener() {
                     @Override
-                    public void onAbortRequested(boolean abort) {}
+                    public void onAbortRequested(boolean abort) {
+                    }
+
                     @Override
                     public void onError(@NonNull String s) {
                         System.out.println(s);
@@ -40,7 +42,6 @@ public class DialogPagamento {
                 });
             }
         });
-
         if (!sDialog.isShowing()) {
             sDialog.show();
         }

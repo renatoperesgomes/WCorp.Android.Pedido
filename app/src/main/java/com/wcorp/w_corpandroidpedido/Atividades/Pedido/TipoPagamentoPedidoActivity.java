@@ -18,38 +18,59 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
+import androidx.datastore.rxjava2.RxDataStore;
 
+import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.R;
+import com.wcorp.w_corpandroidpedido.Util.DataStore;
 import com.wcorp.w_corpandroidpedido.Util.Pagamento.InfoPagamento;
 import com.wcorp.w_corpandroidpedido.Util.Pagamento.PagamentoCall;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPag;
+import io.reactivex.Flowable;
 
 public class TipoPagamentoPedidoActivity extends AppCompatActivity {
 
     private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     public static final String VALORTOTAL = "com.example.w_corpandroidpedido.VALORTOTAL";
+    private boolean isCupomFiscal;
     private EditText txtValorPago;
     private Boolean firstOpen = true;
     private int valorPago;
+    private double valorPagoDouble;
     private Boolean isParcelado;
+    private DecimalFormat decimalFormat = new DecimalFormat("#.00");
+    private String bearer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tipo_pagamento_pedido);
 
+        RxDataStore<Preferences> dataStore = DataStore.getInstance(this);
+
+        Flowable<String> getBearer =
+                dataStore.data().map(prefs -> prefs.get(BEARER));
+
+        bearer = getBearer.blockingFirst();
+
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         Intent intent = getIntent();
 
+        isCupomFiscal = intent.getBooleanExtra(CupomFiscalActivity.CUPOM_FISCAL, false);
         isParcelado = intent.getBooleanExtra("isParcelado", false);
 
         txtValorPago = findViewById(R.id.txtValorPago);
+        txtValorPago.setText(formatNumero.format(dadosComanda.GetValorComanda()));
+        valorPago = Integer.parseInt(decimalFormat.format(dadosComanda.GetValorComanda()).replace(",", ""));
+        valorPagoDouble = dadosComanda.GetValorComanda();
+
         TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
         CardView cardViewInicio = findViewById(R.id.cardInicio);
@@ -58,37 +79,12 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
 
         txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
         txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
+
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicio, cardViewPagamento,cardViewComanda);
         navegacaoBarraApp.addClick(this);
 
         addEventosClick(this);
-
-        txtValorPago.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //Não faz nada
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                String typed = onlyDigits(charSequence.toString());
-                valorPago = Integer.parseInt(typed);
-                if (!TextUtils.isEmpty(typed)) {
-                    txtValorPago.removeTextChangedListener(this);
-                    double converted = Double.parseDouble(typed) / 100;
-                    String convertedString = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(converted);
-                    txtValorPago.setText(convertedString);
-                    txtValorPago.setSelection(convertedString.length());
-                    txtValorPago.addTextChangedListener(this);
-                } else {
-                    txtValorPago.setText("0");
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                //Não faz nada
-            }
-        });
+        addListenerTextoValor();
 
         if(isParcelado){
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -129,6 +125,35 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
             chamarPagamento(context, btnCardView, PlugPag.TYPE_PIX, valorPago);
         });
     }
+    private void addListenerTextoValor(){
+        txtValorPago.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Não faz nada
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                String typed = onlyDigits(charSequence.toString());
+                valorPago = Integer.parseInt(typed);
+                if (!TextUtils.isEmpty(typed)) {
+                    txtValorPago.removeTextChangedListener(this);
+                    double converted = Double.parseDouble(typed) / 100;
+                    valorPagoDouble = converted;
+                    String convertedString = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(converted);
+                    txtValorPago.setText(convertedString);
+                    txtValorPago.setSelection(convertedString.length());
+                    txtValorPago.addTextChangedListener(this);
+                } else {
+                    txtValorPago.setText("0");
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                //Não faz nada
+            }
+        });
+    }
 
     private static String onlyDigits(String textValue) {
         return textValue.replaceAll("[^\\d]", "");
@@ -144,12 +169,16 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         PagamentoCall pagamentoCall = new PagamentoCall();
         InfoPagamento infoPagamento = new InfoPagamento();
 
+        infoPagamento.Bearer = bearer;
+        infoPagamento.IdPedido = dadosComanda.GetPedido().retorno.id;
+        infoPagamento.ValorPagoDouble = valorPagoDouble;
         infoPagamento.TipoPagamento = tipoPagamento;
         infoPagamento.ValorPago = valorPago;
         infoPagamento.TipoParcela = PlugPag.INSTALLMENT_TYPE_A_VISTA;
         infoPagamento.NumeroParcela = 1;
 
-        pagamentoCall.EfetuarPagamento(context, infoPagamento);
+        pagamentoCall.EfetuarPagamento(context, infoPagamento, isCupomFiscal);
+
         IniciarDialog(context, firstOpen);
         MostrarDialog(context, "Aguarde...");
         firstOpen = false;
@@ -160,12 +189,16 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         PagamentoCall pagamentoCall = new PagamentoCall();
         InfoPagamento infoPagamento = new InfoPagamento();
 
+        infoPagamento.Bearer = bearer;
+        infoPagamento.IdPedido = dadosComanda.GetPedido().retorno.id;
+        infoPagamento.ValorPagoDouble = valorPagoDouble;
         infoPagamento.TipoPagamento = tipoPagamento;
         infoPagamento.ValorPago = valorPago;
         infoPagamento.TipoParcela = tipoParcela;
         infoPagamento.NumeroParcela = nmrParcela;
 
-        pagamentoCall.EfetuarPagamento(context, infoPagamento);
+        pagamentoCall.EfetuarPagamento(context, infoPagamento, isCupomFiscal);
+
         IniciarDialog(context, firstOpen);
         MostrarDialog(context, "Aguarde...");
         firstOpen = false;

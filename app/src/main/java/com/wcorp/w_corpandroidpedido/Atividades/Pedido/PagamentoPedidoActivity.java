@@ -2,6 +2,7 @@ package com.wcorp.w_corpandroidpedido.Atividades.Pedido;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
+import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
@@ -104,25 +106,27 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
 
         getBtnFazerPagamento = findViewById(R.id.btnFazerPagamento);
-
+        mImpressao = findViewById(R.id.btnPrinter);
 
         getBtnFazerPagamento.setOnClickListener( view ->{
-            irPaginaTipoPagamento(this);
+            abrirDialogCupomFiscal(this);
+        });
+
+        mImpressao.setOnClickListener(view ->{
+            imprimirArquivo(this);
         });
 
         if(dadosComanda.GetPedido() == null){
             getBtnFazerPagamento.setOnClickListener(view ->{
                 Toast.makeText(this,"Necessário adicionar um material para fazer o pagamento.",Toast.LENGTH_SHORT).show();
             });
+
+            mImpressao.setOnClickListener(view ->{
+                Toast.makeText(this, "Não é possível imprimir um pedido vazio.", Toast.LENGTH_SHORT).show();
+            });
         }
 
-        mImpressao = findViewById(R.id.btnPrinter);
-        mImpressao.setOnClickListener(view ->{
-            imprimirArquivo(this);
-        });
-
         getBtnVoltar = findViewById(R.id.btnVoltar);
-
         getBtnVoltar.setOnClickListener(view ->{
             voltarParaPaginaInicial();
         });
@@ -132,12 +136,6 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
     private void voltarParaPaginaInicial(){
         finish();
     }
-
-    private void irPaginaTipoPagamento(Context context){
-        Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
-        this.startActivity(intent);
-    }
-
     public void ExcluirPedidoMaterialItem(Context context, String bearer ,Integer idPedidoMaterialItem){
         abrirDialogAlerta(context);
 
@@ -202,6 +200,26 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         progressBarDialog.setCancelable(false);
 
         progressBarDialog.show();
+    }
+    private void abrirDialogCupomFiscal(Context context){
+        AlertDialog.Builder alert = new AlertDialog.Builder(context)
+                .setTitle("Deseja emitir cupom fiscal?")
+                .setCancelable(false)
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(context , CupomFiscalActivity.class);
+                        context.startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
+                        context.startActivity(intent);
+                    }
+                });
+        alert.show();
     }
 }
 

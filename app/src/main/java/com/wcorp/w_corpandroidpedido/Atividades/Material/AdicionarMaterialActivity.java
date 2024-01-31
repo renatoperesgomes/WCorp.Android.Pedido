@@ -104,7 +104,6 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
         txtValorComanda.setText(formatNumero.format( dadosComanda.GetValorComanda()));
 
-
         if (multiplaSelecao) {
             getRecycleMaterialInformacao.setAdapter(new AdicionarMaterialAdapter(this, true, qtdSelecao, listMaterial));
         } else if (comboCategoriaFilho) {

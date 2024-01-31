@@ -26,7 +26,7 @@ public class DadosComanda {
         }else{
             DadosComanda.pedidoAtual = pedidoAtual;
             this.numeroComanda = pedidoAtual.retorno.comanda;
-            this.valorComanda = pedidoAtual.retorno.valorTotalPedido;
+            this.valorComanda = pedidoAtual.retorno.valorTotalPedido - pedidoAtual.retorno.valorTotalPago;
         }
     }
 

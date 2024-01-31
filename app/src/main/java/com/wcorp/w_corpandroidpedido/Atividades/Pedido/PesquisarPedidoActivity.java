@@ -39,6 +39,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
     private Button btnPesquisar;
     private String nmrComanda;
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
+    private NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
 
         if(dadosComanda.GetPedido() != null){
             navegacaoBarraApp.addClick(this);
-            NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
             txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
             txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
         }else{

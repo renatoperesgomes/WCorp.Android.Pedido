@@ -7,11 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
 
+import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PagamentoPedidoActivity;
+import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
+import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
+import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
+import com.wcorp.w_corpandroidpedido.Service.Pedido.PedidoService;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPag;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagActivationData;
@@ -20,13 +27,15 @@ import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagEventData;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagInitializationResult;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPaymentData;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPrintResult;
+import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPrinterData;
 import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagTransactionResult;
 import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagPaymentListener;
 
 public class PagamentoCall {
     private Executor executor = Executors.newSingleThreadExecutor();
+    DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     int countPassword;
-    public void EfetuarPagamento(Context context, InfoPagamento infoPagamento) {
+    public void EfetuarPagamento(Context context, InfoPagamento infoPagamento, boolean isCupomFiscal) {
         executor.execute(() ->{
             PlugPagPaymentData paymentData = dadosPagamento(infoPagamento);
             // Cria a identificação do aplicativo
@@ -43,8 +52,10 @@ public class PagamentoCall {
                     @Override
                     public void onSuccess(@NonNull PlugPagTransactionResult plugPagTransactionResult) {
                         FecharDialog();
-                        Intent intent = new Intent(context, PagamentoPedidoActivity.class);
-                        context.startActivity(intent);
+                        if(isCupomFiscal){
+                            imprimirCupomFiscal(plugPag);
+                        }
+                        pagarPedido(context, infoPagamento);
                     }
 
                     @Override
@@ -72,6 +83,42 @@ public class PagamentoCall {
                 });
             }else{
                 System.out.println(initResult.getErrorCode() + " - " + initResult.getErrorMessage());
+            }
+        });
+    }
+
+    private void imprimirCupomFiscal(PlugPag plugPag) {
+        executor.execute(() ->{
+            // Cria objeto com informações da impressão
+            PlugPagPrinterData plugPagPrinterData = new PlugPagPrinterData(
+                    "/storage/emulated/0/Android/data/com.wcorp.w_corpandroidpedido/files/Download/receiptCupomFiscal.bmp",
+                    4, 10 * 12);
+
+
+            PlugPagPrintResult result = plugPag.printFromFile(plugPagPrinterData);
+        });
+    }
+
+    private void pagarPedido(Context context, InfoPagamento infoPagamento){
+        PedidoService pedidoService = new PedidoService();
+        executor.execute(() ->{
+            Future<Pedido> pagarPedido = pedidoService.PagarPedido(infoPagamento.Bearer, infoPagamento.IdPedido, infoPagamento.TipoPagamento, infoPagamento.ValorPagoDouble);
+            try {
+                Pedido retornaPedido = pagarPedido.get();
+                if (retornaPedido.validated) {
+                    double valorRestantePago = retornaPedido.retorno.valorTotalPedido - retornaPedido.retorno.valorTotalPago;
+                    if (valorRestantePago == 0) {
+                        dadosComanda.SetPedido(null);
+                        Intent intent = new Intent(context, PesquisarPedidoActivity.class);
+                        context.startActivity(intent);
+                    } else {
+                        dadosComanda.SetValorComanda(retornaPedido.retorno.valorTotalPedido - retornaPedido.retorno.valorTotalPago);
+                        Intent intent = new Intent(context, PagamentoPedidoActivity.class);
+                        context.startActivity(intent);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
             }
         });
     }

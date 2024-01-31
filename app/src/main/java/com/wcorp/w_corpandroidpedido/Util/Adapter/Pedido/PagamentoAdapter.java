@@ -24,7 +24,6 @@ import java.util.Locale;
 public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.PagamentoViewHolder> {
     private Context context;
     private Pedido pedidoAtual;
-    private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private String bearer;
     public PagamentoAdapter(Context context, String bearer ,Pedido pedidoAtual){
         this.context = context;

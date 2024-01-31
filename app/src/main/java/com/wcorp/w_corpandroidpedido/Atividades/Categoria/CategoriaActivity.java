@@ -72,7 +72,6 @@ public class CategoriaActivity extends AppCompatActivity {
         txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
         txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
 
-
         pesquisarCategorias();
     }
 

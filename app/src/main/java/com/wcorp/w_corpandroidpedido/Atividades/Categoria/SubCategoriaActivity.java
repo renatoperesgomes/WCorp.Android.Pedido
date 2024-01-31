@@ -84,7 +84,6 @@ public class SubCategoriaActivity extends AppCompatActivity {
         txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
         txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
 
-
         pesquisarSubCategorias();
     }
 

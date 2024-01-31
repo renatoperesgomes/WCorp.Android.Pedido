@@ -39,7 +39,9 @@ public class EmpresaAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView label = new TextView(context);
         label.setTextColor(Color.BLACK);
+        label.setTag(empresas.get(position).nomeFantasia);
         label.setText(empresas.get(position).nomeFantasia);
+
         return label;
     }
 }
