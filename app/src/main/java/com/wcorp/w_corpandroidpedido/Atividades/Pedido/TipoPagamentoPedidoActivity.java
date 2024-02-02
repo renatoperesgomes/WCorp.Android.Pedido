@@ -4,6 +4,7 @@ import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.Inici
 import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.MostrarDialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.datastore.preferences.core.Preferences;
@@ -41,6 +43,8 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     public static final String VALORTOTAL = "com.example.w_corpandroidpedido.VALORTOTAL";
     private boolean isCupomFiscal;
+    private String CpfString;
+    private String CnpjString;
     private EditText txtValorPago;
     private Boolean firstOpen = true;
     private int valorPago;
@@ -64,6 +68,8 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         isCupomFiscal = intent.getBooleanExtra(CupomFiscalActivity.CUPOM_FISCAL, false);
+        CpfString = intent.getStringExtra(CupomFiscalActivity.CUPOM_CPF);
+        CnpjString = intent.getStringExtra(CupomFiscalActivity.CUPOM_CNPJ);
         isParcelado = intent.getBooleanExtra("isParcelado", false);
 
         txtValorPago = findViewById(R.id.txtValorPago);
@@ -176,6 +182,8 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         infoPagamento.ValorPago = valorPago;
         infoPagamento.TipoParcela = PlugPag.INSTALLMENT_TYPE_A_VISTA;
         infoPagamento.NumeroParcela = 1;
+        infoPagamento.Cpf = CpfString;
+        infoPagamento.Cnpj = CnpjString;
 
         pagamentoCall.EfetuarPagamento(context, infoPagamento, isCupomFiscal);
 
@@ -196,6 +204,8 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         infoPagamento.ValorPago = valorPago;
         infoPagamento.TipoParcela = tipoParcela;
         infoPagamento.NumeroParcela = nmrParcela;
+        infoPagamento.Cpf = CpfString;
+        infoPagamento.Cnpj = CnpjString;
 
         pagamentoCall.EfetuarPagamento(context, infoPagamento, isCupomFiscal);
 

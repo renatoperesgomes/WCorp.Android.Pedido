@@ -8,4 +8,6 @@ public class InfoPagamento {
     public  int ValorPago;
     public  int TipoParcela;
     public  int NumeroParcela;
+    public String Cpf;
+    public String Cnpj;
 }

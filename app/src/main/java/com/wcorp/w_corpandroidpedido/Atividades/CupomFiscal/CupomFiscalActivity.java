@@ -27,6 +27,8 @@ public class CupomFiscalActivity extends AppCompatActivity {
     private RadioButton rdbCpf;
     private RadioButton rdbCnpj;
     public static final String CUPOM_FISCAL = "com.example.w_corpandroidpedido.CUPOMFISCAL";
+    public static final String CUPOM_CPF = "com.example.w_corpandroidpedido.CUPOMCPF";
+    public static final String CUPOM_CNPJ = "com.example.w_corpandroidpedido.CUPOMCNPJ";
     private static final String mascaraCNPJ = "##.###.###/####-##";
     private static final String mascaraCPF = "###.###.###-##";
     @Override
@@ -43,7 +45,7 @@ public class CupomFiscalActivity extends AppCompatActivity {
 
         addMascaraDoc();
         btnEmitirCupom.setOnClickListener(view ->{
-            emitirCupom(this);
+            criarReceiptCupomFiscal(this);
         });
 
         btnVoltar.setOnClickListener(view ->{
@@ -121,12 +123,12 @@ public class CupomFiscalActivity extends AppCompatActivity {
         }
         return mascaraPadrao;
     }
-    private void emitirCupom(Context context) {
+    private void criarReceiptCupomFiscal(Context context) {
         boolean isCpf = true;
         String getTextoCpfCnpj = txtCpfCnpj.getText().toString();
         if (rdbCpf.isChecked() && tirarMascaraCpfCnpj(getTextoCpfCnpj).length() != 11) {
             Toast.makeText(context, "Por favor, coloque um CPF válido!", Toast.LENGTH_SHORT).show();
-        } else if (rdbCnpj.isChecked() && tirarMascaraCpfCnpj(getTextoCpfCnpj).length() != 14) {
+        }else if (rdbCnpj.isChecked() && tirarMascaraCpfCnpj(getTextoCpfCnpj).length() != 14) {
             Toast.makeText(context, "Por favor, coloque um CNPJ válido!", Toast.LENGTH_SHORT).show();
         }else{
             String nmrCpfCnpj = txtCpfCnpj.getText().toString();
@@ -139,6 +141,12 @@ public class CupomFiscalActivity extends AppCompatActivity {
 
             Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
             intent.putExtra(CUPOM_FISCAL, true);
+
+            if(isCpf)
+                intent.putExtra(CUPOM_CPF, nmrCpfCnpj);
+            else
+                intent.putExtra(CUPOM_CNPJ, nmrCpfCnpj);
+
             context.startActivity(intent);
         }
     }

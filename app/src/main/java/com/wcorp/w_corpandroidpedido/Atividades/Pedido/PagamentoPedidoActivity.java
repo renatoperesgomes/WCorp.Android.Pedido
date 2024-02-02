@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,13 +26,17 @@ import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
+import com.wcorp.w_corpandroidpedido.Models.BaseApi;
+import com.wcorp.w_corpandroidpedido.Models.CupomFiscal.CupomFiscal;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.R;
+import com.wcorp.w_corpandroidpedido.Service.CupomFiscal.CupomFiscalService;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.RemoverPedidoItemService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
 import com.wcorp.w_corpandroidpedido.Util.Impressora.GerarBitmap;
+import com.wcorp.w_corpandroidpedido.Util.Pagamento.InfoPagamento;
 import com.wcorp.w_corpandroidpedido.Util.Util;
 
 import java.text.NumberFormat;
@@ -109,7 +114,23 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         mImpressao = findViewById(R.id.btnPrinter);
 
         getBtnFazerPagamento.setOnClickListener( view ->{
-            abrirDialogCupomFiscal(this);
+            CupomFiscalService cupomFiscalService = new CupomFiscalService();
+            executor.execute(() ->{
+                Future<BaseApi> buscarParametroCupomFiscal = cupomFiscalService.BuscarParametroCupomFiscal(bearer);
+                try {
+                    BaseApi parametroCupomFiscal = buscarParametroCupomFiscal.get();
+                    runOnUiThread(() ->{
+                        if(parametroCupomFiscal.validated){
+                            abrirDialogCupomFiscal(this);
+                        }else{
+                            Intent intent = new Intent(this , TipoPagamentoPedidoActivity.class);
+                            this.startActivity(intent);
+                        }
+                    });
+                }catch (Exception e){
+                    System.out.println("Erro: " + e.getMessage());
+                }
+            });
         });
 
         mImpressao.setOnClickListener(view ->{
@@ -132,7 +153,6 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         });
 
     }
-
     private void voltarParaPaginaInicial(){
         finish();
     }
@@ -154,7 +174,6 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
                         Intent intent = new Intent(context, CategoriaActivity.class);
                         context.startActivity(intent);
                     } else if (pedidoMaterialExcluidoRetorno.hasInconsistence) {
-
                         AlertDialog.Builder alert = new AlertDialog.Builder(context);
                         alert.setTitle("Atenção");
                         StringBuilder inconsistencesJoin = new StringBuilder();
