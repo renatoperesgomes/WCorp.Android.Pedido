@@ -83,16 +83,25 @@ public class GerarBitmap {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         Date data = new Date();
         String dataFomatada = simpleDateFormat.format(data);
-        double valorMaisPorcentagem = pedidoAtual.retorno.valorTotalPedido * 1.1;
         ReceiptBuilder receipt = new ReceiptBuilder(1200);
-        receipt.setMargin(30, 20).
+        receipt.setMargin(10, 10).
                 setAlign(Paint.Align.CENTER).
                 setColor(Color.BLACK).
                 setTypeface(context, "fonts/RobotoMono-Bold.ttf").
                 setTextSize(100).
                 addText(empresa.nomeFantasia).
                 addBlankSpace(30).
-                setTextSize(60).
+                setTextSize(50).
+                addText(empresa.logradouro).
+                addText("CEP: " + empresa.cep + " - " + empresa.bairro +  " - " + empresa.inscricaoEstadual).
+                setAlign(Paint.Align.LEFT).
+                addText("CPNJ: " + empresa.cnpj).
+                addText("IE: " + empresa.inscricaoEstadual).
+                addText("IM: " + empresa.inscricaoMunicipal).
+                setAlign(Paint.Align.LEFT).
+                addLine().
+                addBlankSpace(10).
+                setTextSize(50).
                 setAlign(Paint.Align.LEFT).
                 setTypeface(context, "fonts/RobotoMono-Bold.ttf");
                 if(isCpf){
@@ -100,7 +109,7 @@ public class GerarBitmap {
                 }else{
                     receipt.addText("CNPJ: " + nmrCpfCnpj);
                 }
-                receipt.setTextSize(60).
+                receipt.setTextSize(50).
                 setTypeface(context, "fonts/RobotoMono-Regular.ttf").
                 setAlign(Paint.Align.LEFT).
                 addText(dataFomatada, false).
@@ -124,7 +133,7 @@ public class GerarBitmap {
                     addText(pedido.quantidade + " x " + pedido.material.nome, false).
                     setAlign(Paint.Align.RIGHT).
                     addText(formatNumero.format(pedido.valorUnitario)).
-                    addBlankSpace(30);
+                    addBlankSpace(15);
         }
         receipt.
                 setAlign(Paint.Align.LEFT).
@@ -134,12 +143,7 @@ public class GerarBitmap {
                 setTypeface(context, "fonts/RobotoMono-Regular.ttf").
                 addText("VALOR TOTAL", false).
                 setAlign(Paint.Align.RIGHT).
-                addText(formatNumero.format(pedidoAtual.retorno.valorTotalPedido)).
-                addParagraph().
-                setAlign(Paint.Align.LEFT).
-                addText("VALOR C/ 10%", false).
-                setAlign(Paint.Align.RIGHT).
-                addText(formatNumero.format(valorMaisPorcentagem));
+                addText(formatNumero.format(pedidoAtual.retorno.valorTotalPedido));
         return receipt.build();
     }
 }

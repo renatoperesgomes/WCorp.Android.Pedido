@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 EmpresaSelecionada.id = Integer.parseInt(String.valueOf(id));
-                EmpresaSelecionada.nomeFantasia = parent.getSelectedView().getTag().toString();
+                EmpresaSelecionada = (Empresa) view.getTag();
                 idEmpresa = String.valueOf(id);
             }
             @Override
