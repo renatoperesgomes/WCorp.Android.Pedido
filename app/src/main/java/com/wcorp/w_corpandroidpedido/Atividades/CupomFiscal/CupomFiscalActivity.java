@@ -136,9 +136,6 @@ public class CupomFiscalActivity extends AppCompatActivity {
             if(rdbCnpj.isChecked())
                 isCpf = false;
 
-            Bitmap bitmap = GerarBitmap.GerarBitmapCupomFiscal(context, nmrCpfCnpj, isCpf);
-            Util.SalvarImagemEmExternalStorage(context, bitmap, "receiptCupomFiscal.bmp");
-
             Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
             intent.putExtra(CUPOM_FISCAL, true);
 

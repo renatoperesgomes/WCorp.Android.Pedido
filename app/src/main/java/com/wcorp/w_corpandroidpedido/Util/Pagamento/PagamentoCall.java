@@ -5,6 +5,7 @@ import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.Mostr
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecutors;
@@ -19,6 +20,8 @@ import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.Service.CupomFiscal.CupomFiscalService;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.PedidoService;
+import com.wcorp.w_corpandroidpedido.Util.Impressora.GerarBitmap;
+import com.wcorp.w_corpandroidpedido.Util.Util;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -40,6 +43,7 @@ public class PagamentoCall {
     DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private PlugPag plugPag;
     int countPassword;
+    boolean imprimirCupomFiscal = false;
     public void EfetuarPagamento(Context context, InfoPagamento infoPagamento, boolean isCupomFiscal) {
         executor.execute(() ->{
             PlugPagPaymentData paymentData = dadosPagamento(infoPagamento);
@@ -92,15 +96,22 @@ public class PagamentoCall {
         });
     }
 
-    private void salvarCupomFiscal(Context context, InfoPagamento infoPagamento) {
+    private void gerarCupomFiscal(Context context, InfoPagamento infoPagamento) {
         CupomFiscalService cupomFiscalService = new CupomFiscalService();
-        executor.execute(() ->{
-            Future<CupomFiscal> cupomFiscal = cupomFiscalService.EmitirCupomFiscal(infoPagamento.Bearer, infoPagamento.IdPedido, infoPagamento.Cpf, infoPagamento.Cnpj);
-            try{
+        ListenableFuture<CupomFiscal> cupomFiscal = cupomFiscalService.EmitirCupomFiscal(infoPagamento.Bearer, infoPagamento.IdPedido, infoPagamento.Cpf, infoPagamento.Cnpj);
+        cupomFiscal.addListener(() -> {
+            try {
                 CupomFiscal retornoCupomFiscal = cupomFiscal.get();
-                if(retornoCupomFiscal.validated){
-                    imprimirCupomFiscal();
-                }else if (retornoCupomFiscal.hasInconsistence){
+                if (retornoCupomFiscal.validated) {
+                    Bitmap bitmap = GerarBitmap.GerarBitmapCupomFiscal(context, retornoCupomFiscal);
+
+                    imprimirCupomFiscal = Util.SalvarImagemEmExternalStorage(context, bitmap, "receiptCupomFiscal.bmp");
+
+                    if (imprimirCupomFiscal) {
+                        imprimirCupomFiscal();
+                    }
+
+                } else if (retornoCupomFiscal.hasInconsistence) {
                     StringBuilder inconsistencesJoin = new StringBuilder();
                     for (Inconsistences inconsistences :
                             retornoCupomFiscal.inconsistences) {
@@ -108,11 +119,12 @@ public class PagamentoCall {
                     }
                     MostrarDialog(context, String.valueOf(inconsistencesJoin));
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Erro: " + e.getMessage());
             }
-        });
+        }, MoreExecutors.directExecutor());
     }
+
     private void imprimirCupomFiscal() {
         executor.execute(() ->{
             // Cria objeto com informações da impressão
@@ -135,7 +147,7 @@ public class PagamentoCall {
                     double valorRestantePago = retornaPedido.retorno.valorTotalPedido - retornaPedido.retorno.valorTotalPago;
                     if (valorRestantePago == 0) {
                         if(isCupomFiscal) {
-                            salvarCupomFiscal(context, infoPagamento);
+                            gerarCupomFiscal(context, infoPagamento);
                         }
                         dadosComanda.SetPedido(null);
                         Intent intent = new Intent(context, PesquisarPedidoActivity.class);

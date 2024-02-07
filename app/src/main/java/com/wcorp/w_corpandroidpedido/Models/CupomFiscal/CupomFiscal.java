@@ -2,6 +2,9 @@ package com.wcorp.w_corpandroidpedido.Models.CupomFiscal;
 
 import com.wcorp.w_corpandroidpedido.Models.BaseApi;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class CupomFiscal extends BaseApi {
         public Retorno retorno;
         public class Retorno {
@@ -15,7 +18,7 @@ public class CupomFiscal extends BaseApi {
 
             public int numero;
 
-            public String dataHoraEmissao;
+            public Date dataHoraEmissao;
 
             public String destinatarioNome;
 
@@ -95,6 +98,7 @@ public class CupomFiscal extends BaseApi {
 
             public int tipoCriacaoCupomFiscalEnum;
 
+            public ArrayList<CupomFiscalItem> listCupomFiscalItem;
             public int rowCheckId;
         }
 }

@@ -40,5 +40,6 @@ public class Empresa  {
     public int perfilBloco000SpedEnum;
     public int atividadeBloco000SpedEnum;
     public int rowCheckId;
+    public Municipio municipio;
 }
 

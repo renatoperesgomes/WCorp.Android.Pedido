@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 import kotlin.Triple;
 
 public class CupomFiscalService {
-    public Future<CupomFiscal> EmitirCupomFiscal(String bearer, Integer idPedido, String cpf, String cnpj) {
+    public ListenableFuture<CupomFiscal> EmitirCupomFiscal(String bearer, Integer idPedido, String cpf, String cnpj) {
         ApiCall<CupomFiscal> apiCall = new ApiCall<>(CupomFiscal.class);
         ArrayList<Triple<String,String, Boolean>> listParametro = new ArrayList<Triple<String, String, Boolean>>();
 
