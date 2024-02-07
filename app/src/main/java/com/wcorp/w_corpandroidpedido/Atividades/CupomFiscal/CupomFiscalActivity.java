@@ -1,23 +1,19 @@
 package com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.TipoPagamentoPedidoActivity;
 import com.wcorp.w_corpandroidpedido.R;
-import com.wcorp.w_corpandroidpedido.Util.Impressora.GerarBitmap;
-import com.wcorp.w_corpandroidpedido.Util.Util;
 
 public class CupomFiscalActivity extends AppCompatActivity {
 

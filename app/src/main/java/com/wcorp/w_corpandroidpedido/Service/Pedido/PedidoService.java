@@ -1,7 +1,6 @@
 package com.wcorp.w_corpandroidpedido.Service.Pedido;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.gson.Gson;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.Util.ApiCall;
 

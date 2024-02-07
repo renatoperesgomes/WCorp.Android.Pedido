@@ -14,7 +14,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PagamentoPedidoActivity;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
-import com.wcorp.w_corpandroidpedido.Models.BaseApi;
 import com.wcorp.w_corpandroidpedido.Models.CupomFiscal.CupomFiscal;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
@@ -64,7 +63,6 @@ public class PagamentoCall {
                     public void onSuccess(@NonNull PlugPagTransactionResult plugPagTransactionResult) {
                         FecharDialog();
                         pagarPedido(context, infoPagamento, isCupomFiscal);
-
                     }
 
                     @Override
