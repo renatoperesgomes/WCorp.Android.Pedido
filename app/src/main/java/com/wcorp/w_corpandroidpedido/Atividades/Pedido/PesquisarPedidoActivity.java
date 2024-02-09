@@ -53,6 +53,19 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
 
         String bearer = getBearer.blockingFirst();
 
+        Intent intent = getIntent();
+
+        String messageError = intent.getStringExtra("MESSAGE");
+
+        if(messageError != null){
+            AlertDialog.Builder alert = new AlertDialog.Builder(PesquisarPedidoActivity.this);
+            alert.setTitle("Atenção");
+            alert.setMessage(messageError);
+            alert.setCancelable(false);
+            alert.setPositiveButton("OK", null);
+            alert.show();
+        }
+
         CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
         CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
