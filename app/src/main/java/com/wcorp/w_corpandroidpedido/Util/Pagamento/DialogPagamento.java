@@ -19,11 +19,11 @@ public class DialogPagamento {
         }
     }
     public static void MostrarDialog(Context context, String message) {
-        MostrarDialog(context, message, 0, false);
+        MostrarDialog(context, message, 0);
     }
 
-    public static void MostrarDialog(Context context, String message, int resourceMessage, Boolean isCancelable) {
-        sDialog.setCancelable(isCancelable);
+    public static void MostrarDialog(Context context, String message, int resourceMessage) {
+        sDialog.setCancelable(false);
         sDialog.setMessage(message == null ? context.getString(resourceMessage) : message);
 
         sDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "FECHAR", new DialogInterface.OnClickListener() {
