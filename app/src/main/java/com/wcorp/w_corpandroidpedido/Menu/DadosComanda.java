@@ -9,7 +9,6 @@ public class DadosComanda {
     private static Pedido pedidoAtual;
     private String numeroComanda;
     private double valorComanda;
-    private double valorTotalPago;
     public DadosComanda() {}
     public static DadosComanda GetDadosComanda() {
         if (dadosComanda == null) {
@@ -27,13 +26,14 @@ public class DadosComanda {
             DadosComanda.pedidoAtual = null;
         }else{
             DadosComanda.pedidoAtual = pedidoAtual;
-            this.numeroComanda = pedidoAtual.retorno.comanda;
 
+            double valorTotalPago = 0;
             for (PedidoCaixaItem pedidoCaixaItem:
                  pedidoAtual.retorno.listPedidoCaixaItem) {
                 valorTotalPago += pedidoCaixaItem.valorCartao + pedidoCaixaItem.valorPix;
             }
 
+            this.numeroComanda = pedidoAtual.retorno.comanda;
             this.valorComanda = pedidoAtual.retorno.valorTotalPedido - valorTotalPago;
         }
     }
