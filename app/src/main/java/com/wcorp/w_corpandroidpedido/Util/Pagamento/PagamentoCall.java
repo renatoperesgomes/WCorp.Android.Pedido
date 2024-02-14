@@ -1,13 +1,11 @@
 package com.wcorp.w_corpandroidpedido.Util.Pagamento;
 
-import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.FecharDialog;
 import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.MostrarDialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Window;
@@ -18,7 +16,6 @@ import androidx.test.espresso.core.internal.deps.guava.util.concurrent.MoreExecu
 import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PagamentoPedidoActivity;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.PesquisarPedidoActivity;
-
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Models.CupomFiscal.CupomFiscal;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;

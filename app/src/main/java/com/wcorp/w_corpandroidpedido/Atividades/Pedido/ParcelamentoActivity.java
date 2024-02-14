@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.R;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.ParcelamentoAdapter;
 
@@ -21,6 +22,7 @@ public class ParcelamentoActivity extends AppCompatActivity {
     private RecyclerView getRecycleParcelamento;
     private int valorTotal;
     private int tipoCredito;
+    private boolean isCupomFiscal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,7 @@ public class ParcelamentoActivity extends AppCompatActivity {
 
         valorTotal =  intent.getIntExtra(TipoCreditoActivity.VALORTOTAL, 0);
         tipoCredito = intent.getIntExtra(TipoCreditoActivity.TIPOPARCELA, 0);
+        isCupomFiscal = intent.getBooleanExtra(CupomFiscalActivity.CUPOM_FISCAL, false);
 
         for(double i = 2; i <= 12; i++){
             double valorPagoConvertido = valorTotal / 100.00;
@@ -47,6 +50,6 @@ public class ParcelamentoActivity extends AppCompatActivity {
         getRecycleParcelamento.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         getRecycleParcelamento.setHasFixedSize(true);
 
-        getRecycleParcelamento.setAdapter(new ParcelamentoAdapter(context, valorTotal , tipoCredito, valoresParcelados));
+        getRecycleParcelamento.setAdapter(new ParcelamentoAdapter(context,isCupomFiscal, valorTotal , tipoCredito, valoresParcelados));
     }
 }

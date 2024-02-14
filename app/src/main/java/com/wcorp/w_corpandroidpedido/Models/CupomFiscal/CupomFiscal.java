@@ -3,7 +3,6 @@ package com.wcorp.w_corpandroidpedido.Models.CupomFiscal;
 import com.wcorp.w_corpandroidpedido.Models.BaseApi;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class CupomFiscal extends BaseApi {
         public Retorno retorno;

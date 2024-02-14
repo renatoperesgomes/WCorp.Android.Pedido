@@ -40,7 +40,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
     private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     public static final String VALORTOTAL = "com.example.w_corpandroidpedido.VALORTOTAL";
-    private boolean isCupomFiscal;
+    private static boolean isCupomFiscal;
     private String CpfString;
     private String CnpjString;
     private EditText txtValorPago;
@@ -68,7 +68,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         isCupomFiscal = intent.getBooleanExtra(CupomFiscalActivity.CUPOM_FISCAL, false);
         CpfString = intent.getStringExtra(CupomFiscalActivity.CUPOM_CPF);
         CnpjString = intent.getStringExtra(CupomFiscalActivity.CUPOM_CNPJ);
-        isParcelado = intent.getBooleanExtra("isParcelado", false);
+        isParcelado = intent.getBooleanExtra(TipoCreditoActivity.ISPARCELADO, false);
 
         txtValorPago = findViewById(R.id.txtValorPago);
         txtValorPago.setText(formatNumero.format(dadosComanda.GetValorComanda()));
@@ -94,11 +94,11 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                                  WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             int tipoPagamento = intent.getIntExtra("tipoPagamento", 0);
-            int valorTotal = intent.getIntExtra("valorTotal", 0);
-            int tipoParcela = intent.getIntExtra("tipoParcela", 0);
+            int valorTotal = intent.getIntExtra(TipoCreditoActivity.VALORTOTAL, 0);
+            int tipoParcela = intent.getIntExtra(TipoCreditoActivity.TIPOPARCELA, 0);
             int nmrParcela = intent.getIntExtra("nmrParcela", 0);
             txtValorPago.setText(String.valueOf(valorTotal));
-            chamarPagamento(this,tipoPagamento,tipoParcela ,valorTotal, nmrParcela);
+            chamarPagamento(this, tipoPagamento, tipoParcela, valorTotal, nmrParcela);
         }
     }
 
@@ -114,11 +114,11 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         CardView btnPix = findViewById(R.id.cardPix);
 
         btnDebito.setOnClickListener(btnCardView -> {
-            chamarPagamento(context, btnCardView, PlugPag.TYPE_DEBITO, valorPago);
+            chamarPagamento(context, PlugPag.TYPE_DEBITO, PlugPag.INSTALLMENT_TYPE_A_VISTA, valorPago, 1);
         });
 
         btnCredito.setOnClickListener(btnCardView -> {
-            chamarPagamento(context , btnCardView, PlugPag.TYPE_CREDITO, valorPago);
+            chamarPagamento(context, PlugPag.TYPE_CREDITO, PlugPag.INSTALLMENT_TYPE_A_VISTA, valorPago,1);
         });
 
         btnCreditoParcelado.setOnClickListener(btnCardView -> {
@@ -126,7 +126,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         });
 
         btnPix.setOnClickListener(btnCardView -> {
-            chamarPagamento(context, btnCardView, PlugPag.TYPE_PIX, valorPago);
+            chamarPagamento(context, PlugPag.TYPE_PIX, PlugPag.INSTALLMENT_TYPE_A_VISTA, valorPago,1);
         });
     }
     private void addListenerTextoValor(){
@@ -166,32 +166,13 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
     private void startActivityParcelamento(Context context){
         Intent intent = new Intent(context, TipoCreditoActivity.class);
         intent.putExtra(VALORTOTAL, valorPago);
+        intent.putExtra(CupomFiscalActivity.CUPOM_FISCAL, isCupomFiscal);
         context.startActivity(intent);
     }
-    private void chamarPagamento(Context context, View btnClicado, int tipoPagamento, int valorPago) {
-        btnClicado.setClickable(false);
-        PagamentoCall pagamentoCall = new PagamentoCall();
-        InfoPagamento infoPagamento = new InfoPagamento();
-
-        infoPagamento.Bearer = bearer;
-        infoPagamento.IdPedido = dadosComanda.GetPedido().retorno.id;
-        infoPagamento.ValorPagoDouble = valorPagoDouble;
-        infoPagamento.TipoPagamento = tipoPagamento;
-        infoPagamento.ValorPago = valorPago;
-        infoPagamento.TipoParcela = PlugPag.INSTALLMENT_TYPE_A_VISTA;
-        infoPagamento.NumeroParcela = 1;
-        infoPagamento.Cpf = CpfString;
-        infoPagamento.Cnpj = CnpjString;
-
-        pagamentoCall.EfetuarPagamento(context, infoPagamento, isCupomFiscal);
-
+    private void chamarPagamento(Context context, int tipoPagamento, int tipoParcela ,int valorPago, int nmrParcela) {
         IniciarDialog(context, firstOpen);
         MostrarDialog(context, "Aguarde...");
-        firstOpen = false;
-        btnClicado.setClickable(true);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-    private void chamarPagamento(Context context, int tipoPagamento, int tipoParcela ,int valorPago, int nmrParcela) {
+
         PagamentoCall pagamentoCall = new PagamentoCall();
         InfoPagamento infoPagamento = new InfoPagamento();
 
@@ -207,8 +188,6 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
 
         pagamentoCall.EfetuarPagamento(context, infoPagamento, isCupomFiscal);
 
-        IniciarDialog(context, firstOpen);
-        MostrarDialog(context, "Aguarde...");
         firstOpen = false;
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
