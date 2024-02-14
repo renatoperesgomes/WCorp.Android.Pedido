@@ -24,5 +24,6 @@ public class Pedido extends BaseApi{
                 public String comanda;
                 public String dataFechamento;
                 public ArrayList<PedidoMaterialItem> listPedidoMaterialItem;
+                public ArrayList<PedidoCaixaItem> listPedidoCaixaItem;
         }
 }

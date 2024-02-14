@@ -22,6 +22,7 @@ public class CupomFiscalActivity extends AppCompatActivity {
     private EditText txtCpfCnpj;
     private RadioButton rdbCpf;
     private RadioButton rdbCnpj;
+    private RadioButton rdbNaoInformar;
     public static final String CUPOM_FISCAL = "com.example.w_corpandroidpedido.CUPOMFISCAL";
     public static final String CUPOM_CPF = "com.example.w_corpandroidpedido.CUPOMCPF";
     public static final String CUPOM_CNPJ = "com.example.w_corpandroidpedido.CUPOMCNPJ";
@@ -38,6 +39,7 @@ public class CupomFiscalActivity extends AppCompatActivity {
         rdbCpf = findViewById(R.id.rdbCpf);
         rdbCpf.setChecked(true);
         rdbCnpj = findViewById(R.id.rdbCnpj);
+        rdbNaoInformar = findViewById(R.id.rdbNaoInformado);
 
         addMascaraDoc();
         btnEmitirCupom.setOnClickListener(view ->{
@@ -126,7 +128,12 @@ public class CupomFiscalActivity extends AppCompatActivity {
             Toast.makeText(context, "Por favor, coloque um CPF válido!", Toast.LENGTH_SHORT).show();
         }else if (rdbCnpj.isChecked() && tirarMascaraCpfCnpj(getTextoCpfCnpj).length() != 14) {
             Toast.makeText(context, "Por favor, coloque um CNPJ válido!", Toast.LENGTH_SHORT).show();
-        }else{
+        }else if(rdbNaoInformar.isChecked()){
+            Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
+            intent.putExtra(CUPOM_FISCAL, true);
+            context.startActivity(intent);
+        }
+        else{
             String nmrCpfCnpj = txtCpfCnpj.getText().toString();
 
             if(rdbCnpj.isChecked())

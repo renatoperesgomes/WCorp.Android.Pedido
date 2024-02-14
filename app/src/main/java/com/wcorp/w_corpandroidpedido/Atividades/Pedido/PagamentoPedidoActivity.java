@@ -118,10 +118,10 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
                     BaseApi parametroCupomFiscal = buscarParametroCupomFiscal.get();
                     runOnUiThread(() ->{
                         if(parametroCupomFiscal.validated){
-                            abrirDialogCupomFiscal(this);
-                        }else{
-                            Intent intent = new Intent(this , TipoPagamentoPedidoActivity.class);
+                            Intent intent = new Intent(this, CupomFiscalActivity.class);
                             this.startActivity(intent);
+                        }else{
+                            abrirDialogCupomFiscal(this);
                         }
                     });
                 }catch (Exception e){

@@ -1,6 +1,7 @@
 package com.wcorp.w_corpandroidpedido.Menu;
 
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
+import com.wcorp.w_corpandroidpedido.Models.Pedido.PedidoCaixaItem;
 
 
 public class DadosComanda {
@@ -8,6 +9,7 @@ public class DadosComanda {
     private static Pedido pedidoAtual;
     private String numeroComanda;
     private double valorComanda;
+    private double valorTotalPago;
     public DadosComanda() {}
     public static DadosComanda GetDadosComanda() {
         if (dadosComanda == null) {
@@ -26,7 +28,13 @@ public class DadosComanda {
         }else{
             DadosComanda.pedidoAtual = pedidoAtual;
             this.numeroComanda = pedidoAtual.retorno.comanda;
-            this.valorComanda = pedidoAtual.retorno.valorTotalPedido - pedidoAtual.retorno.valorTotalPago;
+
+            for (PedidoCaixaItem pedidoCaixaItem:
+                 pedidoAtual.retorno.listPedidoCaixaItem) {
+                valorTotalPago += pedidoCaixaItem.valorCartao + pedidoCaixaItem.valorPix;
+            }
+
+            this.valorComanda = pedidoAtual.retorno.valorTotalPedido - valorTotalPago;
         }
     }
 

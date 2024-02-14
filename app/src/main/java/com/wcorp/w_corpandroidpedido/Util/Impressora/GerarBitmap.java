@@ -13,8 +13,10 @@ import com.wcorp.w_corpandroidpedido.Models.CupomFiscal.CupomFiscalItem;
 import com.wcorp.w_corpandroidpedido.Models.Empresa.Empresa;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
+import com.wcorp.w_corpandroidpedido.Util.Util;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -82,8 +84,8 @@ public class GerarBitmap {
 
     public static Bitmap GerarBitmapCupomFiscal(Context context, CupomFiscal cupomFiscal){
         double totalDesconto = 0;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-        String dataFomatada = simpleDateFormat.format(cupomFiscal.retorno.dataHoraEmissao);
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+
         ReceiptBuilder receipt = new ReceiptBuilder(1200);
         receipt.setMargin(10, 10).
                 setAlign(Paint.Align.CENTER).
@@ -104,14 +106,16 @@ public class GerarBitmap {
                 setTextSize(50).
                 addText("Cupom Fiscal Eletrônico - SAT").
                 addText("No.: " + cupomFiscal.retorno.numero).
-                addText(dataFomatada).
+                addText(Util.ConversorData(cupomFiscal.retorno.dataHoraEmissao)).
                 addBlankSpace(30).
                 setTextSize(50).
                 setTypeface(context, "fonts/RobotoMono-Bold.ttf");
-                if(!cupomFiscal.retorno.destinatarioCpf.isEmpty()){
+                if(cupomFiscal.retorno.destinatarioCpf != null){
                     receipt.addText("CPF: " + cupomFiscal.retorno.destinatarioCpf);
-                }else if(!cupomFiscal.retorno.destinatarioCnpj.isEmpty()){
+                }else if(cupomFiscal.retorno.destinatarioCnpj != null){
                     receipt.addText("CNPJ: " + cupomFiscal.retorno.destinatarioCnpj);
+                }else{
+                    receipt.addText("Consumidor não informado");
                 }
                 receipt.
                 addBlankSpace(20).

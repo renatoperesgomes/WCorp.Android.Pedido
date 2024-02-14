@@ -19,6 +19,7 @@ import okhttp3.HttpUrl;
 
 
 public class ApiCall<ApiModel> {
+    //static String baseUrl = "http://dashboard.wcorp.com.br:5000/";
     static String baseUrl = "http://192.168.2.189:45455/";
     private Type modelType;
     private Executor executor = Executors.newSingleThreadExecutor();

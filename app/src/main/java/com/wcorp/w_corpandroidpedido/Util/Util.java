@@ -9,6 +9,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Util {
     public static String ConverteJsonEmString(BufferedReader bufferedReader) throws IOException{
@@ -42,6 +46,19 @@ public class Util {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static String ConversorData(String inputDateString) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+
+        try {
+            Date date = inputFormat.parse(inputDateString);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ""; // Handle the parsing exception as needed
         }
     }
 }
