@@ -123,15 +123,14 @@ public class CupomFiscalActivity extends AppCompatActivity {
     }
     private void criarReceiptCupomFiscal(Context context) {
 
+
         String getTextoCpfCnpj = edtTextCpfCnpj.getText().toString();
 
         if (rdbCpf.isChecked() && tirarMascaraCpfCnpj(getTextoCpfCnpj).length() != 11) {
             Toast.makeText(context, "Por favor, coloque um CPF válido!", Toast.LENGTH_SHORT).show();
         }else if (rdbCnpj.isChecked() && tirarMascaraCpfCnpj(getTextoCpfCnpj).length() != 14) {
             Toast.makeText(context, "Por favor, coloque um CNPJ válido!", Toast.LENGTH_SHORT).show();
-        }
-
-        if(rdbNaoInformar.isChecked()){
+        }else if(rdbNaoInformar.isChecked()){
             Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
             intent.putExtra(CUPOM_FISCAL, true);
             context.startActivity(intent);
