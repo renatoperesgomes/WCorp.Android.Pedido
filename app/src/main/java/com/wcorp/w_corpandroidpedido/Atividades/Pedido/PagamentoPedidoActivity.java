@@ -192,7 +192,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
     }
 
     private void imprimirArquivo(Context context) {
-        Bitmap bitmap = GerarBitmap.GerarBitmap(context);
+        Bitmap bitmap = GerarBitmap.GerarBitmapPedido(context);
         executor.execute(() -> {
             // Cria a referência do PlugPag
             PlugPag plugPag = new PlugPag(context);

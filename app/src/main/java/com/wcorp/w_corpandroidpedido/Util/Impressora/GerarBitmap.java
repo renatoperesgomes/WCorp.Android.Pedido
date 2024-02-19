@@ -24,12 +24,11 @@ public class GerarBitmap {
     private static DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private static Empresa empresa = MainActivity.EmpresaSelecionada();
     private static NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-    public static Bitmap GerarBitmap(Context context){
+    public static Bitmap GerarBitmapPedido(Context context){
         Pedido pedidoAtual = dadosComanda.GetPedido();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         Date data = new Date();
         String dataFomatada = simpleDateFormat.format(data);
-        double valorMaisPorcentagem = pedidoAtual.retorno.valorTotalPedido * 1.1;
         ReceiptBuilder receipt = new ReceiptBuilder(1200);
         receipt.setMargin(30, 20).
                 setAlign(Paint.Align.CENTER).
@@ -72,12 +71,7 @@ public class GerarBitmap {
                 setTypeface(context, "fonts/RobotoMono-Regular.ttf").
                 addText("VALOR TOTAL", false).
                 setAlign(Paint.Align.RIGHT).
-                addText(formatNumero.format(pedidoAtual.retorno.valorTotalPedido)).
-                addParagraph().
-                setAlign(Paint.Align.LEFT).
-                addText("VALOR C/ 10%", false).
-                setAlign(Paint.Align.RIGHT).
-                addText(formatNumero.format(valorMaisPorcentagem));
+                addText(formatNumero.format(pedidoAtual.retorno.valorTotalPedido));
         return receipt.build();
     }
 
