@@ -2,8 +2,10 @@ package com.wcorp.w_corpandroidpedido.Util.Impressora;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Base64;
 
 import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
 import com.wcorp.w_corpandroidpedido.MainActivity;
@@ -15,6 +17,7 @@ import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 import com.wcorp.w_corpandroidpedido.Util.Util;
 
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -77,8 +80,11 @@ public class GerarBitmap {
 
     public static Bitmap GerarBitmapCupomFiscal(Context context, CupomFiscal cupomFiscal){
         double totalDesconto = 0;
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-
+        String qrCodeData = "35240258316217000195590010210000254843420947|20240219163138|68.30||QCQSkAnxyPRxInpevI31kAE4dRMBVHB99FEI05k4xWrDkKM6r/y1c5dR5QSyLGfUgYOV76WWTkvzRGv/wBQwdIXAW7efyUgMWZYhMq7z+sXZ77cwRMXPjbkRJjwIu2uyc79Zbdv4a6wnObM2mQ3IMeyxTzdsQ285f/nBehzv59PTGVXuZN1hZ/2GUCDTb9g2uyt9WJ7ZRtFuX2Hryv6W1Gf22bJSzcS8Em4gYmLAr8f1pI5HM3+0iwPIOhxhXhb4hLEr9u/NGpAN+1h7lz2X8am5n/TSIaamFt33H23Khb7yuDhEWpNbMeoX7Kgp1Kd9OV8gwgxMcA2+cjoRPdljew==";
+        //String qrCodeData = cupomFiscal.retorno.assinaturaQrCode;
+        int width = 900;
+        int height = 900;
+        Bitmap qrCodeBitmap = Util.gerarQRCodeBitmap(qrCodeData, width, height);
         ReceiptBuilder receipt = new ReceiptBuilder(1200);
         receipt.setMargin(10, 10).
                 setAlign(Paint.Align.CENTER).
@@ -154,132 +160,10 @@ public class GerarBitmap {
         receipt.
                 //addText(cupomFiscal.retorno.chaveAcessoCfe.replace("CFe", "")).
                 setAlign(Paint.Align.CENTER).
-                //addImage(cupomFiscal.retorno.assinaturaQrCode).
+                addImage(qrCodeBitmap).
                 addBlankSpace(30).
                 addText("Software de Gestão WCorp").
                 addText("www.waveconcept.com.br");
         return receipt.build();
     }
 }
-
-
-//    //Cria a classe da impressora
-//    W_Corp.Relatorio.ImpressoraNaoFiscal.Impressora impressora = W_Corp.Relatorio.ImpressoraNaoFiscal.Impressora.ConfigurarImpressora(empresa, dbContext);
-//
-//            impressora.IniciaPorta();
-//
-//                    ticket = impressora.ImprimirCabecalho(empresa) + "\n";
-//
-//                    ticket += impressora.TagAbrirCentralizar() + impressora.TagAbrirCondensar();
-//                    ticket += impressora.CriarSeparador() + "\n";
-//                    ticket += impressora.TagAbrirNegrito() + "Cupom Fiscal Eletrônico - SAT" + impressora.TagFecharNegrito() + "\n";
-//                    ticket += impressora.TagAbrirNegrito() + "No.: " + cupomFiscal.Numero.ToString() + impressora.TagFecharNegrito() + "\n";
-//                    ticket += cupomFiscal.DataHoraEmissao.ToString("dd/MM/yy HH:mm:ss") + "\n";
-//
-//                    ticket += impressora.CriarSeparador() + "\n";
-//
-//                    if (!String.IsNullOrEmpty(cupomFiscal.DestinatarioCPF))
-//                    ticket += "CPF do Consumidor:" + cupomFiscal.DestinatarioCPF + "\n";
-//                    else if (!String.IsNullOrEmpty(cupomFiscal.DestinatarioCNPJ))
-//                    ticket += "CNPJ do Consumidor:" + cupomFiscal.DestinatarioCNPJ + "\n";
-//                    else
-//                    ticket += "CPF/CNPJ do Consumidor: Não Informado\n";
-//
-//                    ticket += impressora.TagFecharCentralizar() + impressora.TagFecharCondensar() + impressora.TagAbrirCondensar();
-//                    ticket += impressora.TagAbrirCentralizar() + impressora.CriarSeparador() + impressora.TagFecharCentralizar() + "\n";
-//
-//                    ticket += "Código       Descrição do Item\n";
-//                    ticket += "                                Vl.Unit      Qtde      Vl.Total\n";
-//                    ticket += impressora.TagAbrirCentralizar() + impressora.CriarSeparador() + impressora.TagFecharCentralizar() + "\n";
-//
-//                    impressora.ImprimirTextoTag(ticket);
-//                    ticket = String.Empty;
-//                    Decimal totalDesconto = 0;
-//
-//                    foreach (Persistencia.CupomFiscalItem cupomFiscalItem in cupomFiscal.CupomFiscalItem)
-//                    {
-//                    totalDesconto += cupomFiscalItem.ValorDesconto;
-//                    ticket += cupomFiscalItem.Material.Codigo.PadRight(15, ' ') + cupomFiscalItem.Material.Nome.PadRight(8, ' ') + "\n";
-//                    ticket += "                                " + cupomFiscalItem.ValorUnitario.ToString(casasDecimais).PadLeft(7, ' ') + "   " + cupomFiscalItem.Quantidade.ToString().PadLeft(8, ' ') + "  " + Math.Round(cupomFiscalItem.Quantidade * cupomFiscalItem.ValorUnitario, 2).ToString().PadLeft(9, ' ') + "\n";
-//
-//                    foreach (Persistencia.CupomFiscalMaterialLoteEstoqueItem cupomFiscalMaterialLoteEstoqueItem in cupomFiscalItem.CupomFiscalMaterialLoteEstoqueItem)
-//                    {
-//                    if (!string.IsNullOrEmpty(cupomFiscalMaterialLoteEstoqueItem.MaterialLoteEstoque.NumeroLote))
-//                    {
-//                    ticket += cupomFiscalMaterialLoteEstoqueItem.MaterialLoteEstoque.NumeroLote + "\n";
-//                    }
-//                    }
-//
-//                    impressora.ImprimirTextoTag(ticket);
-//                    ticket = String.Empty;
-//                    }
-//
-//                    ticket += impressora.TagAbrirCentralizar() + impressora.CriarSeparador() + impressora.TagFecharCentralizar() + "\n";
-//
-//                    ticket += "DESCONTOS (-R$): ".PadRight(20, ' ') + totalDesconto.ToString() + "\n";
-//                    ticket += "VALOR TOTAL (R$): ".PadRight(20, ' ') + cupomFiscal.TotalNotaFiscal.ToString() + "\n";
-//
-//                    Decimal totalPago = 0M;
-//
-//                    List<Persistencia.PedidoCaixaItem> listPedidoCaixaItem = new List<Persistencia.PedidoCaixaItem>();
-//
-//        if (cupomFiscal.Pedido != null)
-//        listPedidoCaixaItem = cupomFiscal.Pedido.PedidoCaixaItem.ToList();
-//        else if (cupomFiscal.OrdemServico != null)
-//        listPedidoCaixaItem = cupomFiscal.OrdemServico.PedidoCaixaItem.ToList();
-//
-//        foreach (Persistencia.PedidoCaixaItem pedidoCaixaItem in listPedidoCaixaItem)
-//        {
-//        if (pedidoCaixaItem.ValorDinheiro > 0)
-//        {
-//        ticket += "DINHEIRO (R$): ".PadRight(20, ' ') + pedidoCaixaItem.ValorDinheiro.ToString() + "\n";
-//        totalPago += pedidoCaixaItem.ValorDinheiro;
-//        }
-//        if (pedidoCaixaItem.ValorCartao > 0)
-//        {
-//        ticket += "CARTÃO (R$): ".PadRight(20, ' ') + pedidoCaixaItem.ValorCartao.ToString() + "\n";
-//        totalPago += pedidoCaixaItem.ValorCartao;
-//        }
-//        if (pedidoCaixaItem.ValorCheque > 0)
-//        {
-//        ticket += "CHEQUE (R$): ".PadRight(20, ' ') + pedidoCaixaItem.ValorCheque.ToString() + "\n";
-//        totalPago += pedidoCaixaItem.ValorCheque;
-//        }
-//        if (pedidoCaixaItem.ValorCredito > 0)
-//        {
-//        ticket += "OUTROS (R$): ".PadRight(20, ' ') + pedidoCaixaItem.ValorCredito.ToString() + "\n";
-//        totalPago += pedidoCaixaItem.ValorCredito;
-//        }
-//        if (pedidoCaixaItem.ValorTroco > 0)
-//        {
-//        ticket += "TROCO (R$): ".PadRight(20, ' ') + pedidoCaixaItem.ValorTroco.ToString() + "\n";
-//        totalPago -= pedidoCaixaItem.ValorTroco;
-//        }
-//        }
-//
-//        if (cupomFiscal.TotalNotaFiscal - totalPago > 0)
-//        {
-//        ticket += "OUTROS (R$): ".PadRight(20, ' ') + (cupomFiscal.TotalNotaFiscal - totalPago).ToString() + "\n";
-//        }
-//
-//        ticket += impressora.TagAbrirCentralizar() + impressora.CriarSeparador() + impressora.TagFecharCentralizar() + "\n";
-//
-//        if (!String.IsNullOrEmpty(cupomFiscal.Observacao))
-//        {
-//        ticket += cupomFiscal.Observacao + "\n";
-//        ticket += impressora.TagAbrirCentralizar() + impressora.CriarSeparador() + impressora.TagFecharCentralizar() + "\n";
-//        }
-//
-//        ticket += impressora.TagAbrirCentralizar() + cupomFiscal.ChaveAcessoCFe.Replace("CFe", "") + impressora.TagFecharCentralizar();
-//        impressora.ImprimirTextoTag(ticket);
-//
-//        impressora.ImprimirQrCode(cupomFiscal.AssinaturaQrCode);
-//
-//        ticket = impressora.TagAbrirCentralizar() + impressora.CriarSeparador() + impressora.TagFecharCentralizar() + "\n";
-//        ticket += impressora.TagAbrirCentralizar() + "Software de Gestão WCorp" + impressora.TagFecharCentralizar() + "\n";
-//        ticket += impressora.TagAbrirCentralizar() + "www.waveconcept.com.br" + impressora.TagFecharCentralizar();
-//        impressora.ImprimirTextoTag(ticket);
-//
-//        impressora.AcionarGuilhotina();
-//
-//        impressora.FechaPorta();

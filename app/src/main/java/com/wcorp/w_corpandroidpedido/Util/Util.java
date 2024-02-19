@@ -3,7 +3,13 @@ package com.wcorp.w_corpandroidpedido.Util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Environment;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -59,6 +65,26 @@ public class Util {
         } catch (ParseException e) {
             e.printStackTrace();
             return ""; // Handle the parsing exception as needed
+        }
+    }
+
+    public static Bitmap gerarQRCodeBitmap(String qrCodeData, int width, int height) {
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeData, BarcodeFormat.QR_CODE, width, height);
+
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bitmap.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                }
+            }
+
+            return bitmap;
+        } catch (WriterException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
