@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getBotaoLogin.setOnClickListener(view -> {
+            abrirDialogAlerta();
             String nomeUsuario = getTxtNomeUsuario.getText().toString();
             String senhaUsuario = getTxtSenhaUsuario.getText().toString();
             UsuarioService usuarioService = new UsuarioService();
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                             alert.setPositiveButton("OK", null);
                             alert.show();
                         }
+                        progressBarDialog.dismiss();
                     });
                 } catch (Exception e) {
                     System.out.println("Erro :" + e.getMessage());
