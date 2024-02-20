@@ -2,7 +2,6 @@ package com.wcorp.w_corpandroidpedido.Atividades.Pedido;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -121,7 +120,8 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
                             Intent intent = new Intent(this, CupomFiscalActivity.class);
                             this.startActivity(intent);
                         }else{
-                            abrirDialogCupomFiscal(this);
+                            Intent intent = new Intent(this, TipoPagamentoPedidoActivity.class);
+                            this.startActivity(intent);
                         }
                     });
                 }catch (Exception e){
@@ -216,26 +216,6 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         progressBarDialog.setCancelable(false);
 
         progressBarDialog.show();
-    }
-    private void abrirDialogCupomFiscal(Context context){
-        AlertDialog.Builder alert = new AlertDialog.Builder(context)
-                .setTitle("Deseja emitir cupom fiscal?")
-                .setCancelable(false)
-                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(context , CupomFiscalActivity.class);
-                        context.startActivity(intent);
-                    }
-                })
-                .setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(context , TipoPagamentoPedidoActivity.class);
-                        context.startActivity(intent);
-                    }
-                });
-        alert.show();
     }
 }
 
