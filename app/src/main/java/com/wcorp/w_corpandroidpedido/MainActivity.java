@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private String idEmpresa;
     private Dialog dialogLoading;
     private RxDataStore<Preferences> dataStore;
-    private String android_id = Build.SERIAL;
+    private final String android_id = Build.SERIAL;
     private Executor executor = Executors.newSingleThreadExecutor();
 
     public static Empresa EmpresaSelecionada() {
