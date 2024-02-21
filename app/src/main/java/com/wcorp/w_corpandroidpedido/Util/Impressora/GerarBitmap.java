@@ -2,10 +2,8 @@ package com.wcorp.w_corpandroidpedido.Util.Impressora;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Base64;
 
 import com.github.danielfelgar.drawreceiptlib.ReceiptBuilder;
 import com.wcorp.w_corpandroidpedido.MainActivity;
@@ -17,7 +15,6 @@ import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 import com.wcorp.w_corpandroidpedido.Util.Util;
 
-import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -78,10 +75,9 @@ public class GerarBitmap {
         return receipt.build();
     }
 
-    public static Bitmap GerarBitmapCupomFiscal(Context context, CupomFiscal cupomFiscal){
+    public static Bitmap GerarBitmapCupomFiscal(Context context, CupomFiscal cupomFiscal) {
         double totalDesconto = 0;
-        String qrCodeData = "35240258316217000195590010210000254843420947|20240219163138|68.30||QCQSkAnxyPRxInpevI31kAE4dRMBVHB99FEI05k4xWrDkKM6r/y1c5dR5QSyLGfUgYOV76WWTkvzRGv/wBQwdIXAW7efyUgMWZYhMq7z+sXZ77cwRMXPjbkRJjwIu2uyc79Zbdv4a6wnObM2mQ3IMeyxTzdsQ285f/nBehzv59PTGVXuZN1hZ/2GUCDTb9g2uyt9WJ7ZRtFuX2Hryv6W1Gf22bJSzcS8Em4gYmLAr8f1pI5HM3+0iwPIOhxhXhb4hLEr9u/NGpAN+1h7lz2X8am5n/TSIaamFt33H23Khb7yuDhEWpNbMeoX7Kgp1Kd9OV8gwgxMcA2+cjoRPdljew==";
-        //String qrCodeData = cupomFiscal.retorno.assinaturaQrCode;
+        String qrCodeData = cupomFiscal.retorno.assinaturaQrCode;
         int width = 900;
         int height = 900;
         Bitmap qrCodeBitmap = Util.gerarQRCodeBitmap(qrCodeData, width, height);
@@ -109,14 +105,14 @@ public class GerarBitmap {
                 addBlankSpace(30).
                 setTextSize(50).
                 setTypeface(context, "fonts/RobotoMono-Bold.ttf");
-                if(cupomFiscal.retorno.destinatarioCpf != null){
-                    receipt.addText("CPF: " + cupomFiscal.retorno.destinatarioCpf);
-                }else if(cupomFiscal.retorno.destinatarioCnpj != null){
-                    receipt.addText("CNPJ: " + cupomFiscal.retorno.destinatarioCnpj);
-                }else{
-                    receipt.addText("Consumidor não informado");
-                }
-                receipt.
+        if (cupomFiscal.retorno.destinatarioCpf != null) {
+            receipt.addText("CPF: " + cupomFiscal.retorno.destinatarioCpf);
+        } else if (cupomFiscal.retorno.destinatarioCnpj != null) {
+            receipt.addText("CNPJ: " + cupomFiscal.retorno.destinatarioCnpj);
+        } else {
+            receipt.addText("Consumidor não informado");
+        }
+        receipt.
                 addBlankSpace(20).
                 setTextSize(50).
                 setTypeface(context, "fonts/RobotoMono-Regular.ttf").
@@ -125,7 +121,7 @@ public class GerarBitmap {
                 setAlign(Paint.Align.RIGHT).
                 addText("Qtde  Vl.Total").
                 addParagraph();
-        for (CupomFiscalItem cupomFiscalItem:
+        for (CupomFiscalItem cupomFiscalItem :
                 cupomFiscal.retorno.listCupomFiscalItem) {
             totalDesconto += cupomFiscalItem.valorDesconto;
             receipt.
@@ -148,19 +144,20 @@ public class GerarBitmap {
                 setAlign(Paint.Align.LEFT).
                 addText("VALOR TOTAL", false).
                 setAlign(Paint.Align.RIGHT).
-                addText(formatNumero.format(cupomFiscal.retorno.totalNotaFiscal));
+                addText(formatNumero.format(cupomFiscal.retorno.totalNotaFiscal)).
+                setAlign(Paint.Align.CENTER);
 
-        if (cupomFiscal.retorno.observacao.isEmpty())
-        {
+        if (cupomFiscal.retorno.observacao.isEmpty()) {
             receipt.
                     setAlign(Paint.Align.CENTER).
                     addBlankSpace(30).
                     addText(cupomFiscal.retorno.observacao);
         }
+        if (cupomFiscal.retorno.assinaturaQrCode != null) {
+            receipt.
+                    addImage(qrCodeBitmap);
+        }
         receipt.
-                //addText(cupomFiscal.retorno.chaveAcessoCfe.replace("CFe", "")).
-                setAlign(Paint.Align.CENTER).
-                addImage(qrCodeBitmap).
                 addBlankSpace(30).
                 addText("Software de Gestão WCorp").
                 addText("www.waveconcept.com.br");

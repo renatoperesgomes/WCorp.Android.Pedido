@@ -45,6 +45,7 @@ import br.com.uol.pagseguro.plugpagservice.wrapper.listeners.PlugPagPaymentListe
 public class PagamentoCall {
     private Executor executor = Executors.newSingleThreadExecutor();
     DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
+    public static String CodigoAtivacaoTerminal = "";
     private PlugPag plugPag;
     int countPassword;
     boolean imprimirCupomFiscal = false;
@@ -60,7 +61,7 @@ public class PagamentoCall {
 
             // Ativa terminal e faz o pagamento
             PlugPagInitializationResult initResult = plugPag.initializeAndActivatePinpad(new
-                PlugPagActivationData("749879"));
+                PlugPagActivationData(CodigoAtivacaoTerminal));
 
             if(initResult.getResult() == PlugPag.RET_OK){
                 plugPag.doAsyncPayment(paymentData, new PlugPagPaymentListener() {

@@ -18,14 +18,14 @@ import kotlin.Triple;
 import okhttp3.HttpUrl;
 
 
-public class ApiCall<ApiModel> {
-    public static String BaseUrl = "";
+public class DBCall<ApiModel> {
+    static String BaseUrl = "http://controleacesso.wcorp.com.br/";
     private Type modelType;
     private Executor executor = Executors.newSingleThreadExecutor();
-    public ApiCall(Type modelType) {
+    public DBCall(Type modelType) {
         this.modelType = modelType;
     }
-    public ListenableFuture<ApiModel> CallApi(String function, String bearer, List<Triple<String, String, Boolean>> listParameters)  {
+    public ListenableFuture<ApiModel> CallDb(String function, String bearer, List<Triple<String, String, Boolean>> listParameters)  {
         return CallbackToFutureAdapter.getFuture(completer -> {
             executor.execute(() -> {
                 try {
