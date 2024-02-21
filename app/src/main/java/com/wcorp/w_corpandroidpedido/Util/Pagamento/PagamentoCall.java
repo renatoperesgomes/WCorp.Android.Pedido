@@ -49,7 +49,7 @@ public class PagamentoCall {
     private PlugPag plugPag;
     int countPassword;
     boolean imprimirCupomFiscal = false;
-    private Dialog progressBarDialog;
+    private Dialog dialogLoading;
     public void EfetuarPagamento(Context context, InfoPagamento infoPagamento, boolean isCupomFiscal) {
         executor.execute(() ->{
             PlugPagPaymentData paymentData = dadosPagamento(infoPagamento);
@@ -151,7 +151,12 @@ public class PagamentoCall {
                     });
                 }
             } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MostrarDialog(context, String.valueOf(e.getMessage()));
+                    }
+                });
             }
         });
     }
@@ -159,7 +164,7 @@ public class PagamentoCall {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                abrirDialogAlerta(context);
+                abrirDialogLoading(context);
                 CupomFiscalService cupomFiscalService = new CupomFiscalService();
                 ListenableFuture<CupomFiscal> cupomFiscal = cupomFiscalService.EmitirCupomFiscal(infoPagamento.Bearer, infoPagamento.IdPedido, infoPagamento.Cpf, infoPagamento.Cnpj);
                 cupomFiscal.addListener(() -> {
@@ -175,7 +180,7 @@ public class PagamentoCall {
                                 imprimirCupomFiscal();
                             }
 
-                            progressBarDialog.dismiss();
+                            dialogLoading.dismiss();
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
                             context.startActivity(intent);
@@ -185,7 +190,7 @@ public class PagamentoCall {
                                     retornoCupomFiscal.inconsistences) {
                                 inconsistencesJoin.append(inconsistences.text).append("\n");
                             }
-                            progressBarDialog.dismiss();
+                            dialogLoading.dismiss();
 
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
@@ -193,7 +198,11 @@ public class PagamentoCall {
                             context.startActivity(intent);
                         }
                     } catch (Exception e) {
-                        System.out.println("Erro: " + e.getMessage());
+                        dialogLoading.dismiss();
+                        dadosComanda.SetPedido(null);
+                        Intent intent = new Intent(context, PesquisarPedidoActivity.class);
+                        intent.putExtra("MESSAGE", String.valueOf(e.getMessage()));
+                        context.startActivity(intent);
                     }
                 }, MoreExecutors.directExecutor());
             }
@@ -211,13 +220,13 @@ public class PagamentoCall {
         });
     }
 
-    private void abrirDialogAlerta(Context context){
-        progressBarDialog = new Dialog(context);
-        progressBarDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressBarDialog.setContentView(R.layout.loading);
-        progressBarDialog.setCancelable(false);
+    private void abrirDialogLoading(Context context){
+        dialogLoading = new Dialog(context);
+        dialogLoading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogLoading.setContentView(R.layout.loading);
+        dialogLoading.setCancelable(false);
 
-        progressBarDialog.show();
+        dialogLoading.show();
     }
     private String checkMessagePassword(int eventCode) {
         StringBuilder strPassword = new StringBuilder();

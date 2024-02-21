@@ -125,8 +125,15 @@ public class SubCategoriaActivity extends AppCompatActivity {
                         alert.show();
                     }
                 });
-            }catch (Exception e){
-                System.out.println("Erro :" + e.getMessage());
+            }catch (Exception e) {
+                runOnUiThread(() -> {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(SubCategoriaActivity.this);
+                    alert.setTitle("Atenção");
+                    alert.setMessage(e.getMessage());
+                    alert.setCancelable(false);
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+                });
             }
         }, MoreExecutors.directExecutor());
     }

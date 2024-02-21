@@ -135,7 +135,14 @@ public class MaterialActivity extends AppCompatActivity {
                     }
                 });
             }catch (Exception e){
-                System.out.println("Erro :" + e.getMessage());
+                runOnUiThread(() ->{
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MaterialActivity.this);
+                    alert.setTitle("Atenção");
+                    alert.setMessage(e.getMessage());
+                    alert.setCancelable(false);
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+                });
             }
         }, MoreExecutors.directExecutor());
     }

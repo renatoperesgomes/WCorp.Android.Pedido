@@ -34,7 +34,6 @@ import com.wcorp.w_corpandroidpedido.Util.ApiCall;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
 import com.wcorp.w_corpandroidpedido.Util.Pagamento.PagamentoCall;
 
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -109,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
 
                     getBotaoLogin.setClickable(false);
-                    System.out.println("Erro: " + e.getMessage());
                     dialogLoading.dismiss();
                 });
             }
@@ -168,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
 
                     getBotaoLogin.setClickable(false);
-                    System.out.println("Erro: " + e.getMessage());
                     dialogLoading.dismiss();
                 });
             }
@@ -217,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
                     alert.setPositiveButton("OK", null);
                     alert.show();
 
-                    System.out.println("Erro: " + e.getMessage());
                     dialogLoading.dismiss();
                 });
             }

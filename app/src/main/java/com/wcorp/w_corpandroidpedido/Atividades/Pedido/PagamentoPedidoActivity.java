@@ -53,7 +53,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
     private Button getBtnFazerPagamento;
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
-    private Dialog progressBarDialog;
+    private Dialog dialogLoading;
     private Executor executor = Executors.newSingleThreadExecutor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,14 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
                         }
                     });
                 }catch (Exception e){
-                    System.out.println("Erro: " + e.getMessage());
+                    runOnUiThread(() -> {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(PagamentoPedidoActivity.this);
+                        alert.setTitle("Atenção");
+                        alert.setMessage(e.getMessage());
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("OK", null);
+                        alert.show();
+                    });
                 }
             });
         });
@@ -154,7 +161,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         finish();
     }
     public void ExcluirPedidoMaterialItem(Context context, String bearer ,Integer idPedidoMaterialItem){
-        abrirDialogAlerta(context);
+        abrirDialogLoading(context);
 
         RemoverPedidoItemService removerPedidoItemService = new RemoverPedidoItemService();
         Integer idComandaAtual = Integer.parseInt(dadosComanda.GetNumeroComanda());
@@ -184,9 +191,17 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
                         alert.show();
                     }
                 });
-                progressBarDialog.dismiss();
+                dialogLoading.dismiss();
             } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
+                runOnUiThread(() ->{
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setTitle("Atenção");
+                    alert.setMessage(e.getMessage());
+                    alert.setCancelable(false);
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+                });
+                dialogLoading.dismiss();
             }
         });
     }
@@ -209,13 +224,13 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
             }
         });
     }
-    private void abrirDialogAlerta(Context context){
-        progressBarDialog = new Dialog(context);
-        progressBarDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressBarDialog.setContentView(R.layout.loading);
-        progressBarDialog.setCancelable(false);
+    private void abrirDialogLoading(Context context){
+        dialogLoading = new Dialog(context);
+        dialogLoading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogLoading.setContentView(R.layout.loading);
+        dialogLoading.setCancelable(false);
 
-        progressBarDialog.show();
+        dialogLoading.show();
     }
 }
 

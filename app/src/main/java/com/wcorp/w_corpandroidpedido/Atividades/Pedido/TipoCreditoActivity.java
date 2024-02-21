@@ -50,7 +50,6 @@ public class TipoCreditoActivity extends AppCompatActivity {
         txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
         txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
 
-
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicio, cardViewPagamento,cardViewComanda);
         navegacaoBarraApp.addClick(this);
 

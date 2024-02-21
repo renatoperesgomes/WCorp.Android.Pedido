@@ -57,7 +57,7 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private String bearer;
     DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
-    private Dialog progressBarDialog;
+    private Dialog dialogLoading;
     private Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
@@ -125,7 +125,7 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
     }
 
     private void adicionarProduto(){
-        abrirDialogAlerta();
+        abrirDialogLoading();
 
         ArrayList<PedidoMaterialItem> listPedidoMaterialItem = new ArrayList<>();
 
@@ -200,10 +200,17 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
                         });
                     }
                 } catch (Exception e) {
-                    System.out.println("Erro: " + e.getMessage());
+                    runOnUiThread(() ->{
+                        AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
+                        alert.setTitle("Atenção");
+                        alert.setMessage(e.getMessage());
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("OK", null);
+                        alert.show();
+                    });
                 }
             }
-            progressBarDialog.dismiss();
+            dialogLoading.dismiss();
 
             if(todosMateriaisAdicionados){
                 Intent intent = new Intent(context, CategoriaActivity.class);
@@ -212,13 +219,13 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         });
     }
 
-    private void abrirDialogAlerta(){
-        progressBarDialog = new Dialog(this);
-        progressBarDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressBarDialog.setContentView(R.layout.loading);
-        progressBarDialog.setCancelable(false);
+    private void abrirDialogLoading(){
+        dialogLoading = new Dialog(this);
+        dialogLoading.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogLoading.setContentView(R.layout.loading);
+        dialogLoading.setCancelable(false);
 
-        progressBarDialog.show();
+        dialogLoading.show();
     }
 
     private void voltarParaMaterialActivity(){
