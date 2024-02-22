@@ -129,15 +129,18 @@ public class PagamentoCall {
                             //gerarCupomFiscal(context, infoPagamento);
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             context.startActivity(intent);
                         }else{
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             context.startActivity(intent);
                         }
                     } else {
                         dadosComanda.SetValorComanda(retornaPedido.retorno.valorTotalPedido - valorPagoTotal);
                         Intent intent = new Intent(context, PagamentoPedidoActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }
                 } else if (retornaPedido.hasInconsistence) {
@@ -186,6 +189,7 @@ public class PagamentoCall {
                             dialogLoading.dismiss();
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             context.startActivity(intent);
                         } else if (retornoCupomFiscal.hasInconsistence) {
                             StringBuilder inconsistencesJoin = new StringBuilder();
@@ -198,6 +202,7 @@ public class PagamentoCall {
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
                             intent.putExtra("MESSAGE", String.valueOf(inconsistencesJoin));
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             context.startActivity(intent);
                         }
                     } catch (Exception e) {
@@ -206,6 +211,7 @@ public class PagamentoCall {
                         dadosComanda.SetPedido(null);
                         Intent intent = new Intent(context, PesquisarPedidoActivity.class);
                         intent.putExtra("MESSAGE", String.valueOf(e.getMessage()));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }
                 }, MoreExecutors.directExecutor());
