@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
                         getBotaoLogin.setClickable(false);
                     }
-                    dialogLoading.dismiss();
                 });
             }catch (Exception e){
                 runOnUiThread(() -> {
@@ -108,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                     alert.show();
 
                     getBotaoLogin.setClickable(false);
-                    dialogLoading.dismiss();
                 });
             }
         }, MoreExecutors.directExecutor());
@@ -133,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void buscarEmpresas(){
         EmpresaService empresaService = new EmpresaService();
-
         Future<ListEmpresa> listEmpresa = empresaService.BuscarListEmpresa();
         executor.execute(() ->{
             try {
@@ -141,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (listEmpresaRetorno.validated) {
                         getEmpresa.setAdapter(new EmpresaAdapter(this, listEmpresaRetorno.retorno));
+                        dialogLoading.dismiss();
                     } else if (listEmpresaRetorno.hasInconsistence) {
                         AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
                         alert.setTitle("Atenção");
