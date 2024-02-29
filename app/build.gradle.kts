@@ -3,6 +3,17 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+            enableV1Signing = true
+            enableV2Signing = false
+            storeFile =
+                file("C:\\Users\\gabri\\OneDrive\\Área de Trabalho\\keyapp_android\\wcorp_appandroid.jks")
+            storePassword = "wcorp2015"
+            keyAlias = "key0"
+            keyPassword = "wcorp2015"
+        }
+    }
     namespace = "com.wcorp.w_corpandroidpedido"
     compileSdk = 34
 
@@ -10,16 +21,17 @@ android {
         applicationId = "com.wcorp.w_corpandroidpedido"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig = signingConfigs.getByName("release")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            isDebuggable = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
