@@ -62,7 +62,7 @@ public class CategoriaActivity extends AppCompatActivity {
         getRecycleCategoria = findViewById(R.id.viewCategoria);
 
         getRecycleCategoria.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
-        getRecycleCategoria.setHasFixedSize(true);
+        getRecycleCategoria.setHasFixedSize(false);
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu, cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);

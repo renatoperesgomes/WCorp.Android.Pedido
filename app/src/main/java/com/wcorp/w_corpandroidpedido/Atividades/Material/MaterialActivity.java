@@ -78,7 +78,7 @@ public class MaterialActivity extends AppCompatActivity {
 
         getRecycleMaterial = findViewById(R.id.viewProduto);
         getRecycleMaterial.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
-        getRecycleMaterial.setHasFixedSize(true);
+        getRecycleMaterial.setHasFixedSize(false);
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);

@@ -21,14 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
-import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
-import com.wcorp.w_corpandroidpedido.Models.BaseApi;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.R;
-import com.wcorp.w_corpandroidpedido.Service.CupomFiscal.CupomFiscalService;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.RemoverPedidoItemService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;

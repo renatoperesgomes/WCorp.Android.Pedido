@@ -75,7 +75,7 @@ public class SubCategoriaActivity extends AppCompatActivity {
 
         getRecycleSubCategoria = findViewById(R.id.viewSubCategoria);
         getRecycleSubCategoria.setLayoutManager(new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false));
-        getRecycleSubCategoria.setHasFixedSize(true);
+        getRecycleSubCategoria.setHasFixedSize(false);
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu, cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);

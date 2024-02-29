@@ -90,10 +90,10 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         getGetRecyclerViewBotao = findViewById(R.id.viewBotaoQtd);
 
         getRecycleMaterialInformacao.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        getRecycleMaterialInformacao.setHasFixedSize(true);
+        getRecycleMaterialInformacao.setHasFixedSize(false);
 
         getGetRecyclerViewBotao.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
-        getGetRecyclerViewBotao.setHasFixedSize(true);
+        getGetRecyclerViewBotao.setHasFixedSize(false);
         getGetRecyclerViewBotao.setAdapter(new AdicionarBotaoAdapter(this));
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu, cardViewComandaMenu);
