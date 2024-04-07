@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import kotlin.Triple;
 
 public class AdicionarPedidoService {
-    public ListenableFuture<Pedido> AdicionarPedido(String bearer, Integer idComanda, PedidoMaterialItem pedidoMaterialItem) {
+    public ListenableFuture<Pedido> AdicionarPedido(String bearer, Integer idComanda, ArrayList<PedidoMaterialItem> listPedidoMaterialItem) {
         ApiCall<Pedido> apiCall = new ApiCall<>(Pedido.class);
         ArrayList<Triple<String,String, Boolean>> listParametro = new ArrayList<Triple<String, String, Boolean>>();
 
@@ -19,7 +19,7 @@ public class AdicionarPedidoService {
             listParametro.add(new Triple<>("idComanda", idComanda.toString(), false));
 
         Gson gson = new Gson();
-        String jsonBody = gson.toJson(pedidoMaterialItem);
+        String jsonBody = gson.toJson(listPedidoMaterialItem);
         listParametro.add(new Triple<>("Body", jsonBody, true));
 
         return apiCall.CallApi("AdicionarPedidoMaterialItemPorComanda", bearer, listParametro);

@@ -172,50 +172,42 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         atualizarPedido(this, dadosComanda.GetNumeroComanda(), listPedidoMaterialItem);
     }
 
-    private void atualizarPedido(Context context, String nmrComanda, ArrayList<PedidoMaterialItem> pedidoMaterialItemAtual) {
+    private void atualizarPedido(Context context, String nmrComanda, ArrayList<PedidoMaterialItem> listPedidoMaterialItemAtual) {
         AdicionarPedidoService adicionarPedidoService = new AdicionarPedidoService();
-        executor.execute(() ->{
-            boolean todosMateriaisAdicionados = false;
-            for (PedidoMaterialItem pedidoMaterialItem :
-                    pedidoMaterialItemAtual) {
-                Future<Pedido> pedidoAtualizado = adicionarPedidoService.AdicionarPedido(bearer, Integer.valueOf(nmrComanda), pedidoMaterialItem);
-                try {
-                    Pedido pedidoAtualizadoRetorno = pedidoAtualizado.get();
-                    if (pedidoAtualizadoRetorno.validated) {
-                        dadosComanda.SetPedido(pedidoAtualizadoRetorno);
-                        todosMateriaisAdicionados = true;
-                    } else if (pedidoAtualizadoRetorno.hasInconsistence) {
-                        runOnUiThread(() ->{
-                            AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
-                            alert.setTitle("Atenção");
-                            StringBuilder inconsistencesJoin = new StringBuilder();
-                            for (Inconsistences inconsistences :
-                                    pedidoAtualizadoRetorno.inconsistences) {
-                                inconsistencesJoin.append(inconsistences.text + "\n");
-                            }
-                            alert.setMessage(inconsistencesJoin);
-                            alert.setCancelable(false);
-                            alert.setPositiveButton("OK", null);
-                            alert.show();
-                        });
-                    }
-                } catch (Exception e) {
-                    runOnUiThread(() ->{
+        executor.execute(() -> {
+            Future<Pedido> pedidoAtualizado = adicionarPedidoService.AdicionarPedido(bearer, Integer.valueOf(nmrComanda), listPedidoMaterialItemAtual);
+            try {
+                Pedido pedidoAtualizadoRetorno = pedidoAtualizado.get();
+                if (pedidoAtualizadoRetorno.validated) {
+                    dadosComanda.SetPedido(pedidoAtualizadoRetorno);
+                    Intent intent = new Intent(context, CategoriaActivity.class);
+                    context.startActivity(intent);
+                } else if (pedidoAtualizadoRetorno.hasInconsistence) {
+                    runOnUiThread(() -> {
                         AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
                         alert.setTitle("Atenção");
-                        alert.setMessage(e.getMessage());
+                        StringBuilder inconsistencesJoin = new StringBuilder();
+                        for (Inconsistences inconsistences :
+                                pedidoAtualizadoRetorno.inconsistences) {
+                            inconsistencesJoin.append(inconsistences.text + "\n");
+                        }
+                        alert.setMessage(inconsistencesJoin);
                         alert.setCancelable(false);
                         alert.setPositiveButton("OK", null);
                         alert.show();
                     });
                 }
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(AdicionarMaterialActivity.this);
+                    alert.setTitle("Atenção");
+                    alert.setMessage(e.getMessage());
+                    alert.setCancelable(false);
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+                });
             }
             dialogLoading.dismiss();
-
-            if(todosMateriaisAdicionados){
-                Intent intent = new Intent(context, CategoriaActivity.class);
-                context.startActivity(intent);
-            }
         });
     }
 
