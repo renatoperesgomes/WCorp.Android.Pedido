@@ -126,7 +126,7 @@ public class PagamentoCall {
 
                     if (valorRestantePago <= 0) {
                         if(isCupomFiscal) {
-                            //gerarCupomFiscal(context, infoPagamento);
+                            gerarCupomFiscal(context, infoPagamento);
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
