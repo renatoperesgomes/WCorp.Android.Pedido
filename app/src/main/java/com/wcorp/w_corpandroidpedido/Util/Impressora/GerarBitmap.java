@@ -59,6 +59,7 @@ public class GerarBitmap {
                     setTypeface(context, "fonts/RobotoMono-Regular.ttf").
                     setAlign(Paint.Align.LEFT).
                     addText(pedido.quantidade + " x " + pedido.material.nome, false).
+                    addParagraph().
                     setAlign(Paint.Align.RIGHT).
                     addText(formatNumero.format(pedido.valorUnitario)).
                     addBlankSpace(30);
