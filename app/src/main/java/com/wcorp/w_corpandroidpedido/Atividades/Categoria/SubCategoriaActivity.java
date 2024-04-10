@@ -97,7 +97,7 @@ public class SubCategoriaActivity extends AppCompatActivity {
                 ListMaterialCategoria listaMaterialCategoriaRetorno = listMaterialCategoria.get();
                 runOnUiThread(() ->{
                     if(listaMaterialCategoriaRetorno.validated){
-                        if(comboCategoriaFilho){
+                        if(listaMaterialCategoriaRetorno.retorno.get(0).pdvComboCategoriaFilho || comboCategoriaFilho){
                             finish();
                             irParaProdutos(this, idCategoria,true);
                         }else if(multiplaSelecaoCategoria){
