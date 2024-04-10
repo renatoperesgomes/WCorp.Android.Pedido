@@ -78,10 +78,6 @@ public class GerarBitmap {
 
     public static Bitmap GerarBitmapCupomFiscal(Context context, CupomFiscal cupomFiscal) {
         double totalDesconto = 0;
-        String qrCodeData = cupomFiscal.retorno.assinaturaQrCode;
-        int width = 900;
-        int height = 900;
-        Bitmap qrCodeBitmap = Util.gerarQRCodeBitmap(qrCodeData, width, height);
         ReceiptBuilder receipt = new ReceiptBuilder(1200);
         receipt.setMargin(10, 10).
                 setAlign(Paint.Align.CENTER).
@@ -148,20 +144,25 @@ public class GerarBitmap {
                 addText(formatNumero.format(cupomFiscal.retorno.totalNotaFiscal)).
                 setAlign(Paint.Align.CENTER);
 
-        if (cupomFiscal.retorno.observacao.isEmpty()) {
+        if (!cupomFiscal.retorno.observacao.isEmpty()) {
             receipt.
                     setAlign(Paint.Align.CENTER).
                     addBlankSpace(30).
                     addText(cupomFiscal.retorno.observacao);
         }
-        if (cupomFiscal.retorno.assinaturaQrCode != null) {
+        if(cupomFiscal.retorno.assinaturaQrCode != null){
+            String qrCodeData = cupomFiscal.retorno.assinaturaQrCode;
+            int width = 900;
+            int height = 900;
+            Bitmap qrCodeBitmap = Util.gerarQRCodeBitmap(qrCodeData, width, height);
+
             receipt.
-                    addImage(qrCodeBitmap);
+                addImage(qrCodeBitmap);
         }
         receipt.
                 addBlankSpace(30).
                 addText("Software de Gestão WCorp").
-                addText("www.waveconcept.com.br");
+                addText("www.wcorp.com.br");
         return receipt.build();
     }
 }
