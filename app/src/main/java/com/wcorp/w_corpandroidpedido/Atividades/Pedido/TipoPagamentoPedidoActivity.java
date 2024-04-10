@@ -138,8 +138,8 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 String typed = onlyDigits(charSequence.toString());
-                valorPago = Integer.parseInt(typed);
                 if (!TextUtils.isEmpty(typed)) {
+                    valorPago = Integer.parseInt(typed);
                     txtValorPago.removeTextChangedListener(this);
                     double converted = Double.parseDouble(typed) / 100;
                     valorPagoDouble = converted;
