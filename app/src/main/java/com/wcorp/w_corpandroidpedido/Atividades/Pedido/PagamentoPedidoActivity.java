@@ -110,33 +110,31 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         mImpressao = findViewById(R.id.btnPrinter);
 
         getBtnFazerPagamento.setOnClickListener( view ->{
-            Intent intent = new Intent(this, TipoPagamentoPedidoActivity.class);
-            this.startActivity(intent);
-//            CupomFiscalService cupomFiscalService = new CupomFiscalService();
-//            executor.execute(() ->{
-//                Future<BaseApi> buscarParametroCupomFiscal = cupomFiscalService.BuscarParametroCupomFiscal(bearer);
-//                try {
-//                    BaseApi parametroCupomFiscal = buscarParametroCupomFiscal.get();
-//                    runOnUiThread(() ->{
-//                        if(parametroCupomFiscal.validated){
-//                            Intent intent = new Intent(this, CupomFiscalActivity.class);
-//                            this.startActivity(intent);
-//                        }else{
-//                            Intent intent = new Intent(this, TipoPagamentoPedidoActivity.class);
-//                            this.startActivity(intent);
-//                        }
-//                    });
-//                }catch (Exception e){
-//                    runOnUiThread(() -> {
-//                       AlertDialog.Builder alert = new AlertDialog.Builder(PagamentoPedidoActivity.this);
-//                        alert.setTitle("Atenção");
-//                        alert.setMessage(e.getMessage());
-//                        alert.setCancelable(false);
-//                        alert.setPositiveButton("OK", null);
-//                        alert.show();
-//                    });
-//                }
-//            });
+            CupomFiscalService cupomFiscalService = new CupomFiscalService();
+            executor.execute(() ->{
+                Future<BaseApi> buscarParametroCupomFiscal = cupomFiscalService.BuscarParametroCupomFiscal(bearer);
+                try {
+                    BaseApi parametroCupomFiscal = buscarParametroCupomFiscal.get();
+                    runOnUiThread(() ->{
+                        if(parametroCupomFiscal.validated){
+                            Intent intent = new Intent(this, CupomFiscalActivity.class);
+                            this.startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(this, TipoPagamentoPedidoActivity.class);
+                            this.startActivity(intent);
+                        }
+                    });
+                }catch (Exception e){
+                    runOnUiThread(() -> {
+                       AlertDialog.Builder alert = new AlertDialog.Builder(PagamentoPedidoActivity.this);
+                        alert.setTitle("Atenção");
+                        alert.setMessage(e.getMessage());
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("OK", null);
+                        alert.show();
+                    });
+                }
+            });
         });
 
         mImpressao.setOnClickListener(view ->{

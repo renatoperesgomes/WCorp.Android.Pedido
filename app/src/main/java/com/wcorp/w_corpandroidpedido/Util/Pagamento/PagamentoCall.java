@@ -126,11 +126,8 @@ public class PagamentoCall {
 
                     if (valorRestantePago <= 0) {
                         if(isCupomFiscal) {
-                            //gerarCupomFiscal(context, infoPagamento);
+                            gerarCupomFiscal(context, infoPagamento);
                             dadosComanda.SetPedido(null);
-                            Intent intent = new Intent(context, PesquisarPedidoActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            context.startActivity(intent);
                         }else{
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
@@ -197,7 +194,6 @@ public class PagamentoCall {
                                 inconsistencesJoin.append(inconsistences.text).append("\n");
                             }
                             dialogLoading.dismiss();
-
                             dadosComanda.SetPedido(null);
                             Intent intent = new Intent(context, PesquisarPedidoActivity.class);
                             intent.putExtra("MESSAGE", String.valueOf(inconsistencesJoin));
@@ -206,7 +202,6 @@ public class PagamentoCall {
                         }
                     } catch (Exception e) {
                         dialogLoading.dismiss();
-
                         dadosComanda.SetPedido(null);
                         Intent intent = new Intent(context, PesquisarPedidoActivity.class);
                         intent.putExtra("MESSAGE", String.valueOf(e.getMessage()));
