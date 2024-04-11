@@ -33,10 +33,7 @@ import java.util.Locale;
 import io.reactivex.Flowable;
 
 public class PesquisarPedidoActivity extends AppCompatActivity {
-    private TextView txtNumeroComanda;
-    private TextView txtValorComanda;
     private EditText pesquisarComanda;
-    private Button btnPesquisar;
     private String nmrComanda;
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -53,27 +50,14 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
 
         String bearer = getBearer.blockingFirst();
 
-        Intent intent = getIntent();
-
-        String messageError = intent.getStringExtra("MESSAGE");
-
-        if(messageError != null){
-            AlertDialog.Builder alert = new AlertDialog.Builder(PesquisarPedidoActivity.this);
-            alert.setTitle("Atenção");
-            alert.setMessage(messageError);
-            alert.setCancelable(false);
-            alert.setPositiveButton("OK", null);
-            alert.show();
-        }
-
         CardView cardViewInicioMenu = findViewById(R.id.cardInicio);
         CardView cardViewPagamentoMenu = findViewById(R.id.cardPagamento);
         CardView cardViewComandaMenu = findViewById(R.id.cardComanda);
 
         pesquisarComanda = findViewById(R.id.textPesquisarComanda);
-        btnPesquisar = findViewById(R.id.btnPesquisar);
-        txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
-        txtValorComanda = findViewById(R.id.txtValorComanda);
+        Button btnPesquisar = findViewById(R.id.btnPesquisar);
+        TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
+        TextView txtValorComanda = findViewById(R.id.txtValorComanda);
 
         NavegacaoBarraApp navegacaoBarraApp = new NavegacaoBarraApp(cardViewInicioMenu, cardViewPagamentoMenu,cardViewComandaMenu);
         navegacaoBarraApp.addClick(this);

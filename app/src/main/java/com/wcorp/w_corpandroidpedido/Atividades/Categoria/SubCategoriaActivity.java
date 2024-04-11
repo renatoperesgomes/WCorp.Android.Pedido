@@ -97,17 +97,16 @@ public class SubCategoriaActivity extends AppCompatActivity {
                 ListMaterialCategoria listaMaterialCategoriaRetorno = listMaterialCategoria.get();
                 runOnUiThread(() ->{
                     if(listaMaterialCategoriaRetorno.validated){
-                        if(listaMaterialCategoriaRetorno.retorno.get(0).pdvComboCategoriaFilho || comboCategoriaFilho){
+                        if(comboCategoriaFilho) {
                             finish();
-                            irParaProdutos(this, idCategoria,true);
+                            irParaProdutos(this, idCategoria, true);
                         }else if(multiplaSelecaoCategoria){
                             finish();
                             irParaProdutos(this, idCategoria,true, qtdSelecaoCategoria);
                         }else if(listaMaterialCategoriaRetorno.retorno.size() == 0){
                             finish();
                             irParaProdutos(this, idCategoria);
-                        }
-                        else{
+                        }else{
                             getRecycleSubCategoria.setAdapter(new ConcatAdapter(new SubCategoriaAdapter(this, listaMaterialCategoriaRetorno.retorno),
                                     new VoltarAdapter(this, this, ViewType.SUB_CATEGORIA.ordinal())));
                         }

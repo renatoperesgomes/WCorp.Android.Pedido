@@ -19,7 +19,6 @@ import androidx.datastore.preferences.core.Preferences;
 import androidx.datastore.preferences.core.PreferencesKeys;
 import androidx.datastore.rxjava2.RxDataStore;
 
-import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.R;
@@ -39,15 +38,11 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
     private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     public static final String VALORTOTAL = "com.example.w_corpandroidpedido.VALORTOTAL";
-    private static boolean isCupomFiscal;
-    private String CpfString;
-    private String CnpjString;
     private EditText txtValorPago;
     private Boolean firstOpen = true;
     private int valorPago;
     private double valorPagoDouble;
-    private Boolean isParcelado;
-    private DecimalFormat decimalFormat = new DecimalFormat("#.00");
+    private final DecimalFormat decimalFormat = new DecimalFormat("#.00");
     private String bearer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +59,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         Intent intent = getIntent();
 
-        isCupomFiscal = intent.getBooleanExtra(CupomFiscalActivity.CUPOM_FISCAL, false);
-        CpfString = intent.getStringExtra(CupomFiscalActivity.CUPOM_CPF);
-        CnpjString = intent.getStringExtra(CupomFiscalActivity.CUPOM_CNPJ);
-        isParcelado = intent.getBooleanExtra(TipoCreditoActivity.ISPARCELADO, false);
+        Boolean isParcelado = intent.getBooleanExtra(TipoCreditoActivity.ISPARCELADO, false);
 
         txtValorPago = findViewById(R.id.txtValorPago);
         txtValorPago.setText(formatNumero.format(dadosComanda.GetValorComanda()));
@@ -165,7 +157,6 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
     private void startActivityParcelamento(Context context){
         Intent intent = new Intent(context, TipoCreditoActivity.class);
         intent.putExtra(VALORTOTAL, valorPago);
-        intent.putExtra(CupomFiscalActivity.CUPOM_FISCAL, isCupomFiscal);
         context.startActivity(intent);
     }
     private void chamarPagamento(Context context, int tipoPagamento, int tipoParcela ,int valorPago, int nmrParcela) {
@@ -182,10 +173,8 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         infoPagamento.ValorPago = valorPago;
         infoPagamento.TipoParcela = tipoParcela;
         infoPagamento.NumeroParcela = nmrParcela;
-        infoPagamento.Cpf = CpfString;
-        infoPagamento.Cnpj = CnpjString;
 
-        pagamentoCall.EfetuarPagamento(context, infoPagamento, isCupomFiscal);
+        pagamentoCall.EfetuarPagamento(context, infoPagamento);
 
         firstOpen = false;
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);

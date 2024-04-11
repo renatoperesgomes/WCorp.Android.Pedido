@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.TipoCreditoActivity;
 import com.wcorp.w_corpandroidpedido.Atividades.Pedido.TipoPagamentoPedidoActivity;
 import com.wcorp.w_corpandroidpedido.R;
@@ -27,15 +26,13 @@ public class ParcelamentoAdapter extends RecyclerView.Adapter<ParcelamentoAdapte
     private Context context;
     private int valorTotal;
     private int tipoParcela;
-    private boolean isCupomFiscal;
     private ArrayList<Double> valoresParcelados;
     private Integer nmrParcela = 2;
     private NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-    public ParcelamentoAdapter(Context context,Boolean isCupomFiscal, Integer valorTotal, Integer tipoParcela ,ArrayList<Double> valoresParcelados){
+    public ParcelamentoAdapter(Context context, Integer valorTotal, Integer tipoParcela ,ArrayList<Double> valoresParcelados){
         this.context = context;
         this.valoresParcelados = valoresParcelados;
         this.valorTotal = valorTotal;
-        this.isCupomFiscal = isCupomFiscal;
         this.tipoParcela = tipoParcela;
     }
 
@@ -63,7 +60,6 @@ public class ParcelamentoAdapter extends RecyclerView.Adapter<ParcelamentoAdapte
             intent.putExtra("tipoPagamento", PlugPag.TYPE_CREDITO);
             intent.putExtra(TipoCreditoActivity.TIPOPARCELA, tipoParcela);
             intent.putExtra(TipoCreditoActivity.VALORTOTAL, valorTotal);
-            intent.putExtra(CupomFiscalActivity.CUPOM_FISCAL, isCupomFiscal);
             intent.putExtra("nmrParcela", nmrParcela);
             context.startActivity(intent);
          });

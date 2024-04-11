@@ -21,14 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
-import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
-import com.wcorp.w_corpandroidpedido.Models.BaseApi;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.R;
-import com.wcorp.w_corpandroidpedido.Service.CupomFiscal.CupomFiscalService;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.RemoverPedidoItemService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
@@ -47,10 +44,6 @@ import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPagPrinterData;
 import io.reactivex.Flowable;
 
 public class PagamentoPedidoActivity extends AppCompatActivity {
-    private RecyclerView getRecyclerViewPagamento;
-    private Button mImpressao;
-    private Button getBtnVoltar;
-    private Button getBtnFazerPagamento;
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private Dialog dialogLoading;
@@ -94,7 +87,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
             }
         });
 
-        getRecyclerViewPagamento = findViewById(R.id.viewCarrinhoPagamento);
+        RecyclerView getRecyclerViewPagamento = findViewById(R.id.viewCarrinhoPagamento);
 
         getRecyclerViewPagamento.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         getRecyclerViewPagamento.setHasFixedSize(true);
@@ -106,35 +99,12 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
         txtValorComanda.setText(formatNumero.format(dadosComanda.GetValorComanda()));
 
-        getBtnFazerPagamento = findViewById(R.id.btnFazerPagamento);
-        mImpressao = findViewById(R.id.btnPrinter);
+        Button getBtnFazerPagamento = findViewById(R.id.btnFazerPagamento);
+        Button mImpressao = findViewById(R.id.btnPrinter);
 
-        getBtnFazerPagamento.setOnClickListener( view ->{
-            CupomFiscalService cupomFiscalService = new CupomFiscalService();
-            executor.execute(() ->{
-                Future<BaseApi> buscarParametroCupomFiscal = cupomFiscalService.BuscarParametroCupomFiscal(bearer);
-                try {
-                    BaseApi parametroCupomFiscal = buscarParametroCupomFiscal.get();
-                    runOnUiThread(() ->{
-                        if(parametroCupomFiscal.validated){
-                            Intent intent = new Intent(this, CupomFiscalActivity.class);
-                            this.startActivity(intent);
-                        }else{
-                            Intent intent = new Intent(this, TipoPagamentoPedidoActivity.class);
-                            this.startActivity(intent);
-                        }
-                    });
-                }catch (Exception e){
-                    runOnUiThread(() -> {
-                       AlertDialog.Builder alert = new AlertDialog.Builder(PagamentoPedidoActivity.this);
-                        alert.setTitle("Atenção");
-                        alert.setMessage(e.getMessage());
-                        alert.setCancelable(false);
-                        alert.setPositiveButton("OK", null);
-                        alert.show();
-                    });
-                }
-            });
+        getBtnFazerPagamento.setOnClickListener(view ->{
+            Intent intent = new Intent(this, TipoPagamentoPedidoActivity.class);
+            this.startActivity(intent);
         });
 
         mImpressao.setOnClickListener(view ->{
@@ -151,7 +121,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
             });
         }
 
-        getBtnVoltar = findViewById(R.id.btnVoltar);
+        Button getBtnVoltar = findViewById(R.id.btnVoltar);
         getBtnVoltar.setOnClickListener(view ->{
             voltarParaPaginaInicial();
         });

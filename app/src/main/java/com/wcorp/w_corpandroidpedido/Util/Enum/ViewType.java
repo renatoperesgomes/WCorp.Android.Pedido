@@ -4,3 +4,4 @@ public enum ViewType {
     SUB_CATEGORIA,
     MATERIAL
 }
+

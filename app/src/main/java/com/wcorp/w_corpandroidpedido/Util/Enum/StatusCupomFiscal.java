@@ -1,0 +1,12 @@
+package com.wcorp.w_corpandroidpedido.Util.Enum;
+
+public enum StatusCupomFiscal {
+    PENDENTE_ENVIO_SAT,
+    ENVIADO_SAT_APROVADO,
+    ENVIADO_SAT_REJEITADO,
+    CANCELADO_PENDENTE_ENVIO_SAT,
+    CANCELADO_SAT_APROVADO,
+    CANCELADO_SAT_REJEITADO,
+    ERRO_AO_CRIAR_XML_CFE,
+    CUPOM_FISCAL_DENEGADO
+}

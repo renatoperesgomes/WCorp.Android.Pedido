@@ -7,10 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.datastore.preferences.core.Preferences;
-import androidx.datastore.preferences.core.PreferencesKeys;
 
-import com.wcorp.w_corpandroidpedido.Atividades.CupomFiscal.CupomFiscalActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.R;
@@ -22,12 +19,10 @@ import br.com.uol.pagseguro.plugpagservice.wrapper.PlugPag;
 
 public class TipoCreditoActivity extends AppCompatActivity {
 
-    private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     public static final String TIPOPARCELA = "com.example.w_corpandroidpedido.TIPOCREDITO";
     public static final String VALORTOTAL = "com.example.w_corpandroidpedido.VALORTOTAL";
     public static final String ISPARCELADO = "com.example.w_corpandroidpedido.ISPARCELADO";
-    private boolean isCupomFiscal;
-    private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
+    private final DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private int valorTotal;
 
     @Override
@@ -39,7 +34,6 @@ public class TipoCreditoActivity extends AppCompatActivity {
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
         valorTotal =  intent.getIntExtra(TipoPagamentoPedidoActivity.VALORTOTAL, 0);
-        isCupomFiscal =  intent.getBooleanExtra(CupomFiscalActivity.CUPOM_FISCAL, false);
 
         TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
@@ -64,14 +58,12 @@ public class TipoCreditoActivity extends AppCompatActivity {
         creditoComprador.setOnClickListener(view ->{
             intent.putExtra(TIPOPARCELA, PlugPag.INSTALLMENT_TYPE_PARC_COMPRADOR);
             intent.putExtra(VALORTOTAL, valorTotal);
-            intent.putExtra(CupomFiscalActivity.CUPOM_FISCAL, isCupomFiscal);
             context.startActivity(intent);
         });
 
         creditoVendedor.setOnClickListener(view ->{
             intent.putExtra(TIPOPARCELA, PlugPag.INSTALLMENT_TYPE_PARC_VENDEDOR);
             intent.putExtra(VALORTOTAL, valorTotal);
-            intent.putExtra(CupomFiscalActivity.CUPOM_FISCAL, isCupomFiscal);
             context.startActivity(intent);
         });
 
