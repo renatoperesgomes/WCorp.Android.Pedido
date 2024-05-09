@@ -1,12 +1,18 @@
 package com.wcorp.w_corpandroidpedido.Atividades.Pedido;
 
+import static com.wcorp.w_corpandroidpedido.Util.Pagamento.DialogPagamento.MostrarDialog;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,9 +29,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.wcorp.w_corpandroidpedido.Atividades.Categoria.CategoriaActivity;
 import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
+import com.wcorp.w_corpandroidpedido.Models.BaseApi;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.R;
+import com.wcorp.w_corpandroidpedido.Service.CupomFiscal.CupomFiscalService;
+import com.wcorp.w_corpandroidpedido.Service.Pedido.PedidoService;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.RemoverPedidoItemService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
 import com.wcorp.w_corpandroidpedido.Util.DataStore;
@@ -69,9 +78,16 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
         TextView txtValorTotal = findViewById(R.id.txtValorTotal);
         TextView txtValorDivididoPessoas = findViewById(R.id.txtValorDivPessoas);
+        TextView txtValorTaxaServico = findViewById(R.id.txtValorTaxaServico);
+        TextView lblValorTaxaServico = findViewById(R.id.lblValorTaxaServico);
         EditText txtQtdPessoasDividir = findViewById(R.id.txtQtdPessoasDividir);
+        CheckBox ckbIncluirTaxaServico = findViewById(R.id.ckbIncluirTaxaServico);
         txtValorDivididoPessoas.setText(formatNumero.format(dadosComanda.GetValorComanda()));
         txtValorTotal.setText(formatNumero.format(dadosComanda.GetValorComanda()));
+
+        Pedido pedidoAtual = dadosComanda.GetPedido();
+
+        txtValorTaxaServico.setText(formatNumero.format(pedidoAtual.retorno.valorTotalProduto * pedidoAtual.retorno.valorPorcentagemTaxaServico / 100));
 
         Button btnCalcularValorDividido = findViewById(R.id.btnCalcularValorDividido);
         btnCalcularValorDividido.setOnClickListener(view ->{
@@ -110,6 +126,19 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         mImpressao.setOnClickListener(view ->{
             imprimirArquivo(this);
         });
+
+        ckbIncluirTaxaServico.setChecked(dadosComanda.GetIncluirTaxaServico());
+
+        ckbIncluirTaxaServico.setOnClickListener(view -> {
+            editarTaxaServico(this, bearer, ckbIncluirTaxaServico.isChecked());
+        });
+
+        if(!incluirTaxaServico(this, bearer)){
+            ckbIncluirTaxaServico.setEnabled(false);
+            ckbIncluirTaxaServico.setVisibility(View.INVISIBLE);
+            txtValorTaxaServico.setVisibility(View.INVISIBLE);
+            lblValorTaxaServico.setVisibility(View.INVISIBLE);
+        };
 
         if(dadosComanda.GetPedido() == null){
             getBtnFazerPagamento.setOnClickListener(view ->{
@@ -175,7 +204,6 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
             }
         });
     }
-
     private void imprimirArquivo(Context context) {
         Bitmap bitmap = GerarBitmap.GerarBitmapPedido(context);
         executor.execute(() -> {
@@ -202,6 +230,81 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
 
         dialogLoading.show();
     }
+
+    private void editarTaxaServico(Context context, String bearer, boolean incluirTaxaServico){
+        abrirDialogLoading(context);
+
+        Pedido pedidoAtual = dadosComanda.GetPedido();
+
+        PedidoService editarTaxaServicoPedido = new PedidoService();
+        Integer idComandaAtual = Integer.parseInt(pedidoAtual.retorno.comanda);
+        double valorPedidoComTaxaServico = pedidoAtual.retorno.valorTotalPedido;
+        double valorTaxaServico = pedidoAtual.retorno.valorTotalProduto * pedidoAtual.retorno.valorPorcentagemTaxaServico / 100;
+
+        if(incluirTaxaServico)
+          valorPedidoComTaxaServico += valorTaxaServico;
+        else
+            valorPedidoComTaxaServico -= valorTaxaServico;
+
+        double finalValorPedidoComTaxaServico = valorPedidoComTaxaServico;
+
+        executor.execute(() -> {
+            Future<Pedido> editarTaxaServico = editarTaxaServicoPedido.EditarTaxaServicoPedido(bearer, idComandaAtual, finalValorPedidoComTaxaServico,valorTaxaServico, incluirTaxaServico);
+
+            try {
+                Pedido pedidoTaxaServicoEditada = editarTaxaServico.get();
+                runOnUiThread(() -> {
+                    if (pedidoTaxaServicoEditada.validated) {
+                        dadosComanda.SetPedido(pedidoTaxaServicoEditada);
+
+                        Intent intent = new Intent(context, CategoriaActivity.class);
+                        context.startActivity(intent);
+                    } else if (pedidoTaxaServicoEditada.hasInconsistence) {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                        alert.setTitle("Atenção");
+                        StringBuilder inconsistencesJoin = new StringBuilder();
+                        for (Inconsistences inconsistences :
+                                pedidoTaxaServicoEditada.inconsistences) {
+                            inconsistencesJoin.append(inconsistences.text + "\n");
+                        }
+                        alert.setMessage(inconsistencesJoin);
+                        alert.setCancelable(false);
+                        alert.setPositiveButton("OK", null);
+                        alert.show();
+                    }
+                });
+                dialogLoading.dismiss();
+            } catch (Exception e) {
+                runOnUiThread(() ->{
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setTitle("Atenção");
+                    alert.setMessage(e.getMessage());
+                    alert.setCancelable(false);
+                    alert.setPositiveButton("OK", null);
+                    alert.show();
+                });
+                dialogLoading.dismiss();
+            }
+        });
+    }
+
+    private boolean incluirTaxaServico(Context context, String bearer) {
+        PedidoService pedidoService = new PedidoService();
+        Future<BaseApi> buscarParametroTaxaServico = pedidoService.BuscarParametroIncluirTaxaServico(bearer);
+        try {
+            BaseApi parametroTaxaServico = buscarParametroTaxaServico.get();
+            return parametroTaxaServico.validated;
+        } catch (Exception e) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    MostrarDialog(context, String.valueOf(e.getMessage()));
+                }
+            });
+        }
+        return false;
+    }
+
 }
 
 

@@ -59,7 +59,7 @@ public class TipoPagamentoPedidoActivity extends AppCompatActivity {
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         Intent intent = getIntent();
 
-        Boolean isParcelado = intent.getBooleanExtra(TipoCreditoActivity.ISPARCELADO, false);
+        boolean isParcelado = intent.getBooleanExtra(TipoCreditoActivity.ISPARCELADO, false);
 
         txtValorPago = findViewById(R.id.txtValorPago);
         txtValorPago.setText(formatNumero.format(dadosComanda.GetValorComanda()));

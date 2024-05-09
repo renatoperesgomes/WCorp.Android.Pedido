@@ -37,13 +37,17 @@ public class GerarBitmap {
                 setTextSize(100).
                 addText(empresa.nomeFantasia).
                 addBlankSpace(30).
+                setTextSize(100).
+                setAlign(Paint.Align.LEFT).
+                addText("Nº Comanda:", false).
+                setAlign(Paint.Align.RIGHT).
+                addText(pedidoAtual.retorno.comanda).
+                addBlankSpace(30).
                 setTextSize(60).
                 setTypeface(context, "fonts/RobotoMono-Regular.ttf").
                 setAlign(Paint.Align.LEFT).
-                addText(dataFomatada, false).
+                addText(dataFomatada, true).
                 setAlign(Paint.Align.RIGHT).
-                addText("MÁQUINA 01").
-                setAlign(Paint.Align.LEFT).
                 addLine().
                 addBlankSpace(10).
                 setAlign(Paint.Align.LEFT).
@@ -53,15 +57,15 @@ public class GerarBitmap {
                 addBlankSpace(10).
                 addParagraph();
 
-        for (PedidoMaterialItem pedido:
+        for (PedidoMaterialItem pedidoMaterialItem:
                 pedidoAtual.retorno.listPedidoMaterialItem) {
             receipt.
                     setTypeface(context, "fonts/RobotoMono-Regular.ttf").
                     setAlign(Paint.Align.LEFT).
-                    addText(pedido.quantidade + " x " + pedido.material.nome, false).
+                    addText(pedidoMaterialItem.quantidade + " x " + pedidoMaterialItem.material.nome, false).
                     addParagraph().
                     setAlign(Paint.Align.RIGHT).
-                    addText(formatNumero.format(pedido.valorUnitario)).
+                    addText(formatNumero.format(pedidoMaterialItem.valorTotalDesconto)).
                     addBlankSpace(30);
         }
         receipt.
@@ -73,6 +77,15 @@ public class GerarBitmap {
                 addText("VALOR TOTAL", false).
                 setAlign(Paint.Align.RIGHT).
                 addText(formatNumero.format(pedidoAtual.retorno.valorTotalPedido));
+        if(pedidoAtual.retorno.incluirTaxaServico){
+            receipt.
+                    addBlankSpace(10).
+                    addLine().
+                    setAlign(Paint.Align.LEFT).
+                    addText("VALOR TAXA DE SERVIÇO", false).
+                    setAlign(Paint.Align.RIGHT).
+                    addText(formatNumero.format(pedidoAtual.retorno.taxaServico));
+        }
         return receipt.build();
     }
 

@@ -91,7 +91,7 @@ public class PesquisarPedidoActivity extends AppCompatActivity {
                                     dadosComanda.SetPedido(null);
                                     dadosComanda.SetNumeroComanda(nmrComanda);
                                     dadosComanda.SetValorComanda(0.00);
-                                }else{
+                                 }else{
                                     dadosComanda.SetPedido(retornoPedido);
                                 }
                                 irParaPaginaInicial(this);

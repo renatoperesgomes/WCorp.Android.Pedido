@@ -22,6 +22,9 @@ public class Pedido extends BaseApi{
                 public int tipoPedidoEnum;
                 public int status;
                 public String comanda;
+                public double taxaServico;
+                public boolean incluirTaxaServico;
+                public double valorPorcentagemTaxaServico;
                 public String dataFechamento;
                 public ArrayList<PedidoMaterialItem> listPedidoMaterialItem;
                 public ArrayList<PedidoCaixaItem> listPedidoCaixaItem;

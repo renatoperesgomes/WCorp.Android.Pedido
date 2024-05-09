@@ -71,73 +71,115 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/txtQuantidadePessoas"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Qtd. Pessoas"
+                        android:layout_marginTop="0dp"
                         android:labelFor="@+id/qtdPessoas"
+                        android:text="Qtd. Pessoas"
                         android:textSize="14sp" />
 
                     <EditText
                         android:id="@+id/txtQtdPessoasDividir"
                         android:layout_width="60dp"
-                        android:layout_height="40dp"
+                        android:layout_height="38dp"
                         android:layout_marginStart="20dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="0dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginBottom="10dp"
                         android:gravity="center"
                         android:inputType="number"
-                        android:text="1"/>
+                        android:text="1" />
 
                     <Button
-                        style="@style/BOTAOVERDE"
                         android:id="@+id/btnCalcularValorDividido"
+                        style="@style/BOTAOVERDE"
                         android:layout_width="110dp"
-                        android:layout_height="40dp"
-                        android:text="Calcular"/>
+                        android:layout_height="38dp"
+                        android:text="Calcular" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:gravity="center_horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:gravity="center_horizontal"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="3dp"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/ckbIncluirTaxaServico"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="Valor total: "
-                        android:labelFor="@+id/txtValorTotal"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:id="@+id/txtValorTotal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="1.000,0000000"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="10dp"
-                        android:text="Valor dividido: "
-                        android:labelFor="@+id/txtValorDivPessoas"
-                        android:textSize="14sp"/>
-                    <TextView
-                        android:id="@+id/txtValorDivPessoas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="0,00000000000"
-                        android:textSize="14sp" />
+                        android:text="Incluir taxa de serviço" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:labelFor="@+id/txtValorTotal"
+                            android:text="Valor total: "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtValorTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1.000,0000000"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:labelFor="@+id/txtValorDivPessoas"
+                            android:text="Valor dividido: "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtValorDivPessoas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0,00000000000"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="3dp">
+                        <TextView
+                            android:id="@+id/lblValorTaxaServico"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:labelFor="@+id/txtValorTaxaServico"
+                            android:text="Valor da taxa de serviço: "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtValorTaxaServico"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0,00000000000"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -147,28 +189,39 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_alignParentBottom="true">
-                <Button
-                    style="@style/BOTAOVERDE"
-                    android:id="@+id/btnFazerPagamento"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/fazer_o_pagamento"/>
-                <Button
-                    android:id="@+id/btnPrinter"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Imprimir"
-                    android:layout_gravity="center_vertical"/>
-                <Button
-                    style="@style/BOTAOVOLTAR"
-                    android:id="@+id/btnVoltar"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/voltar"
-                    />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+                    <Button
+                        style="@style/BOTAOVERDE"
+                        android:id="@+id/btnFazerPagamento"
+                        android:layout_width="180dp"
+                        android:layout_height="50dp"
+                        android:text="@string/fazer_o_pagamento"/>
+                    <Button
+                        style="@style/BOTAOVOLTAR"
+                        android:id="@+id/btnVoltar"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/voltar"
+                        />
+
+                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+                        <Button
+                            android:id="@+id/btnPrinter"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:text="Imprimir"
+                            android:layout_gravity="center_vertical"/>
+                    </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

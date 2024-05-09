@@ -1,6 +1,10 @@
 package com.wcorp.w_corpandroidpedido.Service.Pedido;
 
+import android.content.Intent;
+
 import com.google.common.util.concurrent.ListenableFuture;
+import com.wcorp.w_corpandroidpedido.Models.BaseApi;
+import com.wcorp.w_corpandroidpedido.Models.CupomFiscal.CupomFiscal;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.Util.ApiCall;
 
@@ -34,5 +38,31 @@ public class PedidoService {
             listParametro.add(new Triple<>("valorPago", valorPago.toString(), false));
 
         return  apiCall.CallApi("PagarPedido", bearer, listParametro);
+    }
+
+    public Future<Pedido> EditarTaxaServicoPedido(String bearer, Integer idComanda,Double novoValorPedido, Double valorTaxaServico,Boolean incluirTaxaServico){
+        ApiCall<Pedido> apiCall = new ApiCall<>(Pedido.class);
+        ArrayList<Triple<String, String, Boolean>> listParametro = new ArrayList<Triple<String, String, Boolean>>();
+
+        if(idComanda != null)
+            listParametro.add(new Triple<>("idComanda", idComanda.toString(), false));
+
+        if(novoValorPedido != null)
+            listParametro.add(new Triple<>("novoValorPedido", novoValorPedido.toString(), false));
+
+        if(valorTaxaServico != null)
+            listParametro.add(new Triple<>("valorTaxaServico", valorTaxaServico.toString(), false));
+
+        if(incluirTaxaServico != null)
+            listParametro.add(new Triple<>("incluirTaxaServico", incluirTaxaServico.toString(), false));
+
+        return  apiCall.CallApi("EditarTaxaServicoPedido", bearer, listParametro);
+    }
+
+    public Future<BaseApi> BuscarParametroIncluirTaxaServico(String bearer) {
+        ApiCall<BaseApi> apiCall = new ApiCall<>(CupomFiscal.class);
+        ArrayList<Triple<String,String, Boolean>> listParametro = new ArrayList<Triple<String, String, Boolean>>();
+
+        return apiCall.CallApi("BuscarParametroIncluirTaxaServico", bearer, listParametro);
     }
 }
