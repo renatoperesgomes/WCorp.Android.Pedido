@@ -9,6 +9,7 @@ public class DadosComanda {
     private static Pedido pedidoAtual;
     private String numeroComanda;
     private double valorComanda;
+    private double valorTaxaServico;
     private boolean incluirTaxaServico;
     public DadosComanda() {}
     public static DadosComanda GetDadosComanda() {
@@ -36,6 +37,7 @@ public class DadosComanda {
 
             this.numeroComanda = pedidoAtual.retorno.comanda;
             this.valorComanda = pedidoAtual.retorno.valorTotalPedido - valorTotalPago;
+            this.valorTaxaServico = pedidoAtual.retorno.taxaServico;
             this.incluirTaxaServico = pedidoAtual.retorno.incluirTaxaServico;
         }
     }
@@ -51,6 +53,9 @@ public class DadosComanda {
     }
     public void SetValorComanda(double valorComanda){
         this.valorComanda = valorComanda;
+    }
+    public double GetValorTaxaServico(){
+        return valorTaxaServico;
     }
     public boolean GetIncluirTaxaServico() {return incluirTaxaServico;}
 

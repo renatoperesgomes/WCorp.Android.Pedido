@@ -84,10 +84,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         CheckBox ckbIncluirTaxaServico = findViewById(R.id.ckbIncluirTaxaServico);
         txtValorDivididoPessoas.setText(formatNumero.format(dadosComanda.GetValorComanda()));
         txtValorTotal.setText(formatNumero.format(dadosComanda.GetValorComanda()));
-
-        Pedido pedidoAtual = dadosComanda.GetPedido();
-
-        txtValorTaxaServico.setText(formatNumero.format(pedidoAtual.retorno.valorTotalProduto * pedidoAtual.retorno.valorPorcentagemTaxaServico / 100));
+        txtValorTaxaServico.setText(formatNumero.format(dadosComanda.GetValorTaxaServico()));
 
         Button btnCalcularValorDividido = findViewById(R.id.btnCalcularValorDividido);
         btnCalcularValorDividido.setOnClickListener(view ->{
@@ -148,6 +145,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
             mImpressao.setOnClickListener(view ->{
                 Toast.makeText(this, "Não é possível imprimir um pedido vazio.", Toast.LENGTH_SHORT).show();
             });
+            ckbIncluirTaxaServico.setEnabled(false);
         }
 
         Button getBtnVoltar = findViewById(R.id.btnVoltar);
