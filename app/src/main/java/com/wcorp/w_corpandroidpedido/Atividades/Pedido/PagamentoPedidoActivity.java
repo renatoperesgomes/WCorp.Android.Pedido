@@ -9,8 +9,11 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -33,7 +36,6 @@ import com.wcorp.w_corpandroidpedido.Models.BaseApi;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.R;
-import com.wcorp.w_corpandroidpedido.Service.CupomFiscal.CupomFiscalService;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.PedidoService;
 import com.wcorp.w_corpandroidpedido.Service.Pedido.RemoverPedidoItemService;
 import com.wcorp.w_corpandroidpedido.Util.Adapter.Pedido.PagamentoAdapter;
@@ -57,6 +59,9 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
     private Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private Dialog dialogLoading;
     private Executor executor = Executors.newSingleThreadExecutor();
+    private EditText txtQtdPessoasDividir;
+    private TextView txtValorDivididoPessoas;
+    private NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +74,7 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
 
         String bearer = getBearer.blockingFirst();
 
-        NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
 
         CardView cardViewInicio = findViewById(R.id.cardInicio);
         CardView cardViewPagamento = findViewById(R.id.cardPagamento);
@@ -77,27 +82,34 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         TextView txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         TextView txtValorComanda = findViewById(R.id.txtValorComanda);
         TextView txtValorTotal = findViewById(R.id.txtValorTotal);
-        TextView txtValorDivididoPessoas = findViewById(R.id.txtValorDivPessoas);
         TextView txtValorTaxaServico = findViewById(R.id.txtValorTaxaServico);
         TextView lblValorTaxaServico = findViewById(R.id.lblValorTaxaServico);
-        EditText txtQtdPessoasDividir = findViewById(R.id.txtQtdPessoasDividir);
         CheckBox ckbIncluirTaxaServico = findViewById(R.id.ckbIncluirTaxaServico);
+
+        txtValorDivididoPessoas = findViewById(R.id.txtValorDivPessoas);
+        txtQtdPessoasDividir = findViewById(R.id.txtQtdPessoasDividir);
         txtValorDivididoPessoas.setText(formatNumero.format(dadosComanda.GetValorComanda()));
+
         txtValorTotal.setText(formatNumero.format(dadosComanda.GetValorComanda()));
         txtValorTaxaServico.setText(formatNumero.format(dadosComanda.GetValorTaxaServico()));
 
+        txtQtdPessoasDividir.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE){
+                    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(txtQtdPessoasDividir
+                                    .getApplicationWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                    calcularDivisaoPessoas();
+                    return true;
+                }
+                return false;
+            }
+        });
         Button btnCalcularValorDividido = findViewById(R.id.btnCalcularValorDividido);
         btnCalcularValorDividido.setOnClickListener(view ->{
-
-            try{
-                float nmrDivisao = Float.parseFloat(txtQtdPessoasDividir.getText().toString());
-
-                double resultadoDivisaoPessoas = dadosComanda.GetValorComanda() / nmrDivisao;
-                txtValorDivididoPessoas.setText(formatNumero.format(resultadoDivisaoPessoas));
-
-            }catch (Exception e){
-                Toast.makeText(this, "Necessário colocar a quantidade de pessoas!", Toast.LENGTH_SHORT).show();
-            }
+            calcularDivisaoPessoas();
         });
 
         RecyclerView getRecyclerViewPagamento = findViewById(R.id.viewCarrinhoPagamento);
@@ -156,6 +168,17 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
     }
     private void voltarParaPaginaInicial(){
         finish();
+    }
+    private void calcularDivisaoPessoas(){
+        try{
+            float nmrDivisao = Float.parseFloat(txtQtdPessoasDividir.getText().toString());
+
+            double resultadoDivisaoPessoas = dadosComanda.GetValorComanda() / nmrDivisao;
+            txtValorDivididoPessoas.setText(formatNumero.format(resultadoDivisaoPessoas));
+
+        }catch (Exception e){
+            Toast.makeText(this, "Necessário colocar a quantidade de pessoas!", Toast.LENGTH_SHORT).show();
+        }
     }
     public void ExcluirPedidoMaterialItem(Context context, String bearer ,Integer idPedidoMaterialItem){
         abrirDialogLoading(context);
