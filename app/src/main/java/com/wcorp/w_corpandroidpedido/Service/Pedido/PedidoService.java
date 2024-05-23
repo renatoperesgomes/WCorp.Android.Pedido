@@ -1,7 +1,5 @@
 package com.wcorp.w_corpandroidpedido.Service.Pedido;
 
-import android.content.Intent;
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.wcorp.w_corpandroidpedido.Models.BaseApi;
 import com.wcorp.w_corpandroidpedido.Models.CupomFiscal.CupomFiscal;
@@ -38,6 +36,16 @@ public class PedidoService {
             listParametro.add(new Triple<>("valorPago", valorPago.toString(), false));
 
         return  apiCall.CallApi("PagarPedido", bearer, listParametro);
+    }
+
+    public Future<BaseApi> ValidarPedidoMovimentacaoEstoque(String bearer, Integer idPedido){
+        ApiCall<BaseApi> apiCall = new ApiCall<>(BaseApi.class);
+        ArrayList<Triple<String,String,Boolean>> listParametro = new ArrayList<>();
+
+        if(idPedido != null)
+            listParametro.add(new Triple<>("idPedido", idPedido.toString(), false));
+
+        return apiCall.CallApi("ValidarPedidoMovimentacaoEstoque", bearer, listParametro);
     }
 
     public Future<Pedido> EditarTaxaServicoPedido(String bearer, Integer idComanda,Double novoValorPedido, Double valorTaxaServico,Boolean incluirTaxaServico){

@@ -48,7 +48,7 @@ public class PagamentoAdapter extends RecyclerView.Adapter<PagamentoAdapter.Paga
         }else{
             holder.nomeMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).material.nome));
             holder.valorMaterial.setText(formatNumero.format(pedidoAtual.retorno.listPedidoMaterialItem.get(position).valorUnitario));
-            holder.qtdMaterial.setText(String.valueOf(pedidoAtual.retorno.listPedidoMaterialItem.get(position).quantidade));
+            holder.qtdMaterial.setText(String.format(new Locale("pt", "BR"),"%.2f",pedidoAtual.retorno.listPedidoMaterialItem.get(position).quantidade));
 
             holder.btnExcluirItem.setOnClickListener(view -> {
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);

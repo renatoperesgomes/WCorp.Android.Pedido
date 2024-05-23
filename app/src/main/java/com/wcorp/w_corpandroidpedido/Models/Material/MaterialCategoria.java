@@ -20,6 +20,8 @@ public class MaterialCategoria implements Serializable {
         public boolean pdvMultiplaSelecao;
         public int pdvMultiplaSelecaoQuantidade;
         public boolean pdvComboCategoriaFilho;
+        public boolean pdvCategoriaParaItemPromocional;
+        public boolean pdvMulltiplaSelecaoDividirPreco;
         public boolean utilizarOrdenacaoImpressao;
         public int idMagento;
         public int status;

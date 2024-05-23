@@ -107,10 +107,15 @@ public class MaterialActivity extends AppCompatActivity {
                 ListMaterial listaMaterialRetorno = listMaterial.get();
                 runOnUiThread(() ->{
                     if(listaMaterialRetorno.validated){
-                        if(multiplaSelecao){
+                        if(multiplaSelecao && comboCategoriaFilho){
+                            getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, listaMaterialRetorno.retorno, true, true, qtdSelecao),
+                                    new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
+                        }
+                        else if(multiplaSelecao){
                             getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, listaMaterialRetorno.retorno, true, qtdSelecao),
                                     new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
-                        }else if(comboCategoriaFilho){
+                        }
+                        else if(comboCategoriaFilho){
                             getRecycleMaterial.setAdapter(new ConcatAdapter(new MaterialAdapter(this, listaMaterialRetorno.retorno,true),
                                     new VoltarAdapter(this, this, ViewType.MATERIAL.ordinal())));
                         }
@@ -149,6 +154,17 @@ public class MaterialActivity extends AppCompatActivity {
 
     public void irParaMaterialInformacao(Context context, ArrayList<Material> listMateriais){
         Intent intent = new Intent(context, AdicionarMaterialActivity.class);
+        intent.putExtra(ITEMS, listMateriais);
+
+        context.startActivity(intent);
+    }
+
+    public void irParaMaterialInformacao(Context context, boolean multiplaSelecao, int qtdSelecao, boolean comboCategoriaFilho, ArrayList<Material> listMateriais){
+        Intent intent = new Intent(context, AdicionarMaterialActivity.class);
+
+        intent.putExtra(MULTIPLA_SELECAO, multiplaSelecao);
+        intent.putExtra(COMBO_CATEGORIA, comboCategoriaFilho);
+        intent.putExtra(QTD_SELECAO, qtdSelecao);
         intent.putExtra(ITEMS, listMateriais);
 
         context.startActivity(intent);

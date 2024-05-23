@@ -74,8 +74,6 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
 
         String bearer = getBearer.blockingFirst();
 
-
-
         CardView cardViewInicio = findViewById(R.id.cardInicio);
         CardView cardViewPagamento = findViewById(R.id.cardPagamento);
         CardView cardViewComanda = findViewById(R.id.cardComanda);
@@ -128,8 +126,14 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         Button mImpressao = findViewById(R.id.btnPrinter);
 
         getBtnFazerPagamento.setOnClickListener(view ->{
-            Intent intent = new Intent(this, TipoPagamentoPedidoActivity.class);
-            this.startActivity(intent);
+            Integer idPedido = dadosComanda.GetPedido().retorno.id;
+            abrirDialogLoading(this);
+            boolean validated = validarPedidoMaterialItem(this, bearer, idPedido);
+
+            if(validated){
+                Intent intent = new Intent(this, TipoPagamentoPedidoActivity.class);
+                this.startActivity(intent);
+            }
         });
 
         mImpressao.setOnClickListener(view ->{
@@ -326,6 +330,39 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         return false;
     }
 
+    private boolean validarPedidoMaterialItem(Context context, String bearer, Integer idPedido){
+        PedidoService pedidoService = new PedidoService();
+        Future<BaseApi> returnValidarPedidoMaterialItem = pedidoService.ValidarPedidoMovimentacaoEstoque(bearer, idPedido);
+
+        try{
+            BaseApi validarPedidoMaterialItem = returnValidarPedidoMaterialItem.get();
+            if(validarPedidoMaterialItem.validated){
+                return validarPedidoMaterialItem.validated;
+            }
+            else if(validarPedidoMaterialItem.hasInconsistence){
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Atenção");
+                StringBuilder inconsistencesJoin = new StringBuilder();
+                for (Inconsistences inconsistences :
+                        validarPedidoMaterialItem.inconsistences) {
+                    inconsistencesJoin.append(inconsistences.text + "\n");
+                }
+                alert.setMessage(inconsistencesJoin);
+                alert.setCancelable(false);
+                alert.setPositiveButton("OK", null);
+                alert.show();
+            }
+            dialogLoading.dismiss();
+        }catch (Exception e){
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    MostrarDialog(context, String.valueOf(e.getMessage()));
+                }
+            });
+        }
+        return false;
+    }
 }
 
 

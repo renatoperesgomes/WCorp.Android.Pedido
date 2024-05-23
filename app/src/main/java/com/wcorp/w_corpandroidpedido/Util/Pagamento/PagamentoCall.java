@@ -155,7 +155,6 @@ public class PagamentoCall {
             }
         });
     }
-
     private boolean emitirCupomFiscal(Context context, String bearer) {
         CupomFiscalService cupomFiscalService = new CupomFiscalService();
         Future<BaseApi> buscarParametroCupomFiscal = cupomFiscalService.BuscarParametroCupomFiscal(bearer);

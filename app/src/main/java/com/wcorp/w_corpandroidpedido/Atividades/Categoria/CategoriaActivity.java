@@ -139,4 +139,14 @@ public class CategoriaActivity extends AppCompatActivity {
 
         context.startActivity(intent);
     }
+    public void IrParaSubCategoria(Context context, int idCategoria, boolean multiplaSelecaoCategoria, int qtdSelecaoCategoria, boolean comboCategoriaFilho){
+        Intent intent = new Intent(context, SubCategoriaActivity.class);
+
+        intent.putExtra(ID_CATEGORIA, idCategoria);
+        intent.putExtra(MULTIPLA_SELECAO, multiplaSelecaoCategoria);
+        intent.putExtra(QTD_SELECAO, qtdSelecaoCategoria);
+        intent.putExtra(COMBO_CATEGORIA_FILHO, comboCategoriaFilho);
+
+        context.startActivity(intent);
+    }
 }

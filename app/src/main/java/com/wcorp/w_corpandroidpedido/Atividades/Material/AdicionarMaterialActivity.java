@@ -24,6 +24,7 @@ import com.wcorp.w_corpandroidpedido.Menu.DadosComanda;
 import com.wcorp.w_corpandroidpedido.Menu.NavegacaoBarraApp;
 import com.wcorp.w_corpandroidpedido.Models.Inconsistences.Inconsistences;
 import com.wcorp.w_corpandroidpedido.Models.Material.Material;
+import com.wcorp.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.Pedido;
 import com.wcorp.w_corpandroidpedido.Models.Pedido.PedidoMaterialItem;
 import com.wcorp.w_corpandroidpedido.R;
@@ -104,7 +105,9 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
         txtNumeroComanda.setText(dadosComanda.GetNumeroComanda());
         txtValorComanda.setText(formatNumero.format( dadosComanda.GetValorComanda()));
 
-        if (multiplaSelecao) {
+        if(multiplaSelecao && comboCategoriaFilho){
+            getRecycleMaterialInformacao.setAdapter(new AdicionarMaterialAdapter(this, true, qtdSelecao,true, listMaterial));
+        }else if (multiplaSelecao) {
             getRecycleMaterialInformacao.setAdapter(new AdicionarMaterialAdapter(this, true, qtdSelecao, listMaterial));
         } else if (comboCategoriaFilho) {
             getRecycleMaterialInformacao.setAdapter(new AdicionarMaterialAdapter(this, true, listMaterial));
@@ -131,6 +134,8 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
 
         double quantidadeMaterialPedido = 0;
         double maiorValorMaterial = 0;
+        int qtdMaterialNaoPromocional = 0;
+        double divisaoMaterialMultiplaSelecaoPromocional = 0.0;
         int nmrQtdItem = Objects.requireNonNull(getGetRecyclerViewBotao.getAdapter()).getItemCount();
         String observacaoPedido = txtObservacao.getText().toString();
 
@@ -143,10 +148,27 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
 
         double divisaoMaterialMultiplaSelecao = quantidadeMaterialPedido / listMaterial.size();
 
-        if(multiplaSelecao){
-            for(int i = 0; i < listMaterial.size(); i++){
-                if(maiorValorMaterial < listMaterial.get(i).preco){
-                    maiorValorMaterial = listMaterial.get(i).preco;
+        if(multiplaSelecao && comboCategoriaFilho) {
+            for (Material material:
+                 listMaterial) {
+                if(maiorValorMaterial < material.preco){
+                    maiorValorMaterial = material.preco;
+                }
+                for (MaterialCategoria materialCategoria:
+                     material.listMaterialCategoria) {
+                    if(!materialCategoria.pdvCategoriaParaItemPromocional &&
+                        materialCategoria.idPai != 0){
+                        qtdMaterialNaoPromocional++;
+                    }
+                }
+            }
+
+            divisaoMaterialMultiplaSelecaoPromocional = quantidadeMaterialPedido / qtdMaterialNaoPromocional;
+        } else if(multiplaSelecao){
+            for (Material material:
+                    listMaterial) {
+                if (maiorValorMaterial < material.preco) {
+                    maiorValorMaterial = material.preco;
                 }
             }
         }
@@ -156,17 +178,55 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
 
             PedidoMaterialItem pedidoMaterialItemAtual = new PedidoMaterialItem();
 
-            if(!multiplaSelecao){
+            if(multiplaSelecao && comboCategoriaFilho){
+                boolean materialPromocional = false;
+
+                for (MaterialCategoria materialCategoria:
+                     item.listMaterialCategoria) {
+                    if (materialCategoria.idPai != 0 &&
+                            materialCategoria.pdvCategoriaParaItemPromocional) {
+                        materialPromocional = true;
+                        break;
+                    }
+                }
+
+                pedidoMaterialItemAtual.idMaterial = item.id;
+                pedidoMaterialItemAtual.observacao = observacaoPedido;
+
+                if(materialPromocional){
+                    pedidoMaterialItemAtual.valorUnitario = 0;
+                    pedidoMaterialItemAtual.quantidade = 1;
+                }else{
+                    pedidoMaterialItemAtual.valorUnitario = maiorValorMaterial;
+                    pedidoMaterialItemAtual.quantidade = divisaoMaterialMultiplaSelecaoPromocional;
+                }
+
+            } else if(multiplaSelecao){
+                boolean dividirPreco = false;
+
+                for (MaterialCategoria materialCategoria:
+                     item.listMaterialCategoria) {
+                    if(materialCategoria.pdvMulltiplaSelecaoDividirPreco)
+                        dividirPreco = true;
+                }
+
+                pedidoMaterialItemAtual.idMaterial = item.id;
+                pedidoMaterialItemAtual.observacao = observacaoPedido;
+
+                if(dividirPreco){
+                    pedidoMaterialItemAtual.valorUnitario = maiorValorMaterial / listMaterial.size();
+                    pedidoMaterialItemAtual.quantidade = quantidadeMaterialPedido;
+                }else{
+                    pedidoMaterialItemAtual.valorUnitario = maiorValorMaterial;
+                    pedidoMaterialItemAtual.quantidade = divisaoMaterialMultiplaSelecao;
+                }
+            }else{
                 pedidoMaterialItemAtual.idMaterial = item.id;
                 pedidoMaterialItemAtual.valorUnitario = item.preco;
                 pedidoMaterialItemAtual.quantidade = quantidadeMaterialPedido;
                 pedidoMaterialItemAtual.observacao = observacaoPedido;
-            }else{
-                pedidoMaterialItemAtual.idMaterial = item.id;
-                pedidoMaterialItemAtual.valorUnitario = maiorValorMaterial;
-                pedidoMaterialItemAtual.quantidade = divisaoMaterialMultiplaSelecao;
-                pedidoMaterialItemAtual.observacao = observacaoPedido;
             }
+
             listPedidoMaterialItem.add(pedidoMaterialItemAtual);
         }
         atualizarPedido(this, dadosComanda.GetNumeroComanda(), listPedidoMaterialItem);

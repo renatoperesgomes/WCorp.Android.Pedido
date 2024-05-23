@@ -44,6 +44,7 @@ public class SubCategoriaActivity extends AppCompatActivity {
     public static final String MULTIPLA_SELECAO = "com.example.w_corpandroidpedido.MULTIPLASELECAO";
     public static final String QTD_SELECAO = "com.example.w_corpandroidpedido.QTDSELECAO";
     public static final String COMBO_CATEGORIA_FILHO = "com.example.w_corpandroidpedido.COMBOCATEGORIAFILHO";
+    public static final String CATEGORIA_ITEM_PROMOCIONAL = "com.example.w_corpandroidpedido.CATEGORIAITEMPROMOCIONAL";
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private String bearer;
@@ -97,7 +98,10 @@ public class SubCategoriaActivity extends AppCompatActivity {
                 ListMaterialCategoria listaMaterialCategoriaRetorno = listMaterialCategoria.get();
                 runOnUiThread(() ->{
                     if(listaMaterialCategoriaRetorno.validated){
-                        if(comboCategoriaFilho) {
+                        if(comboCategoriaFilho && multiplaSelecaoCategoria){
+                            finish();
+                            irParaProdutos(this, idCategoria, true, qtdSelecaoCategoria, true, true);
+                        }else if(comboCategoriaFilho) {
                             finish();
                             irParaProdutos(this, idCategoria, true);
                         }else if(multiplaSelecaoCategoria){
@@ -152,13 +156,29 @@ public class SubCategoriaActivity extends AppCompatActivity {
 
         context.startActivity(intent);
     }
-
     public void irParaProdutos(Context context, int idSubCategoria, boolean multiplaSelecao, int qtdSelecao){
         Intent intent = new Intent(context, MaterialActivity.class);
 
         intent.putExtra(ID_SUBCATEGORIA, idSubCategoria);
         intent.putExtra(MULTIPLA_SELECAO, multiplaSelecao);
         intent.putExtra(QTD_SELECAO, qtdSelecao);
+
+        context.startActivity(intent);
+    }
+    public void irParaProdutos(Context context,
+                               int idSubCategoria,
+                               boolean multiplaSelecao,
+                               int qtdSelecao,
+                               boolean comboCategoriaFilho,
+                               boolean categoriaParaItemPromocional)
+    {
+        Intent intent = new Intent(context, MaterialActivity.class);
+
+        intent.putExtra(ID_SUBCATEGORIA, idSubCategoria);
+        intent.putExtra(MULTIPLA_SELECAO, multiplaSelecao);
+        intent.putExtra(QTD_SELECAO, qtdSelecao);
+        intent.putExtra(COMBO_CATEGORIA_FILHO, comboCategoriaFilho);
+        intent.putExtra(CATEGORIA_ITEM_PROMOCIONAL, categoriaParaItemPromocional);
 
         context.startActivity(intent);
     }

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.wcorp.w_corpandroidpedido.Models.Material.Material;
+import com.wcorp.w_corpandroidpedido.Models.Material.MaterialCategoria;
 import com.wcorp.w_corpandroidpedido.R;
 
 import java.text.NumberFormat;
@@ -23,7 +24,9 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
     private final boolean multiplaSelecao;
     private final boolean comboCategoriaFilho;
     private final int qtdMaterial;
+    private int qtdMaterialNaoPromocional = 0;
     private double maiorValor = 0;
+    private boolean primeiroMaterial = true;
     private final ArrayList<Material> items;
 
     public AdicionarMaterialAdapter(Context context, ArrayList<Material> items){
@@ -33,6 +36,14 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
         this.qtdMaterial = 0;
         this.items = items;
     }
+
+    public AdicionarMaterialAdapter(Context context, boolean multiplaSelecao, int qtdMaterial, ArrayList<Material> items){
+        this.context = context;
+        this.comboCategoriaFilho = false;
+        this.multiplaSelecao = multiplaSelecao;
+        this.qtdMaterial = qtdMaterial;
+        this.items = items;
+    }
     public AdicionarMaterialAdapter(Context context, boolean comboCategoriaFilho, ArrayList<Material> items){
         this.context = context;
         this.comboCategoriaFilho = comboCategoriaFilho;
@@ -40,9 +51,9 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
         this.qtdMaterial = items.size();
         this.items = items;
     }
-    public AdicionarMaterialAdapter(Context context, boolean multiplaSelecao, int qtdMaterial, ArrayList<Material> items){
+    public AdicionarMaterialAdapter(Context context, boolean multiplaSelecao, int qtdMaterial, boolean comboCategoriaFilho, ArrayList<Material> items){
         this.context = context;
-        this.comboCategoriaFilho = false;
+        this.comboCategoriaFilho = comboCategoriaFilho;
         this.multiplaSelecao = multiplaSelecao;
         this.qtdMaterial = qtdMaterial;
         this.items = items;
@@ -60,26 +71,65 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
     public void onBindViewHolder(@NonNull AdicionarMaterialAdapter.MaterialInformacaoViewHolder holder, int position) {
         NumberFormat formatNumero = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
-        if(!multiplaSelecao && !comboCategoriaFilho) {
+        if(primeiroMaterial){
+            for(Material material:
+                items){
+                if(maiorValor < material.preco){
+                    maiorValor = material.preco;
+                }
+
+                for (MaterialCategoria materialCategoria:
+                    material.listMaterialCategoria) {
+                    if(!materialCategoria.pdvCategoriaParaItemPromocional &&
+                        materialCategoria.idPai != 0)
+                        qtdMaterialNaoPromocional++;
+                }
+            }
+            primeiroMaterial = false;
+        }
+
+        for (MaterialCategoria materialCategoria:
+                items.get(position).listMaterialCategoria) {
+            holder.multiplaSelecaoDividirPreco = materialCategoria.pdvMulltiplaSelecaoDividirPreco;
+            if(materialCategoria.idPai != 0){
+                holder.categoriaParaItemPromocional = materialCategoria.pdvCategoriaParaItemPromocional;
+                break;
+            }
+        }
+
+
+        if (!multiplaSelecao && !comboCategoriaFilho) {
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
             holder.valorMaterial.setText(formatNumero.format(items.get(position).preco));
             holder.qtdMaterial.setText("1 Un.");
 
-        }else if(multiplaSelecao){
-            holder.nomeMaterial.setText(items.get(position).nome);
+        } else if (multiplaSelecao && comboCategoriaFilho) {
 
-            for(int i = 0; i < items.size(); i++){
-                if(maiorValor < items.get(i).preco){
-                    maiorValor = items.get(i).preco;
-                }
+            if (holder.categoriaParaItemPromocional) {
+                holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
+                holder.valorMaterial.setText(formatNumero.format(0));
+                holder.qtdMaterial.setText("1 Un.");
+            }else{
+                holder.nomeMaterial.setText(items.get(position).nome);
+
+                holder.valorMaterial.setText(formatNumero.format(maiorValor));
+
+                double divisaoMateriais = 1.0 / qtdMaterialNaoPromocional;
+                holder.qtdMaterial.setText(divisaoMateriais + " Un.");
             }
-
+        } else if (multiplaSelecao) {
+            holder.nomeMaterial.setText(items.get(position).nome);
             holder.valorMaterial.setText(formatNumero.format(maiorValor));
 
-            double divisaoMateriais = 1.0 / qtdMaterial;
-            holder.qtdMaterial.setText(divisaoMateriais + " Un.");
-
-        }else{
+            if(holder.multiplaSelecaoDividirPreco){
+                double divisaoValorMaior = maiorValor / qtdMaterial;
+                holder.valorMaterial.setText(formatNumero.format(divisaoValorMaior));
+                holder.qtdMaterial.setText("1 Un.");
+            }else{
+                double divisaoMateriais = 1.0 / qtdMaterial;
+                holder.qtdMaterial.setText(String.format(new Locale("pt", "BR"), "%.2f", divisaoMateriais) + " Un.");
+            }
+        } else {
             holder.nomeMaterial.setText(String.valueOf(items.get(position).nome));
             holder.valorMaterial.setText(formatNumero.format(items.get(position).preco));
             holder.qtdMaterial.setText("1 Un.");
@@ -94,6 +144,8 @@ public class AdicionarMaterialAdapter extends RecyclerView.Adapter<AdicionarMate
         TextView nomeMaterial = itemView.findViewById(R.id.nomeMaterial);
         TextView valorMaterial = itemView.findViewById(R.id.valorMaterial);
         TextView qtdMaterial = itemView.findViewById(R.id.qtdMaterial);
+        boolean categoriaParaItemPromocional;
+        boolean multiplaSelecaoDividirPreco;
         public MaterialInformacaoViewHolder(@NonNull View itemView) {
             super(itemView);
         }
