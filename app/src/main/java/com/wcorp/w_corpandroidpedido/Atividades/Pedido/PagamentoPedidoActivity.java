@@ -107,6 +107,10 @@ public class PagamentoPedidoActivity extends AppCompatActivity {
         });
         Button btnCalcularValorDividido = findViewById(R.id.btnCalcularValorDividido);
         btnCalcularValorDividido.setOnClickListener(view ->{
+            InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            in.hideSoftInputFromWindow(txtQtdPessoasDividir
+                            .getApplicationWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
             calcularDivisaoPessoas();
         });
 
