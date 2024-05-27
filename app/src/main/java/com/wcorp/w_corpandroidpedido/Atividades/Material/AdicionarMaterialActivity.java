@@ -44,22 +44,18 @@ import java.util.concurrent.Future;
 import io.reactivex.Flowable;
 
 public class AdicionarMaterialActivity extends AppCompatActivity {
-    private RecyclerView getRecycleMaterialInformacao;
     private RecyclerView getGetRecyclerViewBotao;
     TextView txtNumeroComanda;
     TextView txtValorComanda;
     EditText txtObservacao;
     private boolean multiplaSelecao;
     private boolean comboCategoriaFilho;
-    private int qtdSelecao;
     private ArrayList<Material> listMaterial = new ArrayList<>();
-    private Button getBtnAdicionar;
-    private Button getBtnVoltar;
     Preferences.Key<String> BEARER = PreferencesKeys.stringKey("authentication");
     private String bearer;
     DadosComanda dadosComanda = DadosComanda.GetDadosComanda();
     private Dialog dialogLoading;
-    private Executor executor = Executors.newSingleThreadExecutor();
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +77,13 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
 
         multiplaSelecao = intent.getBooleanExtra(MaterialActivity.MULTIPLA_SELECAO, false);
         comboCategoriaFilho = intent.getBooleanExtra(MaterialActivity.COMBO_CATEGORIA, false);
-        qtdSelecao = intent.getIntExtra(MaterialActivity.QTD_SELECAO, 0);
+        int qtdSelecao = intent.getIntExtra(MaterialActivity.QTD_SELECAO, 0);
         listMaterial = (ArrayList<Material>) intent.getSerializableExtra(MaterialActivity.ITEMS);
 
         txtNumeroComanda = findViewById(R.id.txtNumeroComanda);
         txtValorComanda = findViewById(R.id.txtValorComanda);
         txtObservacao = findViewById(R.id.txtObservacao);
-        getRecycleMaterialInformacao = findViewById(R.id.viewMaterialInformacao);
+        RecyclerView getRecycleMaterialInformacao = findViewById(R.id.viewMaterialInformacao);
         getGetRecyclerViewBotao = findViewById(R.id.viewBotaoQtd);
 
         getRecycleMaterialInformacao.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -115,16 +111,12 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
             getRecycleMaterialInformacao.setAdapter(new AdicionarMaterialAdapter(this, listMaterial));
         }
 
-        getBtnAdicionar = findViewById(R.id.btnAdicionarProduto);
-        getBtnVoltar = findViewById(R.id.btnVoltar);
+        Button getBtnAdicionar = findViewById(R.id.btnAdicionarProduto);
+        Button getBtnVoltar = findViewById(R.id.btnVoltar);
 
-        getBtnAdicionar.setOnClickListener(view -> {
-            adicionarProduto();
-        });
+        getBtnAdicionar.setOnClickListener(view -> adicionarProduto());
 
-        getBtnVoltar.setOnClickListener(view -> {
-            voltarParaMaterialActivity();
-        });
+        getBtnVoltar.setOnClickListener(view -> voltarParaMaterialActivity());
     }
 
     private void adicionarProduto(){
@@ -195,7 +187,7 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
 
                 if(materialPromocional){
                     pedidoMaterialItemAtual.valorUnitario = 0;
-                    pedidoMaterialItemAtual.quantidade = 1;
+                    pedidoMaterialItemAtual.quantidade = quantidadeMaterialPedido;
                 }else{
                     pedidoMaterialItemAtual.valorUnitario = maiorValorMaterial;
                     pedidoMaterialItemAtual.quantidade = divisaoMaterialMultiplaSelecaoPromocional;
@@ -249,7 +241,7 @@ public class AdicionarMaterialActivity extends AppCompatActivity {
                         StringBuilder inconsistencesJoin = new StringBuilder();
                         for (Inconsistences inconsistences :
                                 pedidoAtualizadoRetorno.inconsistences) {
-                            inconsistencesJoin.append(inconsistences.text + "\n");
+                            inconsistencesJoin.append(inconsistences.text).append("\n");
                         }
                         alert.setMessage(inconsistencesJoin);
                         alert.setCancelable(false);
